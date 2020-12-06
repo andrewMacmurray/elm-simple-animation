@@ -1,4 +1,5 @@
-# elm-package generated files
 elm-stuff
-# elm-repl generated files
 repl-temp-*
+.idea
+docs.json
+node_modules
