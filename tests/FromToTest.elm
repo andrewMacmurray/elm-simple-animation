@@ -21,8 +21,10 @@ fromToSuite =
     describe "FromTo"
         [ test "keyframes" <|
             \_ ->
-                Animation.fromTo 1000
-                    []
+                Animation.fromTo
+                    { duration = 1000
+                    , options = []
+                    }
                     [ P.opacity 0 ]
                     [ P.opacity 1 ]
                     |> expectKeyframes
@@ -31,8 +33,10 @@ fromToSuite =
                         ]
         , test "keyframes with multiple properties" <|
             \_ ->
-                Animation.fromTo 1000
-                    []
+                Animation.fromTo
+                    { duration = 1000
+                    , options = []
+                    }
                     [ P.opacity 1, P.x 50 ]
                     [ P.opacity 0.5, P.x 100 ]
                     |> expectKeyframes
@@ -41,8 +45,10 @@ fromToSuite =
                         ]
         , test "rendering class properties" <|
             \_ ->
-                Animation.fromTo 1000
-                    [ Animation.loop, Animation.linear ]
+                Animation.fromTo
+                    { duration = 1000
+                    , options = [ Animation.loop, Animation.linear ]
+                    }
                     [ P.opacity 0 ]
                     [ P.opacity 1 ]
                     |> expectClassProperties
@@ -60,8 +66,9 @@ stepsSuite =
         [ testWithDurations "Steps add up to the total duration" <|
             \d1 d2 d3 ->
                 Animation.steps
-                    []
-                    [ P.opacity 0 ]
+                    { options = []
+                    , startAt = [ P.opacity 0 ]
+                    }
                     [ Animation.step d1 [ P.opacity 1 ]
                     , Animation.step d2 [ P.opacity 0 ]
                     , Animation.step d3 [ P.opacity 1 ]
@@ -87,8 +94,9 @@ stepsSuite =
                         n * 100
                 in
                 Animation.steps
-                    []
-                    [ P.opacity 0 ]
+                    { options = []
+                    , startAt = [ P.opacity 0 ]
+                    }
                     [ Animation.step d1 [ P.opacity 1 ]
                     , Animation.step d2 [ P.opacity 0 ]
                     , Animation.step d3 [ P.opacity 1 ]
@@ -102,8 +110,9 @@ stepsSuite =
         , test "wait repeats the previous frame + duration" <|
             \_ ->
                 Animation.steps
-                    []
-                    [ P.opacity 0 ]
+                    { options = []
+                    , startAt = [ P.opacity 0 ]
+                    }
                     [ Animation.wait 500
                     , Animation.step 500 [ P.opacity 1 ]
                     ]

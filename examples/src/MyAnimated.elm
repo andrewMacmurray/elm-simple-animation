@@ -7,7 +7,7 @@ module MyAnimated exposing
     )
 
 import Animated
-import Element exposing (..)
+import Element exposing (Element, behindContent, htmlAttribute)
 import Html.Attributes
 import Simple.Animation exposing (Animation)
 import Svg exposing (Svg)
@@ -18,25 +18,25 @@ import Svg.Attributes
 -- Elm UI
 
 
-el : Animation -> List (Attribute msg) -> Element msg -> Element msg
+el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
 el =
     elmUINode Element.el
 
 
-column : Animation -> List (Attribute msg) -> List (Element msg) -> Element msg
+column : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
 column =
     elmUINode Element.column
 
 
-row : Animation -> List (Attribute msg) -> List (Element msg) -> Element msg
+row : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
 row =
     elmUINode Element.row
 
 
 elmUINode :
-    (List (Attribute msg) -> children -> Element msg)
+    (List (Element.Attribute msg) -> children -> Element msg)
     -> Animation
-    -> List (Attribute msg)
+    -> List (Element.Attribute msg)
     -> children
     -> Element msg
 elmUINode node_ anim attributes children =
@@ -45,7 +45,7 @@ elmUINode node_ anim attributes children =
             node_
                 (List.append
                     [ htmlAttribute (Html.Attributes.class class)
-                    , behindContent (html stylesheet)
+                    , behindContent (Element.html stylesheet)
                     ]
                     attributes
                 )

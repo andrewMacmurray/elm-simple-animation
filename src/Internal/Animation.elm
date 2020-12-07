@@ -10,7 +10,6 @@ module Internal.Animation exposing
     , duration_
     , frame
     , frameProperties
-    , frames
     , keyframes_
     , linear
     , loop
@@ -27,12 +26,11 @@ import Internal.Property as P exposing (Property)
 
 
 type Animation
-    = Animation Millis (List Option)
+    = Animation Millis (List Option) (List Frame)
 
 
 type Option
-    = Frames (List Frame)
-    | Iteration Iteration
+    = Iteration Iteration
     | Delay Millis
     | Ease Ease
 
@@ -62,7 +60,7 @@ type alias Millis =
 -- Build
 
 
-animation : Millis -> List Option -> Animation
+animation : Millis -> List Option -> List Frame -> Animation
 animation =
     Animation
 
@@ -89,11 +87,6 @@ delay =
 loop : Option
 loop =
     Iteration Loop
-
-
-frames : List Frame -> Option
-frames =
-    Frames
 
 
 
@@ -190,9 +183,6 @@ renderOption o =
         Iteration i ->
             [ "animation-iteration-count: " ++ renderIteration i ]
 
-        Frames _ ->
-            []
-
 
 renderEase : Ease -> String
 renderEase e =
@@ -223,8 +213,8 @@ renderIteration i =
 
 
 name_ : Animation -> String
-name_ (Animation d options) =
-    "anim-" ++ String.fromInt d ++ optionNames options
+name_ (Animation d options frames) =
+    "anim-" ++ String.fromInt d ++ optionNames options ++ framesNames frames
 
 
 optionNames : List Option -> String
@@ -232,14 +222,16 @@ optionNames =
     joinWith optionName
 
 
+framesNames : List Frame -> String
+framesNames =
+    joinWith frameName
+
+
 optionName : Option -> String
 optionName o =
     case o of
         Delay n ->
             "d" ++ String.fromInt n
-
-        Frames f ->
-            joinWith frameName f
 
         Ease ease ->
             easeName ease
@@ -280,28 +272,15 @@ iterationName i =
 
 
 options_ : Animation -> List Option
-options_ (Animation _ o) =
+options_ (Animation _ o _) =
     o
 
 
 duration_ : Animation -> Millis
-duration_ (Animation d _) =
+duration_ (Animation d _ _) =
     d
 
 
 frames_ : Animation -> List Frame
-frames_ =
-    options_
-        >> List.filterMap getFrames
-        >> List.head
-        >> Maybe.withDefault []
-
-
-getFrames : Option -> Maybe (List Frame)
-getFrames o =
-    case o of
-        Frames f ->
-            Just f
-
-        _ ->
-            Nothing
+frames_ (Animation _ _ f) =
+    f

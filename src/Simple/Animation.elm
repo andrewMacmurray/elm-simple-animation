@@ -38,8 +38,8 @@ type alias Option =
 -- Stepped Animation
 
 
-type Steps
-    = Steps (List Option) (List Property) (List Step)
+type Stepped
+    = Stepped (List Option) (List Property) (List Step)
 
 
 type Step
@@ -52,20 +52,32 @@ type Step
 -- From To Animation
 
 
+type alias FromToOptions =
+    { duration : Millis
+    , options : List Option
+    }
+
+
 {-| -}
-fromTo : Millis -> List Option -> List Property -> List Property -> Animation
-fromTo duration options from_ to_ =
-    Steps options from_ [ step duration to_ ] |> toAnimation
+fromTo : FromToOptions -> List Property -> List Property -> Animation
+fromTo { duration, options } from_ to_ =
+    Stepped options from_ [ step duration to_ ] |> toAnimation
 
 
 
 -- Steps
 
 
+type alias StepsOptions =
+    { options : List Option
+    , startAt : List Property
+    }
+
+
 {-| -}
-steps : List Option -> List Property -> List Step -> Animation
-steps options firstFrame steps_ =
-    Steps options firstFrame steps_ |> toAnimation
+steps : StepsOptions -> List Step -> Animation
+steps { options, startAt } steps_ =
+    Stepped options startAt steps_ |> toAnimation
 
 
 
@@ -92,9 +104,9 @@ set =
     Step 1
 
 
-toAnimation : Steps -> Animation
-toAnimation (Steps opts firstFrame nextFrames) =
-    Internal.animation (totalDuration nextFrames) (toStepFrames firstFrame nextFrames :: opts)
+toAnimation : Stepped -> Animation
+toAnimation (Stepped opts firstFrame nextFrames) =
+    Internal.animation (totalDuration nextFrames) opts (toFrames firstFrame nextFrames)
 
 
 totalDuration : List Step -> Millis
@@ -122,11 +134,6 @@ adjustCompleteWait dur curr =
 
     else
         curr + 1
-
-
-toStepFrames : List Property -> List Step -> Option
-toStepFrames firstFrame nextFrames =
-    Internal.frames (toFrames firstFrame nextFrames)
 
 
 toFrames : List Property -> List Step -> List Internal.Frame

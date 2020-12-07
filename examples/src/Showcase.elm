@@ -48,8 +48,10 @@ dot_ =
 
 
 expandFade =
-    Animation.fromTo 2000
-        [ Animation.loop ]
+    Animation.fromTo
+        { duration = 2000
+        , options = [ Animation.loop ]
+        }
         [ P.opacity 1, P.scale 1 ]
         [ P.opacity 0, P.scale 2 ]
 
