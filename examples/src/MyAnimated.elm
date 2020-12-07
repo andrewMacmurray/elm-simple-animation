@@ -7,8 +7,7 @@ module MyAnimated exposing
     )
 
 import Animated
-import Element exposing (Element, behindContent, htmlAttribute)
-import Html.Attributes
+import Element exposing (Element)
 import Simple.Animation exposing (Animation)
 import Svg exposing (Svg)
 import Svg.Attributes
@@ -20,38 +19,31 @@ import Svg.Attributes
 
 el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
 el =
-    elmUINode Element.el
+    ui Element.el
 
 
 column : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
 column =
-    elmUINode Element.column
+    ui Element.column
 
 
 row : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
 row =
-    elmUINode Element.row
+    ui Element.row
 
 
-elmUINode :
+ui :
     (List (Element.Attribute msg) -> children -> Element msg)
     -> Animation
     -> List (Element.Attribute msg)
     -> children
     -> Element msg
-elmUINode node_ anim attributes children =
-    Animated.custom
-        (\class stylesheet ->
-            node_
-                (List.append
-                    [ htmlAttribute (Html.Attributes.class class)
-                    , behindContent (Element.html stylesheet)
-                    ]
-                    attributes
-                )
-                children
-        )
-        anim
+ui =
+    Animated.ui
+        { behindContent = Element.behindContent
+        , htmlAttribute = Element.htmlAttribute
+        , html = Element.html
+        }
 
 
 
@@ -60,19 +52,19 @@ elmUINode node_ anim attributes children =
 
 g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 g =
-    svgNode Svg.g
+    svg_ Svg.g
 
 
 svg : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 svg =
-    svgNode Svg.svg
+    svg_ Svg.svg
 
 
-svgNode :
+svg_ :
     (List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg)
     -> Animation
     -> List (Svg.Attribute msg)
     -> List (Svg msg)
     -> Svg msg
-svgNode node_ anim attrs children =
-    Animated.custom (\class stylesheet -> node_ (Svg.Attributes.class class :: attrs) (stylesheet :: children)) anim
+svg_ =
+    Animated.node Svg.Attributes.class

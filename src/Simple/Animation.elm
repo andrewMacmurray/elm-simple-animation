@@ -1,7 +1,8 @@
 module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
-    , Option, loop, linear
-    , step, wait
+    , step, set, wait, waitTillComplete
+    , Option, loop, delay
+    , linear, zippy
     )
 
 {-| Create an Animation
@@ -9,9 +10,19 @@ module Simple.Animation exposing
 @docs Animation, Millis, fromTo, steps
 
 
+# Steps
+
+@docs step, set, wait, waitTillComplete
+
+
 # Options
 
-@docs Option, loop, linear
+@docs Option, loop, delay
+
+
+# Eases
+
+@docs linear, zippy
 
 -}
 
@@ -84,21 +95,25 @@ steps { options, startAt } steps_ =
 -- Step
 
 
+{-| -}
 step : Millis -> List Property -> Step
 step =
     Step
 
 
+{-| -}
 wait : Millis -> Step
 wait =
     Wait
 
 
+{-| -}
 waitTillComplete : Animation -> Step
 waitTillComplete =
     Internal.duration_ >> WaitTillComplete
 
 
+{-| -}
 set : List Property -> Step
 set =
     Step 1
@@ -173,6 +188,22 @@ loop =
 
 
 {-| -}
+delay : Millis -> Option
+delay =
+    Internal.delay
+
+
+
+-- Eases
+
+
+{-| -}
 linear : Option
 linear =
     Internal.linear
+
+
+{-| -}
+zippy : Option
+zippy =
+    Internal.zippy

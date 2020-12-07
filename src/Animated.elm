@@ -4,6 +4,7 @@ module Animated exposing
     , div
     , html
     , node
+    , ui
     )
 
 import Html exposing (Html)
@@ -43,12 +44,41 @@ node :
     -> List (VirtualDom.Node msg)
     -> VirtualDom.Node msg
 node toClass_ node_ anim attrs els =
-    node_ (toClass_ (Animation.name_ anim) :: attrs) (stylesheet_ anim :: els)
+    node_
+        (toClass_ (Animation.name_ anim) :: attrs)
+        (stylesheet_ anim :: els)
+
+
+type alias UiOptions element attribute msg =
+    { behindContent : element -> attribute
+    , html : Html msg -> element
+    , htmlAttribute : Html.Attribute msg -> attribute
+    }
+
+
+ui :
+    UiOptions el attr msg
+    -> (List attr -> children -> el)
+    -> Animation
+    -> List attr
+    -> children
+    -> el
+ui options node_ anim attrs els =
+    node_
+        (List.append
+            [ options.behindContent (options.html (stylesheet_ anim))
+            , options.htmlAttribute (Html.Attributes.class (Animation.name_ anim))
+            ]
+            attrs
+        )
+        els
 
 
 custom : (ClassName -> VirtualDom.Node msg -> animated) -> Animation -> animated
 custom toAnimated anim =
-    toAnimated (Animation.name_ anim) (stylesheet_ anim)
+    toAnimated
+        (Animation.name_ anim)
+        (stylesheet_ anim)
 
 
 stylesheet_ : Animation -> VirtualDom.Node msg
