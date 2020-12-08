@@ -1,50 +1,73 @@
 module Simple.Animation.Property exposing
     ( Property
-    , opacity
+    , opacity, rotate, scale, scaleXY, y, x
     , property
-    , rotate
-    , scale
-    , scaleXY
-    , x
-    , y
     )
+
+{-|
+
+
+# Property
+
+@docs Property
+
+
+# Common Properties
+
+@docs opacity, rotate, scale, scaleXY, y, x
+
+
+# Custom Property
+
+@docs property
+
+-}
 
 import Internal.Property as Internal
 
 
+{-| -}
 type alias Property =
     Internal.Property
 
 
+{-| -}
 opacity : Float -> Property
 opacity =
     Internal.opacity
 
 
-property : String -> String -> Property
-property =
-    Internal.property
-
-
+{-| -}
 rotate : Float -> Property
 rotate =
     Internal.rotate
 
 
+{-| -}
 scale : Float -> Property
 scale =
     Internal.scale
 
 
+{-| -}
 scaleXY : Float -> Float -> Property
 scaleXY =
     Internal.scaleXY
 
 
+{-| -}
 x : Float -> Property
 x =
     Internal.x
 
 
+{-| -}
+y : Float -> Property
 y =
     Internal.y
+
+
+{-| -}
+property : String -> String -> Property
+property =
+    Internal.property

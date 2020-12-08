@@ -1,11 +1,33 @@
-module Animated exposing
-    ( ClassName
-    , custom
-    , div
-    , html
+module Simple.Animated exposing
+    ( div, html
     , node
-    , ui
+    , UiOptions, ui
+    , ClassName, Stylesheet, custom
     )
+
+{-|
+
+
+# Render Html Animations
+
+@docs div, html
+
+
+# Hook Into SVG
+
+@docs node
+
+
+# Hook Into Elm UI
+
+@docs UiOptions, ui
+
+
+# Custom Renderer
+
+@docs ClassName, Stylesheet, custom
+
+-}
 
 import Html exposing (Html)
 import Html.Attributes
@@ -13,19 +35,17 @@ import Internal.Animation as Animation exposing (Animation)
 import VirtualDom
 
 
-type alias ClassName =
-    String
-
-
 
 -- Html
 
 
+{-| -}
 div : Animation -> List (Html.Attribute msg) -> List (Html msg) -> Html msg
 div =
     html Html.div
 
 
+{-| -}
 html :
     (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
     -> Animation
@@ -36,6 +56,7 @@ html =
     node Html.Attributes.class
 
 
+{-| -}
 node :
     (ClassName -> VirtualDom.Attribute msg)
     -> (List (VirtualDom.Attribute msg) -> List (VirtualDom.Node msg) -> VirtualDom.Node msg)
@@ -49,6 +70,7 @@ node toClass_ node_ anim attrs els =
         (stylesheet_ anim :: els)
 
 
+{-| -}
 type alias UiOptions element attribute msg =
     { behindContent : element -> attribute
     , html : Html msg -> element
@@ -56,13 +78,14 @@ type alias UiOptions element attribute msg =
     }
 
 
+{-| -}
 ui :
-    UiOptions el attr msg
-    -> (List attr -> children -> el)
+    UiOptions element attribute msg
+    -> (List attribute -> children -> element)
     -> Animation
-    -> List attr
+    -> List attribute
     -> children
-    -> el
+    -> element
 ui options node_ anim attrs els =
     node_
         (List.append
@@ -74,13 +97,24 @@ ui options node_ anim attrs els =
         els
 
 
-custom : (ClassName -> VirtualDom.Node msg -> animated) -> Animation -> animated
+{-| -}
+type alias ClassName =
+    String
+
+
+{-| -}
+type alias Stylesheet msg =
+    VirtualDom.Node msg
+
+
+{-| -}
+custom : (ClassName -> Stylesheet msg -> animated) -> Animation -> animated
 custom toAnimated anim =
     toAnimated
         (Animation.name_ anim)
         (stylesheet_ anim)
 
 
-stylesheet_ : Animation -> VirtualDom.Node msg
+stylesheet_ : Animation -> Stylesheet msg
 stylesheet_ anim =
     VirtualDom.node "style" [] [ VirtualDom.text (Animation.stylesheet_ anim) ]

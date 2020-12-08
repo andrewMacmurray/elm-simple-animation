@@ -4,9 +4,9 @@ import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Html exposing (Html)
-import MyAnimated
 import Simple.Animation as Animation
 import Simple.Animation.Property as P
+import Utils.Animated as Animated
 
 
 main : Html msg
@@ -33,7 +33,7 @@ animatedDot =
 
 dot : Element msg
 dot =
-    el [ inFront (MyAnimated.el expandFade [] dot_) ] dot_
+    el [ inFront (Animated.el expandFade [] dot_) ] dot_
 
 
 dot_ : Element msg

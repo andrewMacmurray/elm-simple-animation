@@ -2,10 +2,13 @@ module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
     , step, set, wait, waitTillComplete
     , Option, loop, delay
-    , linear, zippy
+    , linear, zippy, cubic
     )
 
-{-| Create an Animation
+{-|
+
+
+# Create an Animation
 
 @docs Animation, Millis, fromTo, steps
 
@@ -22,7 +25,7 @@ module Simple.Animation exposing
 
 # Eases
 
-@docs linear, zippy
+@docs linear, zippy, cubic
 
 -}
 
@@ -63,14 +66,8 @@ type Step
 -- From To Animation
 
 
-type alias FromToOptions =
-    { duration : Millis
-    , options : List Option
-    }
-
-
 {-| -}
-fromTo : FromToOptions -> List Property -> List Property -> Animation
+fromTo : { duration : Millis, options : List Option } -> List Property -> List Property -> Animation
 fromTo { duration, options } from_ to_ =
     Stepped options from_ [ step duration to_ ] |> toAnimation
 
@@ -79,14 +76,8 @@ fromTo { duration, options } from_ to_ =
 -- Steps
 
 
-type alias StepsOptions =
-    { options : List Option
-    , startAt : List Property
-    }
-
-
 {-| -}
-steps : StepsOptions -> List Step -> Animation
+steps : { startAt : List Property, options : List Option } -> List Step -> Animation
 steps { options, startAt } steps_ =
     Stepped options startAt steps_ |> toAnimation
 
@@ -207,3 +198,9 @@ linear =
 zippy : Option
 zippy =
     Internal.zippy
+
+
+{-| -}
+cubic : Float -> Float -> Float -> Float -> Option
+cubic =
+    Internal.cubic
