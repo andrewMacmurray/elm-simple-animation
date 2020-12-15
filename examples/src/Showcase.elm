@@ -1,68 +1,95 @@
 module Showcase exposing (main)
 
+import Browser
 import Element exposing (..)
-import Element.Background as Background
-import Element.Border as Border
+import Element.Input as Input
+import Examples.Dots as Dots
+import Examples.Sunflowers as Sunflowers
 import Html exposing (Html)
-import Simple.Animation as Animation
-import Simple.Animation.Property as P
-import Utils.Animated as Animated
+import Utils.UI exposing (medium, small)
 
 
-main : Html msg
+
+-- Main
+
+
+main : Program () Model Msg
 main =
-    layout [ width fill, padding medium ] examples
-
-
-examples : Element msg
-examples =
-    column
-        [ centerX
-        , width (fill |> maximum 800)
-        ]
-        [ animatedDot ]
-
-
-animatedDot : Element msg
-animatedDot =
-    column [ spacing small ]
-        [ text "Dot"
-        , dot
-        ]
-
-
-dot : Element msg
-dot =
-    el [ inFront (Animated.el expandFade [] dot_) ] dot_
-
-
-dot_ : Element msg
-dot_ =
-    el
-        [ Background.color (rgb 0 0 0)
-        , Border.rounded 1000
-        , width (px medium)
-        , height (px medium)
-        ]
-        none
-
-
-expandFade =
-    Animation.fromTo
-        { duration = 2000
-        , options = [ Animation.loop ]
+    Browser.sandbox
+        { init = init
+        , update = update
+        , view = view
         }
-        [ P.opacity 1, P.scale 1 ]
-        [ P.opacity 0, P.scale 2 ]
 
 
 
--- Spacing
+-- Model
 
 
-small =
-    14
+type alias Model =
+    { example : Example
+    }
 
 
-medium =
-    24
+type Example
+    = Dots
+    | Sunflowers
+
+
+type Msg
+    = ExampleSelected Example
+
+
+
+-- Init
+
+
+init : Model
+init =
+    { example = Sunflowers
+    }
+
+
+
+-- Update
+
+
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        ExampleSelected example ->
+            { model | example = example }
+
+
+
+-- View
+
+
+view : Model -> Html Msg
+view model =
+    layout [ width fill, padding medium ] (examples model)
+
+
+examples : Model -> Element Msg
+examples model =
+    case model.example of
+        Dots ->
+            Dots.examples buttons
+
+        Sunflowers ->
+            Sunflowers.examples buttons
+
+
+buttons =
+    [ ( Dots, "Dots" )
+    , ( Sunflowers, "Sunflowers" )
+    ]
+        |> List.map button
+        |> row [ spacing small ]
+
+
+button ( ex, label ) =
+    Input.button []
+        { onPress = Just (ExampleSelected ex)
+        , label = text label
+        }

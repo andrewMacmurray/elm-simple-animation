@@ -1,9 +1,7 @@
 module Utils.Animated exposing
-    ( column
-    , el
+    ( el
     , g
-    , row
-    , svg
+    , path
     )
 
 import Element exposing (Element)
@@ -20,16 +18,6 @@ import Svg.Attributes
 el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
 el =
     ui Element.el
-
-
-column : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
-column =
-    ui Element.column
-
-
-row : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
-row =
-    ui Element.row
 
 
 ui :
@@ -55,9 +43,9 @@ g =
     svg_ Svg.g
 
 
-svg : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
-svg =
-    svg_ Svg.svg
+path : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+path =
+    svg_ Svg.path
 
 
 svg_ :

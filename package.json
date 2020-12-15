@@ -5,7 +5,7 @@
   "scripts": {
     "test": "elm-test",
     "docs": "elm-doc-preview",
-    "examples": "cd examples && elm reactor"
+    "examples": "cd examples && elm reactor --port 8001"
   },
   "repository": {
     "type": "git",

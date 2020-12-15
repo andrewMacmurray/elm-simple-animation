@@ -15,7 +15,6 @@ module Internal.Animation exposing
     , loop
     , name_
     , stylesheet_
-    , zippy
     )
 
 import Internal.Property as P exposing (Property)
@@ -91,11 +90,6 @@ loop =
 
 
 -- Eases
-
-
-zippy : Option
-zippy =
-    cubic 0.3 0.66 0 1.18
 
 
 cubic : Float -> Float -> Float -> Float -> Option

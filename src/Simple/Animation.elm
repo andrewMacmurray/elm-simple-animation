@@ -3,6 +3,7 @@ module Simple.Animation exposing
     , step, set, wait, waitTillComplete
     , Option, loop, delay
     , linear, zippy, cubic
+    , duration, zippy2
     )
 
 {-|
@@ -68,8 +69,8 @@ type Step
 
 {-| -}
 fromTo : { duration : Millis, options : List Option } -> List Property -> List Property -> Animation
-fromTo { duration, options } from_ to_ =
-    Stepped options from_ [ step duration to_ ] |> toAnimation
+fromTo o from_ to_ =
+    Stepped o.options from_ [ step o.duration to_ ] |> toAnimation
 
 
 
@@ -93,6 +94,12 @@ step =
 
 
 {-| -}
+set : List Property -> Step
+set =
+    Step 1
+
+
+{-| -}
 wait : Millis -> Step
 wait =
     Wait
@@ -102,12 +109,6 @@ wait =
 waitTillComplete : Animation -> Step
 waitTillComplete =
     Internal.duration_ >> WaitTillComplete
-
-
-{-| -}
-set : List Property -> Step
-set =
-    Step 1
 
 
 toAnimation : Stepped -> Animation
@@ -197,10 +198,25 @@ linear =
 {-| -}
 zippy : Option
 zippy =
-    Internal.zippy
+    cubic 0.3 0.66 0 1.18
+
+
+zippy2 : Option
+zippy2 =
+    cubic 0.38 0.57 0 1.5
 
 
 {-| -}
 cubic : Float -> Float -> Float -> Float -> Option
 cubic =
     Internal.cubic
+
+
+
+-- Other
+
+
+{-| -}
+duration : Animation -> Millis
+duration =
+    Internal.duration_
