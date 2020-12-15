@@ -1,4 +1,7 @@
-module Examples.Sunflowers.Sunflower exposing (duration, sunflower)
+module Examples.Sunflowers.Sunflower exposing
+    ( duration
+    , sunflower
+    )
 
 import Element exposing (Element, html)
 import Simple.Animation as Animation exposing (Animation)
@@ -9,14 +12,8 @@ import Utils.Animated as Animated
 import Utils.Svg exposing (transformOrigin_, viewBox_)
 
 
-vw : number
-vw =
-    669
 
-
-vh : number
-vh =
-    569
+-- Sunflower
 
 
 sunflower : Animation.Millis -> Element msg
@@ -30,7 +27,21 @@ duration =
 
 
 
--- Petals
+-- Blooming Petals
+
+
+bloomPetal : Int -> Animation.Millis -> Animation
+bloomPetal index delay =
+    Animation.steps
+        { startAt = [ P.scale 0 ]
+        , options =
+            [ Animation.cubic 0.34 1.56 0.64 1
+            , Animation.delay ((index * 75) + delay)
+            ]
+        }
+        [ Animation.waitTillComplete (growCore delay)
+        , Animation.step 1000 [ P.scale 1 ]
+        ]
 
 
 petals : Animation.Millis -> List (Svg msg)
@@ -53,22 +64,18 @@ petals delay =
         ]
 
 
-bloomPetal : Int -> Animation.Millis -> Animation
-bloomPetal index delay =
-    Animation.steps
-        { startAt = [ P.scale 0 ]
-        , options =
-            [ Animation.zippy
-            , Animation.delay ((index * 75) + delay)
-            ]
-        }
-        [ Animation.waitTillComplete (growCore delay)
-        , Animation.step 1000 [ P.scale 1 ]
-        ]
-
-
 
 -- Core
+
+
+growCore : Animation.Millis -> Animation
+growCore delay =
+    Animation.fromTo
+        { duration = 1000
+        , options = [ Animation.zippy2, Animation.delay delay ]
+        }
+        [ P.scale 0 ]
+        [ P.scale 1 ]
 
 
 core : Animation.Millis -> Svg msg
@@ -81,11 +88,15 @@ core delay =
         []
 
 
-growCore : Animation.Millis -> Animation
-growCore delay =
-    Animation.fromTo
-        { duration = 1000
-        , options = [ Animation.zippy2, Animation.delay delay ]
-        }
-        [ P.scale 0 ]
-        [ P.scale 1 ]
+
+-- Helpers
+
+
+vw : number
+vw =
+    669
+
+
+vh : number
+vh =
+    569

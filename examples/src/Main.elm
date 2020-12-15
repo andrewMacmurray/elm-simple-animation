@@ -1,4 +1,4 @@
-module Showcase exposing (main)
+module Main exposing (main)
 
 import Browser
 import Element exposing (..)

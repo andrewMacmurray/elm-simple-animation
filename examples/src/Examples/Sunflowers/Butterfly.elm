@@ -41,7 +41,7 @@ resting delay =
         { color = "#C11D1D"
         , size = 20
         , speed = 0.3
-        , delay = delay
+        , delay = delay * 2
         }
 
 
@@ -67,6 +67,7 @@ flapLeftWing options =
         ]
 
 
+flapDuration : Float -> Int
 flapDuration x =
     round (300 / x)
 

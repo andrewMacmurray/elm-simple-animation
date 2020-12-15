@@ -11,12 +11,9 @@ import Utils.UI exposing (..)
 
 examples : Element msg -> Element msg
 examples =
-    groups [ sunflowers ]
-
-
-sunflowers : Element msg
-sunflowers =
-    group "Sunflowers" sunflowers_
+    groups
+        [ group "Sunflowers" sunflowers_
+        ]
 
 
 sunflowers_ : Element msg
