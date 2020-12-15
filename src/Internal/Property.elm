@@ -8,6 +8,7 @@ module Internal.Property exposing
     , scale
     , scaleXY
     , x
+    , xy
     , y
     )
 
@@ -18,6 +19,7 @@ type Property
     = Opacity Float
     | Y Float
     | X Float
+    | XY Float Float
     | Rotate Float
     | ScaleXY Float Float
     | Raw String String
@@ -36,6 +38,11 @@ y =
 x : Float -> Property
 x =
     X
+
+
+xy : Float -> Float -> Property
+xy =
+    XY
 
 
 scale : Float -> Property
@@ -79,6 +86,9 @@ name prop =
         Raw n p ->
             n ++ String.filter (\c -> c /= '.') p
 
+        XY x_ y_ ->
+            "x" ++ rounded 1 x_ ++ "y" ++ rounded 1 y_
+
 
 rounded n val =
     String.fromInt (round val * n)
@@ -114,6 +124,9 @@ collectTransforms =
 
                 X x_ ->
                     Transform.x x_ :: acc
+
+                XY x_ y_ ->
+                    Transform.xy x_ y_ :: acc
 
                 Rotate r_ ->
                     Transform.rotate r_ :: acc

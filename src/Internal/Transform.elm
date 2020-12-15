@@ -5,6 +5,7 @@ module Internal.Transform exposing
     , scale
     , scaleXY
     , x
+    , xy
     , y
     )
 
@@ -12,6 +13,7 @@ module Internal.Transform exposing
 type Transform
     = X Float
     | Y Float
+    | XY Float Float
     | ScaleXY Float Float
     | Rotate Float
 
@@ -41,6 +43,11 @@ y =
     Y
 
 
+xy : Float -> Float -> Transform
+xy =
+    XY
+
+
 rotate : Float -> Transform
 rotate =
     Rotate
@@ -54,6 +61,9 @@ fromTransform ts =
 
         ScaleXY x_ y_ ->
             scale_ x_ y_
+
+        XY x_ y_ ->
+            translate_ x_ y_
 
         X n ->
             translateX_ n
@@ -75,6 +85,11 @@ translateX_ n =
 translateY_ : Float -> String
 translateY_ n =
     join [ "translateY(", px n, ")" ]
+
+
+translate_ : Float -> Float -> String
+translate_ x_ y_ =
+    join [ "translate(", px x_, ",", px y_, ")" ]
 
 
 rotate_ : Float -> String

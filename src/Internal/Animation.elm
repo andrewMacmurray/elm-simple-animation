@@ -8,6 +8,7 @@ module Internal.Animation exposing
     , cubic
     , delay
     , duration_
+    , easeInOut
     , frame
     , frameProperties
     , keyframes_
@@ -41,6 +42,7 @@ type Frame
 type Ease
     = Cubic Float Float Float Float
     | Linear
+    | EaseInOut
 
 
 type Iteration
@@ -100,6 +102,11 @@ cubic a b c d =
 linear : Option
 linear =
     Ease Linear
+
+
+easeInOut : Option
+easeInOut =
+    Ease EaseInOut
 
 
 
@@ -194,6 +201,9 @@ renderEase e =
         Linear ->
             "linear"
 
+        EaseInOut ->
+            "ease-in-out"
+
 
 renderIteration : Iteration -> String
 renderIteration i =
@@ -252,6 +262,9 @@ easeName e =
 
         Linear ->
             "linear"
+
+        EaseInOut ->
+            "ease-in-out"
 
 
 iterationName : Iteration -> String

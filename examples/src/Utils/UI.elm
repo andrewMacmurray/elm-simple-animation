@@ -1,5 +1,8 @@
 module Utils.UI exposing
-    ( group
+    ( black
+    , blue
+    , gold
+    , group
     , groups
     , large
     , medium
@@ -7,6 +10,25 @@ module Utils.UI exposing
     )
 
 import Element exposing (..)
+
+
+
+-- Color
+
+
+blue : Color
+blue =
+    rgb255 36 107 238
+
+
+black : Color
+black =
+    rgb255 24 24 24
+
+
+gold : Color
+gold =
+    rgb255 255 221 46
 
 
 

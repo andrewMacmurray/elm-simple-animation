@@ -2,6 +2,7 @@ module Simple.Animation.Property exposing
     ( Property
     , opacity, rotate, scale, scaleXY, y, x
     , property
+    , xy
     )
 
 {-|
@@ -65,6 +66,11 @@ x =
 y : Float -> Property
 y =
     Internal.y
+
+
+xy : Float -> Float -> Property
+xy =
+    Internal.xy
 
 
 {-| -}

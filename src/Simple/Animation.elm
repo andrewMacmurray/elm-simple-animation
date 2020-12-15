@@ -3,7 +3,7 @@ module Simple.Animation exposing
     , step, set, wait, waitTillComplete
     , Option, loop, delay
     , linear, zippy, cubic
-    , duration, zippy2
+    , duration, easeInOut, zippy2
     )
 
 {-|
@@ -193,6 +193,12 @@ delay =
 linear : Option
 linear =
     Internal.linear
+
+
+{-| -}
+easeInOut : Option
+easeInOut =
+    Internal.easeInOut
 
 
 {-| -}

@@ -1,7 +1,6 @@
-module Sunflower exposing (sunflower)
+module Examples.Sunflowers.Sunflower exposing (duration, sunflower)
 
-import Butterfly
-import Element exposing (Element, el, html)
+import Element exposing (Element, html)
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Svg exposing (Svg)
@@ -20,52 +19,14 @@ vh =
     569
 
 
-type alias Config =
-    { delay : Animation.Millis
-    , offset : { x : Float, y : Float }
-    }
+sunflower : Animation.Millis -> Element msg
+sunflower delay =
+    html (Svg.svg [ viewBox_ 0 0 vw vh, width "100%" ] (petals delay ++ [ core delay ]))
 
 
-sunflower : Config -> Element msg
-sunflower config =
-    el
-        [ Element.width Element.fill
-        , Element.inFront (butterflies config)
-        ]
-        (html (Svg.svg [ viewBox_ 0 0 vw vh, width "100%" ] (petals config.delay ++ [ core config.delay ])))
-
-
-butterflies { delay, offset } =
-    Element.row
-        [ Element.centerX
-        , Element.width Element.fill
-        , Element.height Element.fill
-        ]
-        [ Animated.el fadeInButterfly
-            [ Element.width (Element.px 20)
-            , Element.centerX
-            , Element.moveDown offset.y
-            , Element.moveLeft offset.x
-            , Element.alignTop
-            ]
-            (Butterfly.hovering delay)
-        , Animated.el fadeInButterfly
-            [ Element.width (Element.px 20)
-            , Element.moveRight offset.x
-            , Element.moveUp (offset.y - 50)
-            , Element.centerX
-            ]
-            (Butterfly.resting delay)
-        ]
-
-
-fadeInButterfly =
-    Animation.fromTo
-        { duration = 1000
-        , options = [ Animation.delay (Animation.duration (bloomPetal 12 0) + 500) ]
-        }
-        [ P.opacity 0 ]
-        [ P.opacity 1 ]
+duration : Animation.Millis
+duration =
+    Animation.duration (bloomPetal 12 0)
 
 
 

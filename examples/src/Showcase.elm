@@ -2,11 +2,13 @@ module Showcase exposing (main)
 
 import Browser
 import Element exposing (..)
-import Element.Input as Input
-import Examples.Dots as Dots
-import Examples.Sunflowers as Sunflowers
+import Element.Events exposing (onClick)
+import Element.Font as Font
+import Examples.FromTo as FromTo
+import Examples.Sequence as Sequence
+import Examples.Steps as Steps
 import Html exposing (Html)
-import Utils.UI exposing (medium, small)
+import Utils.UI exposing (black, blue, medium)
 
 
 
@@ -32,8 +34,9 @@ type alias Model =
 
 
 type Example
-    = Dots
-    | Sunflowers
+    = FromTo
+    | Steps
+    | Sequence
 
 
 type Msg
@@ -46,7 +49,7 @@ type Msg
 
 init : Model
 init =
-    { example = Sunflowers
+    { example = Steps
     }
 
 
@@ -73,23 +76,40 @@ view model =
 examples : Model -> Element Msg
 examples model =
     case model.example of
-        Dots ->
-            Dots.examples buttons
+        FromTo ->
+            FromTo.examples (buttons model.example)
 
-        Sunflowers ->
-            Sunflowers.examples buttons
+        Steps ->
+            Steps.examples (buttons model.example)
+
+        Sequence ->
+            Sequence.examples (buttons model.example)
 
 
-buttons =
-    [ ( Dots, "Dots" )
-    , ( Sunflowers, "Sunflowers" )
+buttons : Example -> Element Msg
+buttons selected =
+    [ ( FromTo, "FromTo" )
+    , ( Steps, "Steps" )
+    , ( Sequence, "Sequence" )
     ]
-        |> List.map button
-        |> row [ spacing small ]
+        |> List.map (button selected)
+        |> row [ spacing medium ]
 
 
-button ( ex, label ) =
-    Input.button []
-        { onPress = Just (ExampleSelected ex)
-        , label = text label
-        }
+button : Example -> ( Example, String ) -> Element Msg
+button selected ( ex, label ) =
+    el
+        [ onClick (ExampleSelected ex)
+        , pointer
+        , Font.color (highlightNav selected ex)
+        ]
+        (text label)
+
+
+highlightNav : Example -> Example -> Color
+highlightNav selected ex =
+    if selected == ex then
+        blue
+
+    else
+        black
