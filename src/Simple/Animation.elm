@@ -2,8 +2,8 @@ module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
     , step, set, wait, waitTillComplete
     , Option, loop, delay
-    , linear, zippy, cubic
-    , duration, easeInOut, zippy2
+    , linear, zippy, zippy2, cubic, easeInOut
+    , duration
     )
 
 {-|
@@ -26,7 +26,12 @@ module Simple.Animation exposing
 
 # Eases
 
-@docs linear, zippy, cubic
+@docs linear, zippy, zippy2, cubic, easeInOut
+
+
+# Duration
+
+@docs duration
 
 -}
 
@@ -207,6 +212,7 @@ zippy =
     cubic 0.3 0.66 0 1.18
 
 
+{-| -}
 zippy2 : Option
 zippy2 =
     cubic 0.38 0.57 0 1.5

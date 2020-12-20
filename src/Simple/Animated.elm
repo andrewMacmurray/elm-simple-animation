@@ -32,7 +32,6 @@ module Simple.Animated exposing
 import Html exposing (Html)
 import Html.Attributes
 import Internal.Animation as Animation exposing (Animation)
-import VirtualDom
 
 
 
@@ -58,12 +57,12 @@ html =
 
 {-| -}
 node :
-    (ClassName -> VirtualDom.Attribute msg)
-    -> (List (VirtualDom.Attribute msg) -> List (VirtualDom.Node msg) -> VirtualDom.Node msg)
+    (ClassName -> Html.Attribute msg)
+    -> (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
     -> Animation
-    -> List (VirtualDom.Attribute msg)
-    -> List (VirtualDom.Node msg)
-    -> VirtualDom.Node msg
+    -> List (Html.Attribute msg)
+    -> List (Html msg)
+    -> Html msg
 node toClass_ node_ anim attrs els =
     node_
         (toClass_ (Animation.name_ anim) :: attrs)
@@ -104,7 +103,7 @@ type alias ClassName =
 
 {-| -}
 type alias Stylesheet msg =
-    VirtualDom.Node msg
+    Html msg
 
 
 {-| -}
@@ -117,4 +116,4 @@ custom toAnimated anim =
 
 stylesheet_ : Animation -> Stylesheet msg
 stylesheet_ anim =
-    VirtualDom.node "style" [] [ VirtualDom.text (Animation.stylesheet_ anim) ]
+    Html.node "style" [] [ Html.text (Animation.stylesheet_ anim) ]

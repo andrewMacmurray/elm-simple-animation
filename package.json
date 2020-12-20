@@ -5,6 +5,7 @@
   "scripts": {
     "test": "elm-test",
     "docs": "elm-doc-preview",
+    "gen-docs": "elm make --docs docs.json",
     "examples": "cd examples && elm reactor --port 8001"
   },
   "repository": {
