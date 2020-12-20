@@ -49,7 +49,7 @@ type Msg
 
 init : Model
 init =
-    { example = Steps
+    { example = FromTo
     }
 
 

@@ -2,6 +2,8 @@
 
 ### Stateless animation utils for Elm
 
+See some examples here: https://elm-simple-animation-examples.surge.sh/
+
 ## What?
 
 Animate HTML, SVG (or any UI Elements) with declarative animations
