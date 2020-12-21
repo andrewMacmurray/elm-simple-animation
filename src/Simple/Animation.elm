@@ -2,7 +2,8 @@ module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
     , step, set, wait, waitTillComplete
     , Option, loop, delay
-    , linear, zippy, zippy2, cubic, easeInOut
+    , linear, easeIn, easeOut, easeInOut, cubic
+    , easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
     , duration
     )
 
@@ -24,9 +25,18 @@ module Simple.Animation exposing
 @docs Option, loop, delay
 
 
-# Eases
+# Standard Eases
 
-@docs linear, zippy, zippy2, cubic, easeInOut
+These are the standard CSS eases
+
+@docs linear, easeIn, easeOut, easeInOut, cubic
+
+
+# Extended Eases
+
+See what these eases look and feel like here: <https://easings.net>
+
+@docs easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
 
 
 # Duration
@@ -191,7 +201,7 @@ delay =
 
 
 
--- Eases
+-- Standard Eases
 
 
 {-| -}
@@ -201,27 +211,175 @@ linear =
 
 
 {-| -}
+easeIn : Option
+easeIn =
+    Internal.easeIn
+
+
+{-| -}
+easeOut : Option
+easeOut =
+    Internal.easeOut
+
+
+{-| -}
 easeInOut : Option
 easeInOut =
     Internal.easeInOut
 
 
 {-| -}
-zippy : Option
-zippy =
-    cubic 0.3 0.66 0 1.18
-
-
-{-| -}
-zippy2 : Option
-zippy2 =
-    cubic 0.38 0.57 0 1.5
-
-
-{-| -}
 cubic : Float -> Float -> Float -> Float -> Option
 cubic =
     Internal.cubic
+
+
+
+-- Extended Eases
+
+
+{-| -}
+easeInSine : Option
+easeInSine =
+    cubic 0.12 0 0.39 0
+
+
+{-| -}
+easeOutSine : Option
+easeOutSine =
+    cubic 0.61 1 0.88 1
+
+
+{-| -}
+easeInOutSine : Option
+easeInOutSine =
+    cubic 0.37 0 0.63 1
+
+
+{-| -}
+easeInQuad : Option
+easeInQuad =
+    cubic 0.11 0 0.5 0
+
+
+{-| -}
+easeOutQuad : Option
+easeOutQuad =
+    cubic 0.5 1 0.89 1
+
+
+{-| -}
+easeInOutQuad : Option
+easeInOutQuad =
+    cubic 0.45 0 0.55 1
+
+
+{-| -}
+easeInCubic : Option
+easeInCubic =
+    cubic 0.32 0 0.67 0
+
+
+{-| -}
+easeOutCubic : Option
+easeOutCubic =
+    cubic 0.33 1 0.68 1
+
+
+{-| -}
+easeInOutCubic : Option
+easeInOutCubic =
+    cubic 0.65 0 0.35 1
+
+
+{-| -}
+easeInQuart : Option
+easeInQuart =
+    cubic 0.5 0 0.75 0
+
+
+{-| -}
+easeOutQuart : Option
+easeOutQuart =
+    cubic 0.25 1 0.5 1
+
+
+{-| -}
+easeInOutQuart : Option
+easeInOutQuart =
+    cubic 0.76 0 0.24 1
+
+
+{-| -}
+easeInQuint : Option
+easeInQuint =
+    cubic 0.64 0 0.78 0
+
+
+{-| -}
+easeOutQuint : Option
+easeOutQuint =
+    cubic 0.22 1 0.36 1
+
+
+{-| -}
+easeInOutQuint : Option
+easeInOutQuint =
+    cubic 0.83 0 0.17 1
+
+
+{-| -}
+easeInExpo : Option
+easeInExpo =
+    cubic 0.7 0 0.84 0
+
+
+{-| -}
+easeOutExpo : Option
+easeOutExpo =
+    cubic 0.16 1 0.3 1
+
+
+{-| -}
+easeInOutExpo : Option
+easeInOutExpo =
+    cubic 0.87 0 0.13 1
+
+
+{-| -}
+easeInCirc : Option
+easeInCirc =
+    cubic 0.55 0 1 0.45
+
+
+{-| -}
+easeOutCirc : Option
+easeOutCirc =
+    cubic 0 0.55 0.45 1
+
+
+{-| -}
+easeInOutCirc : Option
+easeInOutCirc =
+    cubic 0.85 0 0.15 1
+
+
+{-| -}
+easeInBack : Option
+easeInBack =
+    cubic 0.36 0 0.66 -0.56
+
+
+{-| -}
+easeOutBack : Option
+easeOutBack =
+    cubic 0.34 1.56 0.64 1
+
+
+{-| -}
+easeInOutBack : Option
+easeInOutBack =
+    cubic 0.68 -0.6 0.32 1.6
 
 
 

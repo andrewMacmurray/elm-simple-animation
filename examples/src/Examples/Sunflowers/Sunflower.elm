@@ -72,7 +72,7 @@ growCore : Animation.Millis -> Animation
 growCore delay =
     Animation.fromTo
         { duration = 1000
-        , options = [ Animation.zippy2, Animation.delay delay ]
+        , options = [ Animation.easeOutBack, Animation.delay delay ]
         }
         [ P.scale 0 ]
         [ P.scale 1 ]

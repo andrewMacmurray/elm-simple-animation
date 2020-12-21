@@ -9,42 +9,8 @@ import Utils.Animated as Animated
 import Utils.UI exposing (blue, gold, group, groups, large, medium)
 
 
-examples : Element msg -> Element msg
-examples =
-    groups [ moveSquare ]
 
-
-moveSquare =
-    group "Steps with different eases" moveSquare_
-
-
-moveSquare_ =
-    row [ spacing large ]
-        [ linearSquare
-        , easeSquare
-        , zippySquare
-        ]
-
-
-linearSquare =
-    column [ spacing medium ]
-        [ text "Linear"
-        , Animated.el (moveAnim Animation.linear) [] square
-        ]
-
-
-zippySquare =
-    column [ spacing medium ]
-        [ text "Zippy"
-        , Animated.el (moveAnim Animation.zippy) [] square
-        ]
-
-
-easeSquare =
-    column [ spacing medium ]
-        [ text "Ease In Out"
-        , Animated.el (moveAnim Animation.easeInOut) [] square
-        ]
+-- Steps Animation
 
 
 moveAnim : Animation.Option -> Animation
@@ -60,6 +26,56 @@ moveAnim ease =
         ]
 
 
+
+-- Examples
+
+
+examples : Element msg -> Element msg
+examples =
+    groups [ stepsWithEases ]
+
+
+stepsWithEases : Element msg
+stepsWithEases =
+    group "Steps with different eases" squaresWithEases
+
+
+squaresWithEases : Element msg
+squaresWithEases =
+    wrappedRow [ spacing large ]
+        [ squareExamples
+            [ ( Animation.linear, "Linear" )
+            , ( Animation.easeIn, "Ease In" )
+            , ( Animation.easeOut, "Ease Out" )
+            , ( Animation.easeInOut, "Ease In Out" )
+            ]
+        , squareExamples
+            [ ( Animation.easeInSine, "Ease In Sine" )
+            , ( Animation.easeOutSine, "Ease Out Sine" )
+            , ( Animation.easeInOutSine, "Ease In Out Sine" )
+            ]
+        , squareExamples
+            [ ( Animation.easeInQuad, "Ease In Quad" )
+            , ( Animation.easeOutQuad, "Ease Out Quad" )
+            , ( Animation.easeInOutQuad, "Ease In Out Quad" )
+            ]
+        ]
+
+
+squareExamples : List ( Animation.Option, String ) -> Element msg
+squareExamples eases_ =
+    row [ spacing large ] (List.map squareExample eases_)
+
+
+squareExample : ( Animation.Option, String ) -> Element msg
+squareExample ( ease, name ) =
+    column [ spacing medium, paddingXY 0 medium ]
+        [ text name
+        , Animated.el (moveAnim ease) [] square
+        ]
+
+
+square : Element msg
 square =
     el
         [ width (px 30)
