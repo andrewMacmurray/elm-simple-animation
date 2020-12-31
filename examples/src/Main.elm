@@ -5,6 +5,7 @@ import Element exposing (..)
 import Element.Events exposing (onClick)
 import Element.Font as Font
 import Examples.FromTo as FromTo
+import Examples.Renderers as Renderers
 import Examples.Sequence as Sequence
 import Examples.Steps as Steps
 import Html exposing (Html)
@@ -37,6 +38,7 @@ type Example
     = FromTo
     | Steps
     | Sequence
+    | Renderers
 
 
 type Msg
@@ -49,7 +51,7 @@ type Msg
 
 init : Model
 init =
-    { example = FromTo
+    { example = Renderers
     }
 
 
@@ -70,20 +72,27 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    layout [ width fill, padding medium ] (examples model)
+    layout
+        [ width fill
+        , padding medium
+        ]
+        (examples model (buttons model.example))
 
 
-examples : Model -> Element Msg
+examples : Model -> Element msg -> Element msg
 examples model =
     case model.example of
         FromTo ->
-            FromTo.examples (buttons model.example)
+            FromTo.examples
 
         Steps ->
-            Steps.examples (buttons model.example)
+            Steps.examples
 
         Sequence ->
-            Sequence.examples (buttons model.example)
+            Sequence.examples
+
+        Renderers ->
+            Renderers.examples
 
 
 buttons : Example -> Element Msg
@@ -91,6 +100,7 @@ buttons selected =
     [ ( FromTo, "FromTo" )
     , ( Steps, "Steps" )
     , ( Sequence, "Sequence" )
+    , ( Renderers, "Renderers" )
     ]
         |> List.map (button selected)
         |> row [ spacing medium ]
