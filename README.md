@@ -24,6 +24,8 @@ expandFade =
         [ P.opacity 0, P.scale 2 ]
 ```
 
+![dot](https://aws1.discourse-cdn.com/standard17/uploads/elm_lang/original/2X/e/e0cc696d2b443390d5b1ba0e736dbbb1087d3f0b.gif)
+
 ## Why?
 
 When you want some typesafe, simple, decorative animations, but you don't need the full power of something like `elm-animator`. The benefits of this are:
@@ -42,9 +44,9 @@ spinAndSlide =
         { startAt = [ P.rotate 0, P.x 0 ]
         , options = [ Animation.loop ]
         }
-        [ Animation.step 500 [ P.rotate 180, P.x 20 ]
-        , Animation.wait 300
-        , Animation.step 500 [ P.rotate 360, P.x 0 ]
+        [ Animation.step 1000 [ P.rotate 180, P.x 50 ]
+        , Animation.wait 500
+        , Animation.step 1000 [ P.rotate 360, P.x 0 ]
         ]
 ```
 
@@ -55,6 +57,8 @@ spinningBox : Html msg
 spinningBox =
     Animated.div spinAndSlide [ class "spinning-box" ] []
 ```
+
+![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
 
 ## Animating SVG and Elm UI Elements
 
