@@ -1,26 +1,51 @@
 module Internal.Transform exposing
     ( Transform
-    , render
+    , name
     , rotate
     , scale
     , scaleXY
+    , toString
     , x
     , xy
     , y
     )
 
+-- Transform
+
 
 type Transform
-    = X Float
-    | Y Float
-    | XY Float Float
+    = Translate Translate
     | ScaleXY Float Float
     | Rotate Float
 
 
-render : List Transform -> String
-render =
-    List.map fromTransform >> String.join " "
+type Translate
+    = X Float
+    | Y Float
+    | XY Float Float
+
+
+type alias Combined =
+    { x : Maybe Float
+    , y : Maybe Float
+    , xy : Maybe ( Float, Float )
+    , scale : Maybe ( Float, Float )
+    , rotate : Maybe Float
+    }
+
+
+empty : Combined
+empty =
+    { x = Nothing
+    , y = Nothing
+    , xy = Nothing
+    , scale = Nothing
+    , rotate = Nothing
+    }
+
+
+
+-- Build
 
 
 scale : Float -> Transform
@@ -35,17 +60,17 @@ scaleXY =
 
 x : Float -> Transform
 x =
-    X
+    Translate << X
 
 
 y : Float -> Transform
 y =
-    Y
+    Translate << Y
 
 
 xy : Float -> Float -> Transform
-xy =
-    XY
+xy x_ y_ =
+    Translate (XY x_ y_)
 
 
 rotate : Float -> Transform
@@ -53,27 +78,53 @@ rotate =
     Rotate
 
 
-fromTransform : Transform -> String
-fromTransform ts =
-    case ts of
+
+-- To String
+
+
+toString : List Transform -> String
+toString =
+    List.foldl combine empty >> render
+
+
+combine : Transform -> Combined -> Combined
+combine transform combined =
+    case transform of
         Rotate n ->
-            rotate_ n
+            { combined | rotate = Just n }
 
         ScaleXY x_ y_ ->
-            scale_ x_ y_
+            { combined | scale = Just ( x_, y_ ) }
 
-        XY x_ y_ ->
-            translate_ x_ y_
+        Translate (XY x_ y_) ->
+            { combined | xy = Just ( x_, y_ ) }
 
-        X n ->
-            translateX_ n
+        Translate (X n) ->
+            { combined | x = Just n }
 
-        Y n ->
-            translateY_ n
+        Translate (Y n) ->
+            { combined | y = Just n }
 
 
-scale_ : Float -> Float -> String
-scale_ x_ y_ =
+render : Combined -> String
+render combined =
+    [ render_ translate_ combined.xy
+    , render_ translateX_ combined.x
+    , render_ translateY_ combined.y
+    , render_ scale_ combined.scale
+    , render_ rotate_ combined.rotate
+    ]
+        |> List.filter (String.isEmpty >> not)
+        |> String.join " "
+
+
+render_ : (transform -> String) -> Maybe transform -> String
+render_ f =
+    Maybe.map f >> Maybe.withDefault ""
+
+
+scale_ : ( Float, Float ) -> String
+scale_ ( x_, y_ ) =
     join [ "scale(", String.fromFloat x_, ",", String.fromFloat y_, ")" ]
 
 
@@ -87,14 +138,14 @@ translateY_ n =
     join [ "translateY(", px n, ")" ]
 
 
-translate_ : Float -> Float -> String
-translate_ x_ y_ =
+translate_ : ( Float, Float ) -> String
+translate_ ( x_, y_ ) =
     join [ "translate(", px x_, ",", px y_, ")" ]
 
 
 rotate_ : Float -> String
 rotate_ n =
-    join [ "rotateZ(", deg n, ")" ]
+    join [ "rotate(", deg n, ")" ]
 
 
 join : List String -> String
@@ -110,3 +161,31 @@ px n =
 deg : Float -> String
 deg n =
     String.fromFloat n ++ "deg"
+
+
+
+-- Name
+
+
+name : Transform -> String
+name t =
+    case t of
+        Translate (Y y_) ->
+            "y" ++ rounded 1 y_
+
+        Translate (X x_) ->
+            "x" ++ rounded 1 x_
+
+        Translate (XY x_ y_) ->
+            "x" ++ rounded 1 x_ ++ "y" ++ rounded 1 y_
+
+        Rotate r_ ->
+            "r" ++ rounded 1 r_
+
+        ScaleXY x_ y_ ->
+            "sx" ++ rounded 100 x_ ++ "sy" ++ rounded 100 y_
+
+
+rounded : Int -> Float -> String
+rounded n val =
+    String.fromInt (round val * n)

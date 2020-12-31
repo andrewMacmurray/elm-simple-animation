@@ -23,12 +23,13 @@ import Utils.UI exposing (group, groups)
 
 flash : Animation
 flash =
-    Animation.fromTo
-        { duration = 1000
+    Animation.steps
+        { startAt = [ P.opacity 0 ]
         , options = [ Animation.loop ]
         }
-        [ P.opacity 0 ]
-        [ P.opacity 1 ]
+        [ Animation.step 1000 [ P.opacity 1 ]
+        , Animation.step 1000 [ P.opacity 0 ]
+        ]
 
 
 

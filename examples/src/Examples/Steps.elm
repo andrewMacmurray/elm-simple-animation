@@ -13,15 +13,15 @@ import Utils.UI exposing (blue, gold, group, groups, large, medium)
 -- Steps Animation
 
 
-moveAnim : Animation.Option -> Animation
-moveAnim ease =
+stepsAnimation : Animation.Option -> Animation
+stepsAnimation ease =
     Animation.steps
-        { startAt = [ P.xy 0 0 ]
+        { startAt = [ P.xy 0 0, P.rotate 0 ]
         , options = [ Animation.loop, ease ]
         }
-        [ Animation.step 600 [ P.xy 50 0 ]
-        , Animation.step 600 [ P.xy 50 50 ]
-        , Animation.step 600 [ P.xy 0 50 ]
+        [ Animation.step 600 [ P.xy 50 0, P.rotate 45 ]
+        , Animation.step 600 [ P.xy 50 50, P.scale 2 ]
+        , Animation.step 600 [ P.xy 0 50, P.rotate 0 ]
         , Animation.step 600 [ P.xy 0 0 ]
         ]
 
@@ -71,7 +71,7 @@ squareExample : ( Animation.Option, String ) -> Element msg
 squareExample ( ease, name ) =
     column [ spacing medium, paddingXY 0 medium ]
         [ text name
-        , Animated.el (moveAnim ease) [] square
+        , Animated.el (stepsAnimation ease) [] square
         ]
 
 
