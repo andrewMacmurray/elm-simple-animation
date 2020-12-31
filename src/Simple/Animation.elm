@@ -27,14 +27,14 @@ module Simple.Animation exposing
 
 # Standard Eases
 
-These are the standard CSS eases
+Standard CSS eases
 
 @docs linear, easeIn, easeOut, easeInOut, cubic
 
 
 # Extended Eases
 
-See what these eases look and feel like here: <https://easings.net>
+See what these eases look and feel like: <https://easings.net>
 
 @docs easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
 
@@ -45,7 +45,7 @@ See what these eases look and feel like here: <https://easings.net>
 
 -}
 
-import Internal.Animation as Internal
+import Internal.Animation as Internal exposing (..)
 import Simple.Animation.Property exposing (Property)
 
 
@@ -69,13 +69,17 @@ type alias Option =
 
 
 type Stepped
-    = Stepped (List Option) (List Property) (List Step)
+    = Stepped
+        { options : List Option
+        , startAt : List Property
+        , steps : List Step
+        }
 
 
 type Step
     = Step Millis (List Property)
     | Wait Millis
-    | WaitTillComplete Millis
+    | WaitTillComplete Animation
 
 
 
@@ -85,7 +89,13 @@ type Step
 {-| -}
 fromTo : { duration : Millis, options : List Option } -> List Property -> List Property -> Animation
 fromTo o from_ to_ =
-    Stepped o.options from_ [ step o.duration to_ ] |> toAnimation
+    toAnimation
+        (Stepped
+            { options = o.options
+            , startAt = from_
+            , steps = [ step o.duration to_ ]
+            }
+        )
 
 
 
@@ -95,7 +105,13 @@ fromTo o from_ to_ =
 {-| -}
 steps : { startAt : List Property, options : List Option } -> List Step -> Animation
 steps { options, startAt } steps_ =
-    Stepped options startAt steps_ |> toAnimation
+    toAnimation
+        (Stepped
+            { options = options
+            , startAt = startAt
+            , steps = steps_
+            }
+        )
 
 
 
@@ -123,12 +139,12 @@ wait =
 {-| -}
 waitTillComplete : Animation -> Step
 waitTillComplete =
-    Internal.duration_ >> WaitTillComplete
+    WaitTillComplete
 
 
 toAnimation : Stepped -> Animation
-toAnimation (Stepped opts firstFrame nextFrames) =
-    Internal.animation (totalDuration nextFrames) opts (toFrames firstFrame nextFrames)
+toAnimation (Stepped s) =
+    Animation (totalDuration s.steps) s.options (toFrames s.startAt s.steps)
 
 
 totalDuration : List Step -> Millis
@@ -145,59 +161,72 @@ accumDuration step_ curr =
         Wait d ->
             d + curr
 
-        WaitTillComplete d ->
-            adjustCompleteWait d curr
+        WaitTillComplete anim ->
+            adjustCompleteWait anim curr
 
 
-adjustCompleteWait : number -> number -> number
-adjustCompleteWait dur curr =
-    if dur - curr >= 1 then
-        curr + (dur - curr)
+adjustCompleteWait : Animation -> Millis -> Millis
+adjustCompleteWait anim timePassed =
+    let
+        duration_ =
+            duration anim
+    in
+    if duration_ - timePassed >= 1 then
+        duration_
 
     else
-        curr + 1
+        timePassed + 1
 
 
 toFrames : List Property -> List Step -> List Internal.Frame
-toFrames firstFrame fx =
+toFrames firstFrame steps_ =
     let
         percentPerMs =
-            100 / toFloat (totalDuration fx)
+            100 / toFloat (totalDuration steps_)
 
         getFrame f ( n, xs, cur ) =
             case f of
                 Step d props ->
-                    ( n + d, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat (n + d)) props )
+                    ( n + d
+                    , xs ++ [ cur ]
+                    , Frame (percentPerMs * toFloat (n + d)) props
+                    )
 
                 Wait d ->
-                    ( n + d, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat (n + d)) (frameProps cur) )
+                    ( n + d
+                    , xs ++ [ cur ]
+                    , Frame (percentPerMs * toFloat (n + d)) (frameProps cur)
+                    )
 
                 WaitTillComplete d ->
                     let
                         dur =
                             adjustCompleteWait d n
                     in
-                    ( dur, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat dur) (frameProps cur) )
+                    ( dur
+                    , xs ++ [ cur ]
+                    , Frame (percentPerMs * toFloat dur) (frameProps cur)
+                    )
     in
-    List.foldl getFrame ( 0, [], Internal.frame 0 firstFrame ) fx
+    List.foldl getFrame ( 0, [], Frame 0 firstFrame ) steps_
         |> (\( _, xs, curr ) -> xs ++ [ curr ])
 
 
-frameProps : Internal.Frame -> List Property
-frameProps =
-    Internal.frameProperties
+frameProps : Frame -> List Property
+frameProps (Frame _ props) =
+    props
 
 
 {-| -}
 loop : Option
 loop =
-    Internal.loop
+    Iteration Loop
 
 
 {-| -}
 delay : Millis -> Option
 delay =
-    Internal.delay
+    Delay
 
 
 
@@ -207,31 +236,31 @@ delay =
 {-| -}
 linear : Option
 linear =
-    Internal.linear
+    Ease Linear
 
 
 {-| -}
 easeIn : Option
 easeIn =
-    Internal.easeIn
+    Ease EaseIn
 
 
 {-| -}
 easeOut : Option
 easeOut =
-    Internal.easeOut
+    Ease EaseOut
 
 
 {-| -}
 easeInOut : Option
 easeInOut =
-    Internal.easeInOut
+    Ease EaseInOut
 
 
 {-| -}
 cubic : Float -> Float -> Float -> Float -> Option
-cubic =
-    Internal.cubic
+cubic a b c d =
+    Ease (Cubic a b c d)
 
 
 

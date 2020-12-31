@@ -12,16 +12,16 @@ module Internal.Property exposing
     , y
     )
 
-import Internal.Transform as Transform
+import Internal.Transform as Transform exposing (Transform)
+
+
+
+-- Property
 
 
 type Property
     = Opacity Float
-    | Y Float
-    | X Float
-    | XY Float Float
-    | Rotate Float
-    | ScaleXY Float Float
+    | Transform Transform
     | Raw String String
 
 
@@ -32,32 +32,32 @@ opacity =
 
 y : Float -> Property
 y =
-    Y
+    Transform << Transform.y
 
 
 x : Float -> Property
 x =
-    X
+    Transform << Transform.x
 
 
 xy : Float -> Float -> Property
-xy =
-    XY
+xy x_ y_ =
+    Transform (Transform.xy x_ y_)
 
 
 scale : Float -> Property
 scale n =
-    ScaleXY n n
+    Transform (Transform.scaleXY n n)
 
 
 scaleXY : Float -> Float -> Property
-scaleXY =
-    ScaleXY
+scaleXY x_ y_ =
+    Transform (Transform.scaleXY x_ y_)
 
 
 rotate : Float -> Property
 rotate =
-    Rotate
+    Transform << Transform.rotate
 
 
 property : String -> String -> Property
@@ -71,23 +71,11 @@ name prop =
         Opacity n ->
             "o" ++ rounded 100 n
 
-        Y y_ ->
-            "y" ++ rounded 1 y_
-
-        X x_ ->
-            "x" ++ rounded 1 x_
-
-        Rotate r_ ->
-            "r" ++ rounded 1 r_
-
-        ScaleXY x_ y_ ->
-            "sx" ++ rounded 100 x_ ++ "sy" ++ rounded 100 y_
+        Transform t ->
+            Transform.name t
 
         Raw n p ->
             n ++ String.filter (\c -> c /= '.') p
-
-        XY x_ y_ ->
-            "x" ++ rounded 1 x_ ++ "y" ++ rounded 1 y_
 
 
 rounded n val =
@@ -111,7 +99,7 @@ transform_ props =
             Nothing
 
         transforms ->
-            Just ("transform:" ++ Transform.render transforms)
+            Just ("transform:" ++ Transform.toString transforms)
 
 
 collectTransforms : List Property -> List Transform.Transform
@@ -119,20 +107,8 @@ collectTransforms =
     List.foldl
         (\val acc ->
             case val of
-                Y y_ ->
-                    Transform.y y_ :: acc
-
-                X x_ ->
-                    Transform.x x_ :: acc
-
-                XY x_ y_ ->
-                    Transform.xy x_ y_ :: acc
-
-                Rotate r_ ->
-                    Transform.rotate r_ :: acc
-
-                ScaleXY x_ y_ ->
-                    Transform.scaleXY x_ y_ :: acc
+                Transform t ->
+                    t :: acc
 
                 _ ->
                     acc

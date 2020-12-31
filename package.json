@@ -6,7 +6,10 @@
     "test": "elm-test",
     "docs": "elm-doc-preview",
     "gen-docs": "elm make --docs docs.json",
-    "examples": "cd examples && elm reactor --port 8001"
+    "examples": "cd examples && elm reactor --port 8001",
+    "examples:build": "cd examples && elm make src/Main.elm && mkdir -p dist && mv index.html dist/",
+    "examples:push": "cd examples && surge dist --domain https://elm-simple-animation-examples.surge.sh",
+    "examples:deploy": "npm run examples:build && npm run examples:deploy"
   },
   "repository": {
     "type": "git",
