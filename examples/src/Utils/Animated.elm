@@ -21,16 +21,16 @@ import TypedSvg.Core as TypedSvg
 
 el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
 el =
-    ui Element.el
+    animatedUi Element.el
 
 
-ui :
+animatedUi :
     (List (Element.Attribute msg) -> children -> Element msg)
     -> Animation
     -> List (Element.Attribute msg)
     -> children
     -> Element msg
-ui =
+animatedUi =
     Animated.ui
         { behindContent = Element.behindContent
         , htmlAttribute = Element.htmlAttribute
@@ -44,21 +44,21 @@ ui =
 
 g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 g =
-    svg_ Svg.g
+    animatedSvg Svg.g
 
 
 path : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 path =
-    svg_ Svg.path
+    animatedSvg Svg.path
 
 
-svg_ :
+animatedSvg :
     (List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg)
     -> Animation
     -> List (Svg.Attribute msg)
     -> List (Svg msg)
     -> Svg msg
-svg_ =
+animatedSvg =
     Animated.node Svg.Attributes.class
 
 
@@ -68,20 +68,20 @@ svg_ =
 
 typedSvgG : Animation -> List (TypedSvg.Attribute msg) -> List (TypedSvg.Svg msg) -> TypedSvg.Svg msg
 typedSvgG =
-    typedSvg_ TypedSvg.g
+    animatedTypedSvg TypedSvg.g
 
 
-typedSvg_ :
+animatedTypedSvg :
     (List (TypedSvg.Attribute msg) -> List (TypedSvg.Svg msg) -> TypedSvg.Svg msg)
     -> Animation
     -> List (TypedSvg.Attribute msg)
     -> List (TypedSvg.Svg msg)
     -> TypedSvg.Svg msg
-typedSvg_ node anim attrs children =
+animatedTypedSvg node animation attributes children =
     Animated.custom
         (\className stylesheet ->
             node
-                (TypedSvg.Attributes.class [ className ] :: attrs)
+                (TypedSvg.Attributes.class [ className ] :: attributes)
                 (TypedSvg.style [] [ TypedSvg.text stylesheet ] :: children)
         )
-        anim
+        animation

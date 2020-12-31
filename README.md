@@ -60,15 +60,15 @@ spinningBox =
 
 ![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
 
-## Animating SVG and Elm UI Elements
+## Animating SVG, Elm UI and Others
 
-So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` there are some functions that let you create animated versions:
+So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whatever `Html` abstraction you use) there are some helpers that let you create animated versions:
 
 ## Hook into SVG
 
 Give the `Svg.Attributes` `class` function to `Simple.Animated.node`
 ```elm
-animated =
+animatedSvg =
     Simple.Animated.node Svg.Attributes.class
 ```
 
@@ -76,12 +76,12 @@ Then create any animated SVG element you like!
 ```elm
 svg : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 svg =
-    animated Svg.svg
+    animatedSvg Svg.svg
 
 
 g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 g =
-    animated Svg.g
+    animatedSvg Svg.g
 ```
 
 ## Hook into Elm UI
@@ -108,6 +108,28 @@ el =
 column : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
 column =
     animatedUi Element.column
+```
+
+## Hook Into Custom Renderer
+
+In case you want to completely customise how to render animations you can use the low level `Simple.Animated.custom` - which gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
+
+For example, say you wanted to animate `elm-community/typed-svg` nodes - you could create animated versions like this:
+
+```elm
+g : Animation -> List (TypedSvg.Attribute msg) -> List (TypedSvg.Svg msg) -> TypedSvg.Svg msg
+g =
+    animatedTypedSvg TypedSvg.g
+
+
+animatedTypedSvg node animation attributes children =
+    Animated.custom
+        (\className stylesheet ->
+            node
+                (TypedSvg.Attributes.class [ className ] :: attributes)
+                (TypedSvg.style [] [ TypedSvg.text stylesheet ] :: children)
+        )
+        animation
 ```
 
 You can find many of these common helpers here: https://github.com/andrewMacmurray/elm-simple-animation/blob/main/examples/src/Utils/Animated.elm
