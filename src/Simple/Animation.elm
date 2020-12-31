@@ -45,7 +45,7 @@ See what these eases look and feel like here: <https://easings.net>
 
 -}
 
-import Internal.Animation as Internal
+import Internal.Animation as Internal exposing (..)
 import Simple.Animation.Property exposing (Property)
 
 
@@ -123,12 +123,12 @@ wait =
 {-| -}
 waitTillComplete : Animation -> Step
 waitTillComplete =
-    Internal.duration_ >> WaitTillComplete
+    duration >> WaitTillComplete
 
 
 toAnimation : Stepped -> Animation
 toAnimation (Stepped opts firstFrame nextFrames) =
-    Internal.animation (totalDuration nextFrames) opts (toFrames firstFrame nextFrames)
+    Animation (totalDuration nextFrames) opts (toFrames firstFrame nextFrames)
 
 
 totalDuration : List Step -> Millis
@@ -159,45 +159,45 @@ adjustCompleteWait dur curr =
 
 
 toFrames : List Property -> List Step -> List Internal.Frame
-toFrames firstFrame fx =
+toFrames firstFrame steps_ =
     let
         percentPerMs =
-            100 / toFloat (totalDuration fx)
+            100 / toFloat (totalDuration steps_)
 
         getFrame f ( n, xs, cur ) =
             case f of
                 Step d props ->
-                    ( n + d, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat (n + d)) props )
+                    ( n + d, xs ++ [ cur ], Frame (percentPerMs * toFloat (n + d)) props )
 
                 Wait d ->
-                    ( n + d, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat (n + d)) (frameProps cur) )
+                    ( n + d, xs ++ [ cur ], Frame (percentPerMs * toFloat (n + d)) (frameProps cur) )
 
                 WaitTillComplete d ->
                     let
                         dur =
                             adjustCompleteWait d n
                     in
-                    ( dur, xs ++ [ cur ], Internal.frame (percentPerMs * toFloat dur) (frameProps cur) )
+                    ( dur, xs ++ [ cur ], Frame (percentPerMs * toFloat dur) (frameProps cur) )
     in
-    List.foldl getFrame ( 0, [], Internal.frame 0 firstFrame ) fx
+    List.foldl getFrame ( 0, [], Frame 0 firstFrame ) steps_
         |> (\( _, xs, curr ) -> xs ++ [ curr ])
 
 
-frameProps : Internal.Frame -> List Property
-frameProps =
-    Internal.frameProperties
+frameProps : Frame -> List Property
+frameProps (Frame _ props) =
+    props
 
 
 {-| -}
 loop : Option
 loop =
-    Internal.loop
+    Iteration Loop
 
 
 {-| -}
 delay : Millis -> Option
 delay =
-    Internal.delay
+    Delay
 
 
 
@@ -207,31 +207,31 @@ delay =
 {-| -}
 linear : Option
 linear =
-    Internal.linear
+    Ease Linear
 
 
 {-| -}
 easeIn : Option
 easeIn =
-    Internal.easeIn
+    Ease EaseIn
 
 
 {-| -}
 easeOut : Option
 easeOut =
-    Internal.easeOut
+    Ease EaseOut
 
 
 {-| -}
 easeInOut : Option
 easeInOut =
-    Internal.easeInOut
+    Ease EaseInOut
 
 
 {-| -}
 cubic : Float -> Float -> Float -> Float -> Option
-cubic =
-    Internal.cubic
+cubic a b c d =
+    Ease (Cubic a b c d)
 
 
 

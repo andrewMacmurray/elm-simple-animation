@@ -1,21 +1,13 @@
 module Internal.Animation exposing
-    ( Animation
-    , Frame
+    ( Animation(..)
+    , Ease(..)
+    , Frame(..)
+    , Iteration(..)
     , Millis
-    , Option
-    , animation
+    , Option(..)
     , classDefinition_
-    , cubic
-    , delay
     , duration_
-    , easeIn
-    , easeInOut
-    , easeOut
-    , frame
-    , frameProperties
     , keyframes_
-    , linear
-    , loop
     , name_
     , stylesheet_
     )
@@ -59,68 +51,6 @@ type alias Percent =
 
 type alias Millis =
     Int
-
-
-
--- Build
-
-
-animation : Millis -> List Option -> List Frame -> Animation
-animation =
-    Animation
-
-
-frame : Percent -> List Property -> Frame
-frame =
-    Frame
-
-
-frameProperties : Frame -> List Property
-frameProperties (Frame _ props) =
-    props
-
-
-
--- Options
-
-
-delay : Millis -> Option
-delay =
-    Delay
-
-
-loop : Option
-loop =
-    Iteration Loop
-
-
-
--- Eases
-
-
-cubic : Float -> Float -> Float -> Float -> Option
-cubic a b c d =
-    Ease (Cubic a b c d)
-
-
-linear : Option
-linear =
-    Ease Linear
-
-
-easeIn : Option
-easeIn =
-    Ease EaseIn
-
-
-easeOut : Option
-easeOut =
-    Ease EaseOut
-
-
-easeInOut : Option
-easeInOut =
-    Ease EaseInOut
 
 
 
