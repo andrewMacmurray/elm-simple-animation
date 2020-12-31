@@ -51,7 +51,7 @@ type Msg
 
 init : Model
 init =
-    { example = Renderers
+    { example = FromTo
     }
 
 
