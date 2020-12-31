@@ -43,6 +43,7 @@ type Ease
 
 type Iteration
     = Loop
+    | Count Int
 
 
 type alias Percent =
@@ -161,6 +162,9 @@ renderIteration i =
         Loop ->
             "infinite"
 
+        Count count ->
+            String.fromInt count
+
 
 
 -- Name
@@ -228,6 +232,9 @@ iterationName i =
     case i of
         Loop ->
             "infinite"
+
+        Count count ->
+            "count-" ++ String.fromInt count
 
 
 

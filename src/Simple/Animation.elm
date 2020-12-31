@@ -1,13 +1,15 @@
 module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
     , step, set, wait, waitTillComplete
-    , Option, loop, delay
+    , Option, loop, count, delay
     , linear, easeIn, easeOut, easeInOut, cubic
     , easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
     , duration
     )
 
-{-|
+{-| Build an Animation for rendering on the page
+
+All animation durations are in `milliseconds`
 
 
 # Create an Animation
@@ -22,7 +24,9 @@ module Simple.Animation exposing
 
 # Options
 
-@docs Option, loop, delay
+Customise the feel an behaviour of an animation
+
+@docs Option, loop, count, delay
 
 
 # Standard Eases
@@ -86,7 +90,18 @@ type Step
 -- From To Animation
 
 
-{-| -}
+{-| Create an animation with `start` and `end` properties:
+
+    fadeOut : Animation
+    fadeOut =
+        Animation.fromTo
+            { duration = 1000
+            , options = []
+            }
+            [ P.opacity 1 ]
+            [ P.opacity 0 ]
+
+-}
 fromTo : { duration : Millis, options : List Option } -> List Property -> List Property -> Animation
 fromTo o from_ to_ =
     toAnimation
@@ -102,7 +117,19 @@ fromTo o from_ to_ =
 -- Steps
 
 
-{-| -}
+{-| Create an animation with multiple steps:
+
+    backAndForth : Animation
+    backAndForth =
+        Animation.steps
+            { startAt = [ P.x 0 ]
+            , options = []
+            }
+            [ Animation.step 1000 [ P.x 100 ]
+            , Animation.step 1000 [ P.x 0 ]
+            ]
+
+-}
 steps : { startAt : List Property, options : List Option } -> List Step -> Animation
 steps { options, startAt } steps_ =
     toAnimation
@@ -118,25 +145,61 @@ steps { options, startAt } steps_ =
 -- Step
 
 
-{-| -}
+{-| Animate to a list of properties for a given number of `milliseconds`:
+
+    Animation.step 1000 [ P.opacity 1 ]
+
+-}
 step : Millis -> List Property -> Step
 step =
     Step
 
 
-{-| -}
+{-| Set a list of properties immediately in an animation (This is equivalent to `step 1`):
+
+    Animation.set [ P.opacity 0 ]
+
+-}
 set : List Property -> Step
 set =
     Step 1
 
 
-{-| -}
+{-| Wait for a given number of `milliseconds` before animating the next properties:
+
+    Animation.wait 1000
+
+-}
 wait : Millis -> Step
 wait =
     Wait
 
 
-{-| -}
+{-| Wait for another animation to complete before animating the next properties:
+
+This animation will `wait` for `1500` milliseconds before animating to the next step
+
+    finishAfterFadeOut : Animation
+    finishAfterFadeOut =
+        Animation.steps
+            { startAt = [ P.x 0 ]
+            , options = []
+            }
+            [ Animation.step 500 [ P.x 20 ]
+            , Animation.waitTillComplete fadeOut
+            , Animation.step 500 [ P.x 60 ]
+            ]
+
+    fadeOut : Animation
+    fadeOut =
+        Animation.fromTo
+            { duration = 2000
+            , options = []
+            }
+            [ P.opacity 1 ]
+            [ P.opacity 2 ]
+
+-}
 waitTillComplete : Animation -> Step
 waitTillComplete =
     WaitTillComplete
@@ -217,13 +280,22 @@ frameProps (Frame _ props) =
     props
 
 
-{-| -}
+{-| Repeat an animation forever
+-}
 loop : Option
 loop =
     Iteration Loop
 
 
-{-| -}
+{-| Play an animation a given number of times
+-}
+count : Int -> Option
+count =
+    Iteration << Count
+
+
+{-| Delay the start of an animation (repeats like `loop` or `count` are not affected by this)
+-}
 delay : Millis -> Option
 delay =
     Delay
@@ -415,7 +487,8 @@ easeInOutBack =
 -- Other
 
 
-{-| -}
+{-| Get the duration of an animation
+-}
 duration : Animation -> Millis
 duration =
     Internal.duration_
