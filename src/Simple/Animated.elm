@@ -66,7 +66,7 @@ node :
 node toClass_ node_ anim attrs els =
     node_
         (toClass_ (Animation.name_ anim) :: attrs)
-        (stylesheet_ anim :: els)
+        (toStylesheet_ anim :: els)
 
 
 {-| -}
@@ -88,7 +88,7 @@ ui :
 ui options node_ anim attrs els =
     node_
         (List.append
-            [ options.behindContent (options.html (stylesheet_ anim))
+            [ options.behindContent (options.html (toStylesheet_ anim))
             , options.htmlAttribute (Html.Attributes.class (Animation.name_ anim))
             ]
             attrs
@@ -102,18 +102,18 @@ type alias ClassName =
 
 
 {-| -}
-type alias Stylesheet msg =
-    Html msg
+type alias Stylesheet =
+    String
 
 
 {-| -}
-custom : (ClassName -> Stylesheet msg -> animated) -> Animation -> animated
+custom : (ClassName -> Stylesheet -> animated) -> Animation -> animated
 custom toAnimated anim =
     toAnimated
         (Animation.name_ anim)
-        (stylesheet_ anim)
+        (Animation.stylesheet_ anim)
 
 
-stylesheet_ : Animation -> Stylesheet msg
-stylesheet_ anim =
+toStylesheet_ : Animation -> Html msg
+toStylesheet_ anim =
     Html.node "style" [] [ Html.text (Animation.stylesheet_ anim) ]

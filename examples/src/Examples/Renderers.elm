@@ -8,6 +8,10 @@ import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Svg exposing (Svg)
 import Svg.Attributes
+import TypedSvg
+import TypedSvg.Attributes
+import TypedSvg.Core as TypedSvg
+import TypedSvg.Types exposing (num)
 import Utils.Animated as Animated
 import Utils.Stylesheet as Stylesheet
 import Utils.UI exposing (group, groups)
@@ -77,6 +81,44 @@ circle =
 
 
 
+-- Typed SVG
+
+
+typedSvgExample : Html msg
+typedSvgExample =
+    TypedSvg.svg
+        [ TypedSvg.Attributes.viewBox 0 0 20 20
+        ]
+        [ Animated.typedSvgG flash
+            [ TypedSvg.Attributes.class [ "blue-fill" ] ]
+            [ typedCircle
+            , typedRectangle
+            ]
+        ]
+
+
+typedRectangle : TypedSvg.Svg msg
+typedRectangle =
+    TypedSvg.rect
+        [ TypedSvg.Attributes.x (num 2)
+        , TypedSvg.Attributes.y (num 10)
+        , TypedSvg.Attributes.width (num 10)
+        , TypedSvg.Attributes.height (num 5)
+        ]
+        []
+
+
+typedCircle : TypedSvg.Svg msg
+typedCircle =
+    TypedSvg.circle
+        [ TypedSvg.Attributes.cx (num 5)
+        , TypedSvg.Attributes.cy (num 5)
+        , TypedSvg.Attributes.r (num 2)
+        ]
+        []
+
+
+
 -- Examples
 
 
@@ -85,6 +127,7 @@ examples =
     groups
         [ group "With HTML" (Element.html htmlExample)
         , group "With SVG" (Element.html svgExample)
+        , group "With Typed SVG" (Element.html typedSvgExample)
         ]
 
 
