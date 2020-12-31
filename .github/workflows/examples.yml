@@ -1,0 +1,17 @@
+name: Deploy Examples
+
+on:
+  push:
+    branches:
+      - main
+
+deploy-examples:
+  env:
+    SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+    SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+    - run: npm ci
+    - run: npm run examples:deploy
