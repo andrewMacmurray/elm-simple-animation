@@ -3,8 +3,8 @@ module Examples.Steps exposing (examples)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
-import Internal.Property as P
 import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Property as P
 import Utils.Animated as Animated
 import Utils.UI exposing (blue, gold, group, groups, large, medium)
 

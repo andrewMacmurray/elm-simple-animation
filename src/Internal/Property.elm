@@ -1,15 +1,7 @@
 module Internal.Property exposing
-    ( Property
+    ( Property(..)
     , name
-    , opacity
-    , property
     , render
-    , rotate
-    , scale
-    , scaleXY
-    , x
-    , xy
-    , y
     )
 
 import Internal.Transform as Transform exposing (Transform)
@@ -25,44 +17,8 @@ type Property
     | Raw String String
 
 
-opacity : Float -> Property
-opacity =
-    Opacity
 
-
-y : Float -> Property
-y =
-    Transform << Transform.y
-
-
-x : Float -> Property
-x =
-    Transform << Transform.x
-
-
-xy : Float -> Float -> Property
-xy x_ y_ =
-    Transform (Transform.xy x_ y_)
-
-
-scale : Float -> Property
-scale n =
-    Transform (Transform.scaleXY n n)
-
-
-scaleXY : Float -> Float -> Property
-scaleXY x_ y_ =
-    Transform (Transform.scaleXY x_ y_)
-
-
-rotate : Float -> Property
-rotate =
-    Transform << Transform.rotate
-
-
-property : String -> String -> Property
-property =
-    Raw
+-- Name
 
 
 name : Property -> String
@@ -75,19 +31,32 @@ name prop =
             Transform.name t
 
         Raw n p ->
-            n ++ String.filter (\c -> c /= '.') p
+            n ++ escape p
 
 
+escape : String -> String
+escape =
+    String.filter escapedChars
+
+
+escapedChars : Char -> Bool
+escapedChars c =
+    not (List.member c [ '.', '#', ',', '(', ')', ' ' ])
+
+
+rounded : Int -> Float -> String
 rounded n val =
     String.fromInt (round val * n)
 
 
 render : List Property -> String
 render props =
-    [ getProp opacity_ props
-    , getProp raw_ props
-    , transform_ props
-    ]
+    List.concat
+        [ List.map raw_ props
+        , [ getProp opacity_ props
+          , transform_ props
+          ]
+        ]
         |> filterMaybes
         |> String.join ";"
 

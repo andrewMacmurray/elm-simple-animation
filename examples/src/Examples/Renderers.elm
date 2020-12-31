@@ -24,11 +24,11 @@ import Utils.UI exposing (group, groups)
 flash : Animation
 flash =
     Animation.steps
-        { startAt = [ P.opacity 0 ]
+        { startAt = [ P.opacity 0, P.backgroundColor "#0382c8" ]
         , options = [ Animation.loop ]
         }
-        [ Animation.step 1000 [ P.opacity 1 ]
-        , Animation.step 1000 [ P.opacity 0 ]
+        [ Animation.step 1000 [ P.opacity 1, P.backgroundColor "rgb(19 228 187)" ]
+        , Animation.step 1000 [ P.opacity 0, P.backgroundColor "#0382c8" ]
         ]
 
 
@@ -39,7 +39,7 @@ flash =
 htmlExample : Html msg
 htmlExample =
     Animated.div flash
-        [ Html.Attributes.class "blue-text" ]
+        [ Html.Attributes.class "text" ]
         [ Html.text "I'm animating!"
         , stylesheet
         ]
@@ -140,9 +140,11 @@ stylesheet : Html msg
 stylesheet =
     Stylesheet.stylesheet
         """
-        .blue-text {
-            color: blue;
-            padding: 24px 0px;
+        .text {
+            color: white;
+            border-radius: 10px;
+            margin: 12px 0;
+            padding: 24px;
         }
 
         .blue-fill {
