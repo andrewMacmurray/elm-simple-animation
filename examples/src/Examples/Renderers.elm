@@ -6,6 +6,9 @@ import Html.Attributes
 import Simple.Animated as Animated
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
+import Svg exposing (Svg)
+import Svg.Attributes
+import Utils.Animated as Animated
 import Utils.Stylesheet as Stylesheet
 import Utils.UI exposing (group, groups)
 
@@ -38,13 +41,50 @@ htmlExample =
 
 
 
+-- Svg
+
+
+svgExample : Svg msg
+svgExample =
+    Svg.svg [ Svg.Attributes.viewBox "0 0 20 20" ]
+        [ Animated.g flash
+            [ Svg.Attributes.class "blue-fill" ]
+            [ rectangle
+            , circle
+            ]
+        ]
+
+
+rectangle : Svg msg
+rectangle =
+    Svg.rect
+        [ Svg.Attributes.x "2"
+        , Svg.Attributes.y "10"
+        , Svg.Attributes.width "10"
+        , Svg.Attributes.height "5"
+        ]
+        []
+
+
+circle : Svg msg
+circle =
+    Svg.circle
+        [ Svg.Attributes.cx "5"
+        , Svg.Attributes.cy "5"
+        , Svg.Attributes.r "2"
+        ]
+        []
+
+
+
 -- Examples
 
 
 examples : Element msg -> Element msg
 examples =
     groups
-        [ group "With Html" (Element.html htmlExample)
+        [ group "With HTML" (Element.html htmlExample)
+        , group "With SVG" (Element.html svgExample)
         ]
 
 
@@ -59,5 +99,9 @@ stylesheet =
         .blue-text {
             color: blue;
             padding: 24px 0px;
+        }
+
+        .blue-fill {
+            fill: blue;
         }
         """
