@@ -66,10 +66,10 @@ So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whateve
 
 ## Hook into SVG
 
-Give the `Svg.Attributes` `class` function to `Simple.Animated.node`
+Give the `Svg.Attributes` `class` function to `Simple.Animated.svg`
 ```elm
 animatedSvg =
-    Simple.Animated.node Svg.Attributes.class
+    Simple.Animated.svg Svg.Attributes.class
 ```
 
 Then create any animated SVG element you like!
