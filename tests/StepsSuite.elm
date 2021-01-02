@@ -70,7 +70,55 @@ suite =
                         , frame 50 "{ opacity: 0; }"
                         , frame 100 "{ opacity: 1; }"
                         ]
+        , describe "waitUntilComplete"
+            [ test "ensures given animation's duration has passed until the next step" <|
+                \_ ->
+                    steps
+                        [ Animation.step 500 []
+                        , Animation.waitTillComplete (fromToWithDuration 2000)
+                        ]
+                        |> Animation.duration
+                        |> Expect.equal 2000
+            , test "adds a wait step with remaining duration" <|
+                \_ ->
+                    steps
+                        [ Animation.step 500 [ P.opacity 1 ]
+                        , Animation.waitTillComplete (fromToWithDuration 2000)
+                        ]
+                        |> Expect.keyframes
+                            [ frame 0 "{ opacity: 0; }"
+                            , frame 25 "{ opacity: 1; }"
+                            , frame 100 "{ opacity: 1; }"
+                            ]
+            , test "adds a single ms step if duration has already passed" <|
+                \_ ->
+                    steps
+                        [ Animation.step 2000 []
+                        , Animation.waitTillComplete (fromToWithDuration 2000)
+                        , Animation.step 500 []
+                        ]
+                        |> Animation.duration
+                        |> Expect.equal 2501
+            ]
         ]
+
+
+steps : List Animation.Step -> Animation
+steps =
+    Animation.steps
+        { options = []
+        , startAt = [ P.opacity 0 ]
+        }
+
+
+fromToWithDuration : Animation.Millis -> Animation
+fromToWithDuration ms =
+    Animation.fromTo
+        { duration = ms
+        , options = []
+        }
+        [ P.opacity 0 ]
+        [ P.opacity 1 ]
 
 
 frame : Float -> String -> String

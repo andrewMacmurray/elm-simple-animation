@@ -1,6 +1,6 @@
 module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
-    , step, set, wait, waitTillComplete
+    , Step, step, set, wait, waitTillComplete
     , Option, loop, count, delay
     , linear, easeIn, easeOut, easeInOut, cubic
     , easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
@@ -19,12 +19,14 @@ All animation durations are in `milliseconds`
 
 # Steps
 
-@docs step, set, wait, waitTillComplete
+Build up a multi step animation
+
+@docs Step, step, set, wait, waitTillComplete
 
 
 # Options
 
-Customise the feel an behaviour of an animation
+Customise the feel and behaviour of an animation
 
 @docs Option, loop, count, delay
 
@@ -80,6 +82,7 @@ type Stepped
         }
 
 
+{-| -}
 type Step
     = Step Millis (List Property)
     | Wait Millis

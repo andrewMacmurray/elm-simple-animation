@@ -12,31 +12,10 @@ module Simple.Animated exposing
 
 This module gives you animated `Html` `div`s out of the box, and some helpers to create animated versions of whatever `UI` library you're using.
 
-e.g. You want animated `elm-ui` `Element`s? Create an animated helper like this:
-
-    animatedUi =
-        Simple.Animated.ui
-            { behindContent = Element.behindContent
-            , htmlAttribute = Element.htmlAttribute
-            , html = Element.html
-            }
-
-Then make animated `el`s, `column`s and `row`s!
-
-    el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
-    el =
-        animatedUi Element.el
-
-Then render an animation
-
-    dot : Element msg
-    dot =
-        Utils.Animated.el expandFade [] elmUiDot
-
 
 ## Common Helpers
 
-You can find many of these common helpers here: <https://github.com/andrewMacmurray/elm-simple-animation/blob/main/examples/src/Utils/Animated.elm>
+You can find examples of building many of the common helpers mentioned below: <https://github.com/andrewMacmurray/elm-simple-animation/blob/main/examples/src/Utils/Animated.elm>
 
 
 # Html Animations
@@ -46,68 +25,15 @@ You can find many of these common helpers here: <https://github.com/andrewMacmur
 
 # Hook Into SVG
 
-So you can use whatever version of `elm/svg` you like use the `Simple.Animated.svg` function along with `Svg.Attributes.class` to create animated `Svg` elements:
-
-    g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
-    g =
-        animatedSvg Svg.g
-
-    animatedSvg =
-        Simple.Animated.node Svg.Attributes.class
-
-Then render an animation
-
-    dot : Svg msg
-    dot =
-        Svg.svg []
-            [ Utils.Animated.g expandFade [] [ svgDot ]
-            ]
-
 @docs svg
 
 
 # Hook Into Elm UI
 
-Create animated `elm-ui` `Element`s
-
-    el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
-    el =
-        animatedUi Element.el
-
-    animatedUi =
-        Simple.Animated.ui
-            { behindContent = Element.behindContent
-            , htmlAttribute = Element.htmlAttribute
-            , html = Element.html
-            }
-
-Then render an animation
-
-    dot : Element msg
-    dot =
-        Utils.Animated.el expandFade [] elmUiDot
-
 @docs UiOptions, ui
 
 
 # Custom Renderer
-
-When you want to completely customise how to render animations you can use the low level `Simple.Animated.custom` - which gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
-
-For example, say you wanted to animate `elm-community/typed-svg` nodes - you could create animated versions like this:
-
-    g : Animation -> List (TypedSvg.Attribute msg) -> List (TypedSvg.Svg msg) -> TypedSvg.Svg msg
-    g =
-        animatedTypedSvg TypedSvg.g
-
-    animatedTypedSvg node animation attributes children =
-        Simple.Animated.custom
-            (\className stylesheet ->
-                node
-                    (TypedSvg.Attributes.class [ className ] :: attributes)
-                    (TypedSvg.style [] [ TypedSvg.text stylesheet ] :: children)
-            )
-            animation
 
 @docs ClassName, Stylesheet, custom
 
@@ -168,7 +94,24 @@ html =
     node Html.Attributes.class
 
 
-{-| -}
+{-| So you can use whatever version of `elm/svg` you like use the `Simple.Animated.svg` function along with `Svg.Attributes.class` to create animated `Svg` elements:
+
+    animatedSvg =
+        Simple.Animated.node Svg.Attributes.class
+
+Then render an animation
+
+    dot : Svg msg
+    dot =
+        Svg.svg []
+            [ g expandFade [] [ svgDot ]
+            ]
+
+    g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+    g =
+        animatedSvg Svg.g
+
+-}
 svg :
     (ClassName -> Html.Attribute msg)
     -> (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
@@ -201,7 +144,26 @@ type alias UiOptions element attribute msg =
     }
 
 
-{-| -}
+{-| Create animated `elm-ui` `Element`s
+
+    animatedUi =
+        Simple.Animated.ui
+            { behindContent = Element.behindContent
+            , htmlAttribute = Element.htmlAttribute
+            , html = Element.html
+            }
+
+Then render an animation
+
+    dot : Element msg
+    dot =
+        el expandFade [] elmUiDot
+
+    el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
+    el =
+        animatedUi Element.el
+
+-}
 ui :
     UiOptions element attribute msg
     -> (List attribute -> children -> element)
@@ -230,7 +192,24 @@ type alias Stylesheet =
     String
 
 
-{-| -}
+{-| When you want to completely customise how to render animations you can use the low level `Simple.Animated.custom`. This gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
+
+For example, say you wanted to animate `elm-community/typed-svg` nodes - you could create animated versions like this:
+
+    g : Animation -> List (TypedSvg.Attribute msg) -> List (TypedSvg.Svg msg) -> TypedSvg.Svg msg
+    g =
+        animatedTypedSvg TypedSvg.g
+
+    animatedTypedSvg node animation attributes children =
+        Simple.Animated.custom
+            (\className stylesheet ->
+                node
+                    (TypedSvg.Attributes.class [ className ] :: attributes)
+                    (TypedSvg.style [] [ TypedSvg.text stylesheet ] :: children)
+            )
+            animation
+
+-}
 custom : (ClassName -> Stylesheet -> animated) -> Animation -> animated
 custom toAnimated anim =
     toAnimated
