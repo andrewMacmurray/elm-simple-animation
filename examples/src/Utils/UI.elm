@@ -47,7 +47,7 @@ groups els controls =
 
 group : String -> Element msg -> Element msg
 group label x =
-    column [ spacing medium ] [ text label, x ]
+    column [ spacing medium, width fill ] [ text label, x ]
 
 
 

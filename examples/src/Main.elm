@@ -5,6 +5,7 @@ import Element exposing (..)
 import Element.Events exposing (onClick)
 import Element.Font as Font
 import Examples.FromTo as FromTo
+import Examples.Progress as Progress
 import Examples.Renderers as Renderers
 import Examples.Sequence as Sequence
 import Examples.Steps as Steps
@@ -39,6 +40,7 @@ type Example
     | Steps
     | Sequence
     | Renderers
+    | Progress
 
 
 type Msg
@@ -94,6 +96,9 @@ examples model =
         Renderers ->
             Renderers.examples
 
+        Progress ->
+            Progress.examples
+
 
 buttons : Example -> Element Msg
 buttons selected =
@@ -101,6 +106,7 @@ buttons selected =
     , ( Steps, "Steps" )
     , ( Sequence, "Sequence" )
     , ( Renderers, "Renderers" )
+    , ( Progress, "Progress" )
     ]
         |> List.map (button selected)
         |> row [ spacing medium ]

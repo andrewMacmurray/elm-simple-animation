@@ -5,6 +5,7 @@ module Internal.Property exposing
     )
 
 import Internal.Transform as Transform exposing (Transform)
+import Set exposing (Set)
 
 
 
@@ -31,7 +32,7 @@ name prop =
             Transform.name t
 
         Raw n p ->
-            n ++ escape p
+            escape n ++ escape p
 
 
 escape : String -> String
@@ -41,7 +42,43 @@ escape =
 
 escapedChars : Char -> Bool
 escapedChars c =
-    not (List.member c [ '.', '#', ',', '(', ')', ' ' ])
+    not (Set.member c escapedChars_)
+
+
+escapedChars_ : Set Char
+escapedChars_ =
+    Set.fromList
+        [ '.'
+        , ' '
+        , ','
+        , '#'
+        , '$'
+        , '%'
+        , '('
+        , ')'
+        , '&'
+        , ';'
+        , ':'
+        , '"'
+        , '\''
+        , '*'
+        , '~'
+        , '!'
+        , '@'
+        , '^'
+        , '+'
+        , '='
+        , '/'
+        , '?'
+        , '>'
+        , '<'
+        , '['
+        , ']'
+        , '{'
+        , '}'
+        , '|'
+        , '`'
+        ]
 
 
 rounded : Int -> Float -> String

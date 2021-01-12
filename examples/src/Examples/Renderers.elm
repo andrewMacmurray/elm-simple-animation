@@ -126,9 +126,9 @@ typedCircle =
 examples : Element msg -> Element msg
 examples =
     groups
-        [ group "With HTML" (Element.html htmlExample)
-        , group "With SVG" (Element.html svgExample)
-        , group "With Typed SVG" (Element.html typedSvgExample)
+        [ group "With HTML" (html htmlExample)
+        , group "With SVG" (html svgExample)
+        , group "With Typed SVG" (html typedSvgExample)
         ]
 
 
@@ -143,6 +143,7 @@ stylesheet =
         .text {
             color: white;
             border-radius: 10px;
+            text-align: center;
             margin: 12px 0;
             padding: 24px;
         }
@@ -151,3 +152,8 @@ stylesheet =
             fill: blue;
         }
         """
+
+
+html : Html msg -> Element msg
+html =
+    Element.html >> Element.el [ Element.width (Element.fill |> Element.maximum 200) ]
