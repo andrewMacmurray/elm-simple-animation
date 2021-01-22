@@ -95,6 +95,9 @@ type Step
 
 {-| Create an animation with `start` and `end` properties:
 
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
+
     fadeOut : Animation
     fadeOut =
         Animation.fromTo
@@ -121,6 +124,9 @@ fromTo o from_ to_ =
 
 
 {-| Create an animation with multiple steps:
+
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
 
     backAndForth : Animation
     backAndForth =
@@ -181,6 +187,9 @@ wait =
 {-| Wait for another animation to complete before animating the next properties:
 
 This animation will `wait` for `1500` milliseconds before animating to the next step
+
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
 
     finishAfterFadeOut : Animation
     finishAfterFadeOut =

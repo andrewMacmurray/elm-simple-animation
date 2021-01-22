@@ -53,6 +53,11 @@ import Internal.Animation as Animation exposing (Animation)
 
 ### Render an Animated `div`
 
+    import Html exposing (Html)
+    import Simple.Animated as Animated
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
+
     dot : Html msg
     dot =
         Animated.div expandFade [ class "dot" ] []
