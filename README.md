@@ -9,6 +9,11 @@ See some examples here: https://elm-simple-animation-examples.surge.sh/
 Animate HTML, SVG (or any UI Elements) with declarative animations
 
 ```elm
+import Html exposing (Html)
+import Simple.Animated as Animated
+import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Property as P
+
 animatedDot : Html msg
 animatedDot =
     Animated.div expandFade [ class "dot" ] []
