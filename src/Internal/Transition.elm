@@ -40,7 +40,6 @@ type alias PropertyShorthand =
 all : Config -> List PropertyShorthand -> Transition
 all config =
     List.map (\p -> p config.duration config.options)
-        >> Debug.log "props"
         >> Transition
 
 
