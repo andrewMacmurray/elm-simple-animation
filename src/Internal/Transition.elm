@@ -1,42 +1,70 @@
-module Internal.Transition exposing (Property(..), Transition(..), toAttr)
+module Internal.Transition exposing
+    ( Config
+    , Property(..)
+    , PropertyShorthand
+    , Transition(..)
+    , all
+    , render
+    , toAttr
+    )
 
+import Html exposing (Attribute)
 import Html.Attributes
-import Internal.Animation exposing (Millis, Option, ms, renderOption)
-import Internal.Property as P
+import Internal.Animation
+    exposing
+        ( Millis
+        , Option
+        , findDelayOption
+        , findEaseOption
+        , ms
+        , renderOptionShorthand
+        )
 
 
 type Transition
     = Transition (List Property)
 
 
+type Property
+    = Property String Millis (List Option)
+
+
 type alias Config =
     { duration : Millis, options : List Option }
 
 
-type Property
-    = Property String Millis (List Option)
+type alias PropertyShorthand =
+    Millis -> List Option -> Property
+
+
+all : Config -> List PropertyShorthand -> Transition
+all config =
+    List.map (\p -> p config.duration config.options)
+        >> Debug.log "props"
+        >> Transition
 
 
 render : Transition -> String
 render (Transition props) =
     List.map renderProperty props
-        |> List.intersperse ", "
-        |> append
+        |> intersperseValuesWith ", "
 
 
 renderProperty : Property -> String
 renderProperty (Property name duration options) =
-    name
-        ++ " "
-        ++ ms duration
-        ++ (List.concatMap renderOption options |> append)
+    intersperseValuesWith " "
+        [ name
+        , ms duration
+        , findEaseOption options |> renderOptionShorthand
+        , findDelayOption options |> renderOptionShorthand
+        ]
 
 
-append : List String -> String
-append =
-    List.foldl (++) ""
+intersperseValuesWith : String -> List String -> String
+intersperseValuesWith separator =
+    List.intersperse separator >> List.foldr (++) ""
 
 
-toAttr : Transition -> Html.Attributes msg
+toAttr : Transition -> Attribute msg
 toAttr =
     render >> Html.Attributes.style "transition"

@@ -7,10 +7,13 @@ module Internal.Animation exposing
     , Option(..)
     , classDefinition_
     , duration_
+    , findDelayOption
+    , findEaseOption
     , keyframes_
     , ms
     , name_
     , renderOption
+    , renderOptionShorthand
     , stylesheet_
     )
 
@@ -41,6 +44,7 @@ type Ease
     | EaseIn
     | EaseOut
     | EaseInOut
+    | Default
 
 
 type Iteration
@@ -132,6 +136,47 @@ renderOption o =
             [ "animation-iteration-count: " ++ renderIteration i ]
 
 
+renderOptionShorthand : Option -> String
+renderOptionShorthand o =
+    case o of
+        Delay n ->
+            ms n
+
+        Ease e ->
+            renderEase e
+
+        Iteration i ->
+            renderIteration i
+
+
+findDelayOption : List Option -> Option
+findDelayOption =
+    List.foldl
+        (\o acc ->
+            case o of
+                Delay _ ->
+                    o
+
+                _ ->
+                    acc
+        )
+        (Delay 0)
+
+
+findEaseOption : List Option -> Option
+findEaseOption =
+    List.foldl
+        (\o acc ->
+            case o of
+                Ease _ ->
+                    o
+
+                _ ->
+                    acc
+        )
+        (Ease Default)
+
+
 renderEase : Ease -> String
 renderEase e =
     case e of
@@ -156,6 +201,9 @@ renderEase e =
 
         EaseInOut ->
             "ease-in-out"
+
+        Default ->
+            "ease"
 
 
 renderIteration : Iteration -> String
@@ -227,6 +275,9 @@ easeName e =
 
         EaseInOut ->
             "ease-in-out"
+
+        Default ->
+            "ease"
 
 
 iterationName : Iteration -> String

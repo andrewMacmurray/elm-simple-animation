@@ -10,8 +10,8 @@ module Simple.Transition exposing
     , transform
     )
 
-import Internal.Animation exposing (Millis, Option)
-import Internal.Transition as Internal
+import Html
+import Internal.Transition as Internal exposing (Config, PropertyShorthand)
 
 
 type alias Transition =
@@ -22,22 +22,13 @@ type alias Property =
     Internal.Property
 
 
-type alias Config =
-    { duration : Millis, options : List Option }
+all : Config -> List PropertyShorthand -> Html.Attribute msg
+all config props =
+    Internal.all config props
+        |> Internal.toAttr
 
 
-type alias PropertyShorthand =
-    Millis -> List Option -> Property
-
-
-all : Config -> List PropertyShorthand -> Transition
-all config =
-    List.map (\p -> p config.duration config.options)
-        >> Internal.Transition
-        >> Internal.toAttr
-
-
-properties : List Property -> Transition
+properties : List Property -> Html.Attribute msg
 properties =
     Internal.Transition
         >> Internal.toAttr
