@@ -61,11 +61,11 @@ suite =
                         ]
                         |> Transition.render
                         |> Expect.equal "opacity 500ms linear 100ms"
-            , test "keep only the leftmost option of each type" <|
+            , test "keep only the last provided option of each type" <|
                 \_ ->
                     Transition.all
                         { duration = 500
-                        , options = [ easeInOut, linear, delay 200, delay 100 ]
+                        , options = [ linear, easeInOut, delay 100, delay 200 ]
                         }
                         [ opacity
                         ]
