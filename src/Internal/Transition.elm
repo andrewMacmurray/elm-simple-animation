@@ -5,6 +5,7 @@ module Internal.Transition exposing
     , PropertyShorthand
     , Transition(..)
     , all
+    , properties
     , render
     , toAttr
     )
@@ -40,6 +41,11 @@ all : Config -> List PropertyShorthand -> Transition
 all config =
     List.map (\p -> p config.duration config.options)
         >> Transition
+
+
+properties : List Property -> Transition
+properties =
+    Transition
 
 
 render : Transition -> String
