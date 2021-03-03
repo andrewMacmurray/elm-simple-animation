@@ -41,6 +41,36 @@ suite =
                         ]
                         |> Transition.render
                         |> Expect.equal "opacity 500ms ease 0ms"
+            , test "ensure the validity of the transition when the options are out of order" <|
+                \_ ->
+                    Transition.all
+                        { duration = 500
+                        , options = [ linear, delay 100 ]
+                        }
+                        [ opacity
+                        ]
+                        |> Transition.render
+                        |> Expect.equal "opacity 500ms linear 100ms"
+            , test "ensure the validity of the transition when the options are duplicated" <|
+                \_ ->
+                    Transition.all
+                        { duration = 500
+                        , options = [ linear, linear, delay 100 ]
+                        }
+                        [ opacity
+                        ]
+                        |> Transition.render
+                        |> Expect.equal "opacity 500ms linear 100ms"
+            , test "keep only the leftmost option of each type" <|
+                \_ ->
+                    Transition.all
+                        { duration = 500
+                        , options = [ easeInOut, linear, delay 200, delay 100 ]
+                        }
+                        [ opacity
+                        ]
+                        |> Transition.render
+                        |> Expect.equal "opacity 500ms ease-in-out 200ms"
             ]
         , describe "properties"
             [ test "multiple properties" <|
