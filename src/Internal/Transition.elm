@@ -1,5 +1,6 @@
 module Internal.Transition exposing
     ( Config
+    , Option(..)
     , Property(..)
     , PropertyShorthand
     , Transition(..)
@@ -10,19 +11,17 @@ module Internal.Transition exposing
 
 import Html exposing (Attribute)
 import Html.Attributes
-import Internal.Animation
-    exposing
-        ( Millis
-        , Option
-        , findDelayOption
-        , findEaseOption
-        , ms
-        , renderOptionShorthand
-        )
+import Internal.Animation exposing (Millis, ms)
+import Internal.Ease as Ease exposing (Ease)
 
 
 type Transition
     = Transition (List Property)
+
+
+type Option
+    = Delay Millis
+    | Ease Ease
 
 
 type Property
@@ -57,6 +56,44 @@ renderProperty (Property name duration options) =
         , findEaseOption options |> renderOptionShorthand
         , findDelayOption options |> renderOptionShorthand
         ]
+
+
+renderOptionShorthand : Option -> String
+renderOptionShorthand o =
+    case o of
+        Delay n ->
+            ms n
+
+        Ease e ->
+            Ease.render e
+
+
+findDelayOption : List Option -> Option
+findDelayOption =
+    List.foldl
+        (\o acc ->
+            case o of
+                Delay _ ->
+                    o
+
+                _ ->
+                    acc
+        )
+        (Delay 0)
+
+
+findEaseOption : List Option -> Option
+findEaseOption =
+    List.foldl
+        (\o acc ->
+            case o of
+                Ease _ ->
+                    o
+
+                _ ->
+                    acc
+        )
+        (Ease Ease.Default)
 
 
 intersperseValuesWith : String -> List String -> String

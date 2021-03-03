@@ -5,13 +5,21 @@ module Simple.Transition exposing
     , backgroundColor
     , borderColor
     , color
+    , cubic
+    , delay
+    , easeIn
+    , easeInOut
+    , easeOut
+    , linear
     , opacity
     , properties
     , transform
     )
 
 import Html
-import Internal.Transition as Internal exposing (Config, PropertyShorthand)
+import Internal.Animation exposing (Millis)
+import Internal.Ease as Ease
+import Internal.Transition as Internal exposing (..)
 
 
 type alias Transition =
@@ -57,3 +65,38 @@ backgroundColor =
 borderColor : PropertyShorthand
 borderColor =
     Internal.Property "border-color"
+
+
+delay : Millis -> Option
+delay =
+    Delay
+
+
+{-| -}
+linear : Option
+linear =
+    Ease Ease.Linear
+
+
+{-| -}
+easeIn : Option
+easeIn =
+    Ease Ease.EaseIn
+
+
+{-| -}
+easeOut : Option
+easeOut =
+    Ease Ease.EaseOut
+
+
+{-| -}
+easeInOut : Option
+easeInOut =
+    Ease Ease.EaseInOut
+
+
+{-| -}
+cubic : Float -> Float -> Float -> Float -> Option
+cubic a b c d =
+    Ease (Ease.Cubic a b c d)

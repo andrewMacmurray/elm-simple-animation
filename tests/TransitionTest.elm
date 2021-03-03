@@ -2,8 +2,7 @@ module TransitionTest exposing (suite)
 
 import Expect
 import Internal.Transition as Transition
-import Simple.Animation as Animation
-import Simple.Transition exposing (color, opacity)
+import Simple.Transition exposing (..)
 import Test exposing (..)
 
 
@@ -14,7 +13,7 @@ suite =
             \_ ->
                 Transition.all
                     { duration = 500
-                    , options = [ Animation.delay 200, Animation.linear ]
+                    , options = [ delay 200, linear ]
                     }
                     [ opacity
                     ]
@@ -24,7 +23,7 @@ suite =
             \_ ->
                 Transition.all
                     { duration = 500
-                    , options = [ Animation.delay 200, Animation.linear ]
+                    , options = [ delay 200, linear ]
                     }
                     [ opacity
                     , color
