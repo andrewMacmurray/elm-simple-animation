@@ -1,8 +1,8 @@
 module Simple.Transition exposing
     ( Transition, all, properties
-    , delay
-    , linear, easeIn, easeOut, easeInOut, cubic
+    , Option, delay
     , Property, backgroundColor, borderColor, color, opacity, transform
+    , linear, easeIn, easeOut, easeInOut, cubic
     )
 
 {-| Build a CSS transition
@@ -22,16 +22,16 @@ Set the options accepted by the transition property
 @docs Option, delay
 
 
+# Properties
+
+@docs Property, backgroundColor, borderColor, color, opacity, transform
+
+
 # Standard Eases
 
 Standard CSS eases
 
 @docs linear, easeIn, easeOut, easeInOut, cubic
-
-
-# Duration
-
-@docs duration
 
 -}
 
@@ -41,12 +41,19 @@ import Internal.Ease as Ease
 import Internal.Transition as Internal exposing (..)
 
 
+{-| -}
 type alias Transition =
     Internal.Transition
 
 
+{-| -}
 type alias Property =
     Internal.Property
+
+
+{-| -}
+type alias Option =
+    Internal.Option
 
 
 {-| Create a transition where the same duration, ease and delay are applied to all the supplied properties
