@@ -52,6 +52,7 @@ See what these eases look and feel like: <https://easings.net>
 -}
 
 import Internal.Animation as Internal exposing (..)
+import Internal.Ease as Ease
 import Simple.Animation.Property exposing (Property)
 
 
@@ -320,31 +321,31 @@ delay =
 {-| -}
 linear : Option
 linear =
-    Ease Linear
+    Ease Ease.Linear
 
 
 {-| -}
 easeIn : Option
 easeIn =
-    Ease EaseIn
+    Ease Ease.EaseIn
 
 
 {-| -}
 easeOut : Option
 easeOut =
-    Ease EaseOut
+    Ease Ease.EaseOut
 
 
 {-| -}
 easeInOut : Option
 easeInOut =
-    Ease EaseInOut
+    Ease Ease.EaseInOut
 
 
 {-| -}
 cubic : Float -> Float -> Float -> Float -> Option
 cubic a b c d =
-    Ease (Cubic a b c d)
+    Ease (Ease.Cubic a b c d)
 
 
 

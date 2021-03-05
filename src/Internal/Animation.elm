@@ -1,6 +1,5 @@
 module Internal.Animation exposing
     ( Animation(..)
-    , Ease(..)
     , Frame(..)
     , Iteration(..)
     , Millis
@@ -8,10 +7,13 @@ module Internal.Animation exposing
     , classDefinition_
     , duration_
     , keyframes_
+    , ms
     , name_
+    , renderOption
     , stylesheet_
     )
 
+import Internal.Ease as Ease exposing (Ease)
 import Internal.Property as P exposing (Property)
 
 
@@ -31,14 +33,6 @@ type Option
 
 type Frame
     = Frame Percent (List Property)
-
-
-type Ease
-    = Cubic Float Float Float Float
-    | Linear
-    | EaseIn
-    | EaseOut
-    | EaseInOut
 
 
 type Iteration
@@ -124,36 +118,10 @@ renderOption o =
             [ "animation-delay: " ++ ms n ]
 
         Ease e ->
-            [ "animation-timing-function: " ++ renderEase e ]
+            [ "animation-timing-function: " ++ Ease.render e ]
 
         Iteration i ->
             [ "animation-iteration-count: " ++ renderIteration i ]
-
-
-renderEase : Ease -> String
-renderEase e =
-    case e of
-        Cubic a b c d ->
-            "cubic-bezier("
-                ++ String.join ","
-                    [ String.fromFloat a
-                    , String.fromFloat b
-                    , String.fromFloat c
-                    , String.fromFloat d
-                    ]
-                ++ ")"
-
-        Linear ->
-            "linear"
-
-        EaseIn ->
-            "ease-in"
-
-        EaseOut ->
-            "ease-out"
-
-        EaseInOut ->
-            "ease-in-out"
 
 
 renderIteration : Iteration -> String
@@ -192,7 +160,7 @@ optionName o =
             "d" ++ String.fromInt n
 
         Ease ease ->
-            easeName ease
+            Ease.name ease
 
         Iteration i ->
             iterationName i
@@ -206,25 +174,6 @@ frameName (Frame dur props) =
 joinWith : (a -> String) -> List a -> String
 joinWith f =
     List.map f >> String.concat
-
-
-easeName : Ease -> String
-easeName e =
-    case e of
-        Cubic a b c d ->
-            "cubic" ++ String.fromInt (round (a + b + c + d))
-
-        Linear ->
-            "linear"
-
-        EaseIn ->
-            "ease-in"
-
-        EaseOut ->
-            "ease-out"
-
-        EaseInOut ->
-            "ease-in-out"
 
 
 iterationName : Iteration -> String
