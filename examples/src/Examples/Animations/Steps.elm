@@ -6,7 +6,7 @@ import Element.Border as Border
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Utils.Animated as Animated
-import Utils.UI exposing (blue, gold, group, groups, large, medium)
+import Utils.UI exposing (blue, gold, groups, large, medium)
 
 
 
@@ -32,12 +32,7 @@ stepsAnimation ease =
 
 examples : Element msg -> Element msg
 examples =
-    groups [ stepsWithEases ]
-
-
-stepsWithEases : Element msg
-stepsWithEases =
-    group "Steps with different eases" squaresWithEases
+    groups [ squaresWithEases ]
 
 
 squaresWithEases : Element msg
