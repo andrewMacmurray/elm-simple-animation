@@ -57,7 +57,8 @@ import Internal.Unit as Unit
 import Simple.Animation.Property exposing (Property)
 
 
-{-| -}
+{-| Animation to be rendered with `Simple.Animation.Animated` functions
+-}
 type alias Animation =
     Internal.Animation
 

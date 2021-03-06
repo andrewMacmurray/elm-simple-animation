@@ -3,7 +3,7 @@ module Simple.Transition exposing
     , properties, all
     , Option, delay
     , linear, easeIn, easeOut, easeInOut, cubic
-    , Property, backgroundColor, borderColor, color, opacity, transform
+    , Property, backgroundColor, borderColor, color, opacity, transform, property
     )
 
 {-| Build a Html Attribute for applying CSS transitions
@@ -30,7 +30,7 @@ Customise transition properties
 
 # Transition Properties
 
-@docs Property, backgroundColor, borderColor, color, opacity, transform
+@docs Property, backgroundColor, borderColor, color, opacity, transform, property
 
 -}
 
@@ -96,31 +96,43 @@ properties =
 {-| -}
 transform : Millis -> List Option -> Property
 transform =
-    Internal.Property "transform"
+    property "transform"
 
 
 {-| -}
 opacity : Millis -> List Option -> Property
 opacity =
-    Internal.Property "opacity"
+    property "opacity"
 
 
 {-| -}
 color : Millis -> List Option -> Property
 color =
-    Internal.Property "color"
+    property "color"
 
 
 {-| -}
 backgroundColor : Millis -> List Option -> Property
 backgroundColor =
-    Internal.Property "background-color"
+    property "background-color"
 
 
 {-| -}
 borderColor : Millis -> List Option -> Property
 borderColor =
-    Internal.Property "border-color"
+    property "border-color"
+
+
+{-| Create a custom transition property (for any CSS attribute) - use with care as they may result in janky transitions!
+
+e.g. for SVG fill:
+
+    property "fill" 500 []
+
+-}
+property : String -> Millis -> List Option -> Property
+property =
+    Internal.Property
 
 
 {-| Delay the start of the transition by a number of `milliseconds`
