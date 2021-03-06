@@ -8,7 +8,7 @@ module Simple.Animated exposing
 {-|
 
 
-# Render animations on the page
+# Render an animation on the page
 
 This module gives you animated `Html` `div`s out of the box, and some helpers to create animated versions of whatever `UI` library you're using.
 

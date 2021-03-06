@@ -2,19 +2,18 @@ module Internal.Animation exposing
     ( Animation(..)
     , Frame(..)
     , Iteration(..)
-    , Millis
     , Option(..)
     , classDefinition_
     , duration_
     , keyframes_
-    , ms
     , name_
     , renderOption
     , stylesheet_
     )
 
+import Internal.Animation.Property as P exposing (Property)
 import Internal.Ease as Ease exposing (Ease)
-import Internal.Property as P exposing (Property)
+import Internal.Unit as Unit
 
 
 
@@ -45,7 +44,7 @@ type alias Percent =
 
 
 type alias Millis =
-    Int
+    Unit.Millis
 
 
 
@@ -88,7 +87,7 @@ keyframes_ =
 
 renderFrame : Frame -> String
 renderFrame (Frame percent properties) =
-    pc percent ++ "{" ++ P.render properties ++ ";}"
+    Unit.pc percent ++ "{" ++ P.render properties ++ ";}"
 
 
 renderOptions : Animation -> List String
@@ -98,24 +97,14 @@ renderOptions =
 
 animationDuration : Animation -> String
 animationDuration anim =
-    ms (duration_ anim)
-
-
-ms : Int -> String
-ms n =
-    String.fromInt n ++ "ms"
-
-
-pc : Float -> String
-pc n =
-    String.fromFloat n ++ "%"
+    Unit.ms (duration_ anim)
 
 
 renderOption : Option -> List String
 renderOption o =
     case o of
         Delay n ->
-            [ "animation-delay: " ++ ms n ]
+            [ "animation-delay: " ++ Unit.ms n ]
 
         Ease e ->
             [ "animation-timing-function: " ++ Ease.render e ]

@@ -1,4 +1,4 @@
-module StepsSuite exposing (suite)
+module StepsTest exposing (suite)
 
 import Expect exposing (Expectation)
 import Fuzz

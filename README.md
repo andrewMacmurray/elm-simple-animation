@@ -6,7 +6,7 @@ See some examples here: https://elm-simple-animation-examples.surge.sh/
 
 ## What?
 
-Animate HTML, SVG (or any UI Elements) with declarative animations
+Animate HTML, SVG (or any UI Elements) with declarative animations and transitions
 
 ```elm
 import Html exposing (Html)

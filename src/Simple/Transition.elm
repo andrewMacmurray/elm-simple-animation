@@ -1,47 +1,45 @@
 module Simple.Transition exposing
-    ( Transition, all, properties
+    ( Millis
+    , properties, all
     , Option, delay
-    , Property, backgroundColor, borderColor, color, opacity, transform
     , linear, easeIn, easeOut, easeInOut, cubic
+    , Property, backgroundColor, borderColor, color, opacity, transform
     )
 
-{-| Build a CSS transition
+{-| Build a Html Attribute for applying CSS transitions
 
-All transition durations are in `milliseconds`
-
-
-# Create an Transition
-
-@docs Transition, all, properties
+@docs Millis
 
 
-# Options
+# Create a Transition
 
-Set the options accepted by the transition property
+@docs properties, all
+
+
+# Transition Options
+
+Customise transition properties
 
 @docs Option, delay
 
 
-# Properties
-
-@docs Property, backgroundColor, borderColor, color, opacity, transform
-
-
-# Standard Eases
-
-Standard CSS eases
+# CSS Eases
 
 @docs linear, easeIn, easeOut, easeInOut, cubic
+
+
+# Transition Properties
+
+@docs Property, backgroundColor, borderColor, color, opacity, transform
 
 -}
 
 import Html
-import Internal.Animation exposing (Millis)
 import Internal.Ease as Ease
-import Internal.Transition as Internal exposing (..)
+import Internal.Transition as Internal exposing (Option(..))
+import Internal.Unit as Unit
 
 
-{-| -}
 type alias Transition =
     Internal.Transition
 
@@ -56,36 +54,39 @@ type alias Option =
     Internal.Option
 
 
-{-| Create a transition where the same duration, ease and delay are applied to all the supplied properties
+{-| Unit for all Transitions
+-}
+type alias Millis =
+    Unit.Millis
+
+
+{-| Create a transition with the same duration, ease and delay for all properties
 
     Transition.all
         { duration = 500
         , options = [ Transition.delay 200, Transition.linear ]
         }
         [ Transition.opacity
+        , Transition.color
         ]
 
-     Which will render the transition:
-
-     "opacity 500ms linear 200ms, color 500ms linear 200ms"
+Will render a CSS transition: `opacity 500ms linear 200ms, color 500ms linear 200ms`
 
 -}
-all : Config -> List PropertyShorthand -> Html.Attribute msg
+all : { duration : Millis, options : List Option } -> List (Millis -> List Option -> Property) -> Html.Attribute msg
 all config props =
     Internal.all config props
         |> Internal.toAttr
 
 
-{-| Create a transition supplying separate options for each property
+{-| Create a transition for a list of properties
 
     Transition.properties
         [ Transition.opacity 200 [ Transition.delay 100 ]
         , Transition.color 500 [ Transition.easeInOut ]
         ]
 
-     Which will render the transition:
-
-     "opacity 200ms ease 100ms, color 500ms ease-in-out 0ms"
+Will render a CSS transition: `opacity 200ms ease 100ms, color 500ms ease-in-out 0ms`
 
 -}
 properties : List Property -> Html.Attribute msg
@@ -94,42 +95,37 @@ properties =
         >> Internal.toAttr
 
 
-{-| Add a transition to the transform property
--}
-transform : PropertyShorthand
+{-| -}
+transform : Millis -> List Option -> Property
 transform =
     Internal.Property "transform"
 
 
-{-| Add a transition to the opacity property
--}
-opacity : PropertyShorthand
+{-| -}
+opacity : Millis -> List Option -> Property
 opacity =
     Internal.Property "opacity"
 
 
-{-| Add a transition to the color property
--}
-color : PropertyShorthand
+{-| -}
+color : Millis -> List Option -> Property
 color =
     Internal.Property "color"
 
 
-{-| Add a transition to the background-color property
--}
-backgroundColor : PropertyShorthand
+{-| -}
+backgroundColor : Millis -> List Option -> Property
 backgroundColor =
     Internal.Property "background-color"
 
 
-{-| Add a transition to the border-color property
--}
-borderColor : PropertyShorthand
+{-| -}
+borderColor : Millis -> List Option -> Property
 borderColor =
     Internal.Property "border-color"
 
 
-{-| Set the animation delay
+{-| Delay the start of the transition by a number of `milliseconds`
 -}
 delay : Millis -> Option
 delay =

@@ -53,6 +53,7 @@ See what these eases look and feel like: <https://easings.net>
 
 import Internal.Animation as Internal exposing (..)
 import Internal.Ease as Ease
+import Internal.Unit as Unit
 import Simple.Animation.Property exposing (Property)
 
 
@@ -63,7 +64,7 @@ type alias Animation =
 
 {-| -}
 type alias Millis =
-    Int
+    Unit.Millis
 
 
 {-| -}
