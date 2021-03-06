@@ -10,9 +10,10 @@ Animate HTML, SVG (or any UI Elements) with declarative animations and transitio
 
 ```elm
 import Html exposing (Html)
-import Simple.Animated as Animated
+import Simple.Animation.Animated as Animated
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
+
 
 animatedDot : Html msg
 animatedDot =
@@ -71,10 +72,10 @@ So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whateve
 
 ## Hook into SVG
 
-Give the `Svg.Attributes` `class` function to `Simple.Animated.svg`
+Give the `Svg.Attributes` `class` function to `Simple.Animation.Animated.svg`
 ```elm
 animatedSvg =
-    Simple.Animated.svg Svg.Attributes.class
+    Simple.Animation.Animated.svg Svg.Attributes.class
 ```
 
 Then create any animated SVG element you like!
@@ -91,11 +92,11 @@ g =
 
 ## Hook into Elm UI
 
-Provide these 3 functions to `Simple.Animated.ui`
+Provide these 3 functions to `Simple.Animation.Animated.ui`
 
 ```elm
 animatedUi =
-    Simple.Animated.ui
+    Simple.Animation.Animated.ui
         { behindContent = Element.behindContent
         , htmlAttribute = Element.htmlAttribute
         , html = Element.html
@@ -117,7 +118,7 @@ column =
 
 ## Hook Into Custom Renderer
 
-In case you want to completely customise how to render animations you can use the low level `Simple.Animated.custom` - which gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
+In case you want to completely customise how to render animations you can use the low level `Simple.Animation.Animated.custom` - which gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
 
 For example, say you wanted to animate `elm-community/typed-svg` nodes - you could create animated versions like this:
 
@@ -128,7 +129,7 @@ g =
 
 
 animatedTypedSvg node animation attributes children =
-    Animated.custom
+    Simple.Animation.Animated.custom
         (\className stylesheet ->
             node
                 (TypedSvg.Attributes.class [ className ] :: attributes)

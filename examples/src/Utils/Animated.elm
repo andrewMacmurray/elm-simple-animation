@@ -6,8 +6,8 @@ module Utils.Animated exposing
     )
 
 import Element exposing (Element)
-import Simple.Animated as Animated
 import Simple.Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
 import Svg exposing (Svg)
 import Svg.Attributes
 import TypedSvg
