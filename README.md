@@ -10,8 +10,8 @@ Animate HTML, SVG (or any UI Elements) with declarative animations and transitio
 
 ```elm
 import Html exposing (Html)
-import Simple.Animation.Animated as Animated
 import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
 import Simple.Animation.Property as P
 
 

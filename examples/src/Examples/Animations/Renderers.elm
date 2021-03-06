@@ -1,4 +1,4 @@
-module Examples.Renderers exposing (examples)
+module Examples.Animations.Renderers exposing (examples)
 
 import Element exposing (Element)
 import Html exposing (Html)

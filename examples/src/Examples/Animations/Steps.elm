@@ -1,4 +1,4 @@
-module Examples.Steps exposing (examples)
+module Examples.Animations.Steps exposing (examples)
 
 import Element exposing (..)
 import Element.Background as Background

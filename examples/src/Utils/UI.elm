@@ -7,6 +7,7 @@ module Utils.UI exposing
     , large
     , medium
     , small
+    , white
     )
 
 import Element exposing (..)
@@ -29,6 +30,11 @@ black =
 gold : Color
 gold =
     rgb255 255 221 46
+
+
+white : Color
+white =
+    rgb255 255 255 255
 
 
 
