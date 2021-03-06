@@ -74,9 +74,8 @@ Will render a CSS transition: `opacity 500ms linear 200ms, color 500ms linear 20
 
 -}
 all : { duration : Millis, options : List Option } -> List (Millis -> List Option -> Property) -> Html.Attribute msg
-all config props =
-    Internal.all config props
-        |> Internal.toAttr
+all config =
+    Internal.all config >> Internal.toAttr
 
 
 {-| Create a transition for a list of properties
@@ -91,8 +90,7 @@ Will render a CSS transition: `opacity 200ms ease 100ms, color 500ms ease-in-out
 -}
 properties : List Property -> Html.Attribute msg
 properties =
-    Internal.properties
-        >> Internal.toAttr
+    Internal.properties >> Internal.toAttr
 
 
 {-| -}

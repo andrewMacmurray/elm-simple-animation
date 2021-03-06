@@ -34,12 +34,16 @@ expandFade =
 
 ## Why?
 
-When you want some typesafe, simple, decorative animations, but you don't need the full power of something like `elm-animator`. The benefits of this are:
+When you want some typesafe, simple, decorative animations or transitions, but you don't need the full power of something like `elm-animator`. The benefits of this are:
 
 + Animations are `stateless` (from Elm's perspective) so easy to drop in anywhere (no model, update or subscriptions required).
-+ Very performant (generates CSS keyframes animations under the hood).
++ Very performant
+    + Animations generate CSS keyframes animations under the hood.
+    + Transitions are a single Html Attribute with a CSS transition.
 
 ## How?
+
+## For Animations:
 
 1 . Define an animation (either `fromTo` or a sequence of `steps`)
 
@@ -66,7 +70,7 @@ spinningBox =
 
 ![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
 
-## Animating SVG, Elm UI and Others
+## Rendering Animations with SVG, Elm UI and Others
 
 So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whatever `Html` abstraction you use) there are some helpers that let you create animated versions:
 

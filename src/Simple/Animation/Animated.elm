@@ -1,6 +1,6 @@
 module Simple.Animation.Animated exposing
     ( div, html
-    , svg
+    , SvgOptions, svg
     , UiOptions, ui
     , ClassName, Stylesheet, custom
     )
@@ -25,7 +25,7 @@ You can find examples of building many of the common helpers mentioned below: <h
 
 # Hook Into SVG
 
-@docs svg
+@docs SvgOptions, svg
 
 
 # Hook Into Elm UI
@@ -96,13 +96,21 @@ html :
     -> List (Html msg)
     -> Html msg
 html =
-    node Html.Attributes.class
+    node { class = Html.Attributes.class }
+
+
+{-| -}
+type alias SvgOptions msg =
+    { class : String -> Html.Attribute msg
+    }
 
 
 {-| So you can use whatever version of `elm/svg` you like use the `Simple.Animation.Animated.svg` function along with `Svg.Attributes.class` to create animated `Svg` elements:
 
     animatedSvg =
-        Simple.Animation.Animated.node Svg.Attributes.class
+        Simple.Animation.Animated.svg
+            { class = Svg.Attributes.class
+            }
 
 Then render an animation
 
@@ -118,7 +126,7 @@ Then render an animation
 
 -}
 svg :
-    (ClassName -> Html.Attribute msg)
+    SvgOptions msg
     -> (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
     -> Animation
     -> List (Html.Attribute msg)
@@ -129,15 +137,15 @@ svg =
 
 
 node :
-    (ClassName -> Html.Attribute msg)
+    SvgOptions msg
     -> (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
     -> Animation
     -> List (Html.Attribute msg)
     -> List (Html msg)
     -> Html msg
-node toClass_ node_ anim attrs els =
+node options node_ anim attrs els =
     node_
-        (toClass_ (Animation.name_ anim) :: attrs)
+        (options.class (Animation.name_ anim) :: attrs)
         (toStylesheet_ anim :: els)
 
 

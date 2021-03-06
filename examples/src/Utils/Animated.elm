@@ -59,7 +59,9 @@ animatedSvg :
     -> List (Svg msg)
     -> Svg msg
 animatedSvg =
-    Animated.svg Svg.Attributes.class
+    Animated.svg
+        { class = Svg.Attributes.class
+        }
 
 
 
