@@ -70,6 +70,25 @@ spinningBox =
 
 ![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
 
+## For Transitions
+
+1. Add a transition as a Html Attribute (either `all` or `properties`)
+
+```elm
+glowingBox : Html msg
+glowingBox =
+    div
+        [ class "gold-box-on-hover"
+        , Transition.properties
+            [ Transition.backgroundColor 500 []
+            , Transition.color 500 [ Transition.delay 100 ]
+            ]
+        ]
+        [ text "Hover over me" ]
+```
+
+![glowing-box](https://user-images.githubusercontent.com/14013616/110212957-c1b4a380-7e95-11eb-9ab9-3d88485496b4.gif)
+
 ## Rendering Animations with SVG, Elm UI and Others
 
 So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whatever `Html` abstraction you use) there are some helpers that let you create animated versions:
