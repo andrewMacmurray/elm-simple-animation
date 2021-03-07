@@ -1,5 +1,6 @@
 module Utils.Animated exposing
-    ( el
+    ( circle
+    , el
     , g
     , path
     , typedSvgG
@@ -45,6 +46,11 @@ animatedUi =
 g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 g =
     animatedSvg Svg.g
+
+
+circle : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+circle =
+    animatedSvg Svg.circle
 
 
 path : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
