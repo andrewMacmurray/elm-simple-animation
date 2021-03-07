@@ -1,5 +1,6 @@
 module Internal.Animation.Property exposing
     ( Property(..)
+    , escape
     , name
     , render
     )

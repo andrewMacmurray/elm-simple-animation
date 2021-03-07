@@ -71,7 +71,7 @@ renderOptionShorthand o =
             Unit.ms n
 
         Ease e ->
-            Ease.render e
+            Ease.toString e
 
 
 findDelayOption : List Option -> Option
@@ -99,7 +99,7 @@ findEaseOption =
                 _ ->
                     acc
         )
-        (Ease Ease.Default)
+        (Ease Ease.Ease)
 
 
 intersperseValuesWith : String -> List String -> String

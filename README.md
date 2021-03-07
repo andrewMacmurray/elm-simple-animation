@@ -38,8 +38,8 @@ When you want some typesafe, simple, decorative animations or transitions, but y
 
 + Animations are `stateless` (from Elm's perspective) so easy to drop in anywhere (no model, update or subscriptions required).
 + Very performant
-    + Animations generate CSS keyframes animations under the hood.
-    + Transitions are a single Html Attribute with a CSS transition.
+    + `Animations` generate CSS keyframes animations under the hood.
+    + `Transitions` are a single Html Attribute with a CSS transition.
 
 ## How?
 
@@ -72,7 +72,7 @@ spinningBox =
 
 ## For Transitions
 
-1. Add a transition as a Html Attribute (either `all` or `properties`)
+Just add a transition as a Html Attribute 
 
 ```elm
 glowingBox : Html msg
@@ -89,7 +89,7 @@ glowingBox =
 
 ![glowing-box](https://user-images.githubusercontent.com/14013616/110212957-c1b4a380-7e95-11eb-9ab9-3d88485496b4.gif)
 
-## Rendering Animations with SVG, Elm UI and Others
+## Rendering an `Animation` with SVG, Elm UI and Others
 
 So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whatever `Html` abstraction you use) there are some helpers that let you create animated versions:
 
@@ -98,7 +98,9 @@ So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whateve
 Give the `Svg.Attributes` `class` function to `Simple.Animation.Animated.svg`
 ```elm
 animatedSvg =
-    Simple.Animation.Animated.svg Svg.Attributes.class
+    Simple.Animation.Animated.svg
+        { class = Svg.Attributes.class
+        }
 ```
 
 Then create any animated SVG element you like!

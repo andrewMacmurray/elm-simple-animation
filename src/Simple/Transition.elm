@@ -3,6 +3,7 @@ module Simple.Transition exposing
     , properties, all
     , Option, delay
     , linear, easeIn, easeOut, easeInOut, cubic
+    , easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
     , Property, backgroundColor, borderColor, color, opacity, transform, property
     )
 
@@ -23,9 +24,18 @@ Customise transition properties
 @docs Option, delay
 
 
-# CSS Eases
+# Standard Eases
+
+Standard CSS eases
 
 @docs linear, easeIn, easeOut, easeInOut, cubic
+
+
+# Extended Eases
+
+See what these eases look and feel like: <https://easings.net>
+
+@docs easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
 
 
 # Transition Properties
@@ -54,7 +64,7 @@ type alias Option =
     Internal.Option
 
 
-{-| Unit for all Transitions
+{-| Time unit for all Transitions
 -}
 type alias Millis =
     Unit.Millis
@@ -142,6 +152,10 @@ delay =
     Delay
 
 
+
+-- Standard Eases
+
+
 {-| -}
 linear : Option
 linear =
@@ -170,3 +184,151 @@ easeInOut =
 cubic : Float -> Float -> Float -> Float -> Option
 cubic a b c d =
     Ease (Ease.Cubic a b c d)
+
+
+
+-- Extended Eases
+
+
+{-| -}
+easeInSine : Option
+easeInSine =
+    Ease Ease.easeInSine
+
+
+{-| -}
+easeOutSine : Option
+easeOutSine =
+    Ease Ease.easeOutSine
+
+
+{-| -}
+easeInOutSine : Option
+easeInOutSine =
+    Ease Ease.easeInOutSine
+
+
+{-| -}
+easeInQuad : Option
+easeInQuad =
+    Ease Ease.easeInQuad
+
+
+{-| -}
+easeOutQuad : Option
+easeOutQuad =
+    Ease Ease.easeOutQuad
+
+
+{-| -}
+easeInOutQuad : Option
+easeInOutQuad =
+    Ease Ease.easeInOutQuad
+
+
+{-| -}
+easeInCubic : Option
+easeInCubic =
+    Ease Ease.easeInCubic
+
+
+{-| -}
+easeOutCubic : Option
+easeOutCubic =
+    Ease Ease.easeOutCubic
+
+
+{-| -}
+easeInOutCubic : Option
+easeInOutCubic =
+    Ease Ease.easeInOutCubic
+
+
+{-| -}
+easeInQuart : Option
+easeInQuart =
+    Ease Ease.easeInQuart
+
+
+{-| -}
+easeOutQuart : Option
+easeOutQuart =
+    Ease Ease.easeOutQuart
+
+
+{-| -}
+easeInOutQuart : Option
+easeInOutQuart =
+    Ease Ease.easeInOutQuart
+
+
+{-| -}
+easeInQuint : Option
+easeInQuint =
+    Ease Ease.easeInQuint
+
+
+{-| -}
+easeOutQuint : Option
+easeOutQuint =
+    Ease Ease.easeOutQuint
+
+
+{-| -}
+easeInOutQuint : Option
+easeInOutQuint =
+    Ease Ease.easeInOutQuint
+
+
+{-| -}
+easeInExpo : Option
+easeInExpo =
+    Ease Ease.easeInExpo
+
+
+{-| -}
+easeOutExpo : Option
+easeOutExpo =
+    Ease Ease.easeOutExpo
+
+
+{-| -}
+easeInOutExpo : Option
+easeInOutExpo =
+    Ease Ease.easeInOutExpo
+
+
+{-| -}
+easeInCirc : Option
+easeInCirc =
+    Ease Ease.easeInCirc
+
+
+{-| -}
+easeOutCirc : Option
+easeOutCirc =
+    Ease Ease.easeOutCirc
+
+
+{-| -}
+easeInOutCirc : Option
+easeInOutCirc =
+    Ease Ease.easeInOutCirc
+
+
+{-| -}
+easeInBack : Option
+easeInBack =
+    Ease Ease.easeInBack
+
+
+{-| -}
+easeOutBack : Option
+easeOutBack =
+    Ease Ease.easeOutBack
+
+
+{-| -}
+easeInOutBack : Option
+easeInOutBack =
+    Ease Ease.easeInOutBack

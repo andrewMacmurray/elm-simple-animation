@@ -107,7 +107,7 @@ renderOption o =
             [ "animation-delay: " ++ Unit.ms n ]
 
         Ease e ->
-            [ "animation-timing-function: " ++ Ease.render e ]
+            [ "animation-timing-function: " ++ Ease.toString e ]
 
         Iteration i ->
             [ "animation-iteration-count: " ++ renderIteration i ]
@@ -149,7 +149,7 @@ optionName o =
             "d" ++ String.fromInt n
 
         Ease ease ->
-            Ease.name ease
+            P.escape (Ease.toString ease)
 
         Iteration i ->
             iterationName i
