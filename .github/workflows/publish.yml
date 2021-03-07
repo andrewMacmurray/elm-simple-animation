@@ -1,15 +1,12 @@
-name: CI
+name: Publish Package
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  verify:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/cache@v2
@@ -21,9 +18,8 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
       - run: npm ci
-      - name: Run Unit Tests
-        run: npm test
-      - name: Check Docs Compile
-        run: npm run docs:verify
+      - uses: dillonkearns/elm-publish-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-elm: ./node_modules/.bin/elm
