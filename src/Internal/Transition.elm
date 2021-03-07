@@ -16,6 +16,10 @@ import Internal.Ease as Ease exposing (Ease)
 import Internal.Unit as Unit exposing (Millis)
 
 
+
+-- Transition
+
+
 type Transition
     = Transition (List Property)
 
@@ -39,14 +43,26 @@ type alias ToProperty =
     Millis -> List Option -> Property
 
 
+
+-- All
+
+
 all : Config -> List ToProperty -> Transition
 all config =
     List.map (\p -> p config.duration config.options) >> Transition
 
 
+
+-- Properties
+
+
 properties : List Property -> Transition
 properties =
     Transition
+
+
+
+-- Render
 
 
 render : Transition -> String

@@ -163,6 +163,10 @@ easeInOutBack =
     Cubic 0.68 -0.6 0.32 1.6
 
 
+
+-- To String
+
+
 toString : Ease -> String
 toString e =
     case e of
