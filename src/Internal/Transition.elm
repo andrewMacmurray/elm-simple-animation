@@ -2,7 +2,7 @@ module Internal.Transition exposing
     ( Config
     , Option(..)
     , Property(..)
-    , PropertyShorthand
+    , ToProperty
     , Transition(..)
     , all
     , properties
@@ -12,8 +12,12 @@ module Internal.Transition exposing
 
 import Html exposing (Attribute)
 import Html.Attributes
-import Internal.Animation exposing (Millis, ms)
 import Internal.Ease as Ease exposing (Ease)
+import Internal.Unit as Unit exposing (Millis)
+
+
+
+-- Transition
 
 
 type Transition
@@ -30,17 +34,26 @@ type Property
 
 
 type alias Config =
-    { duration : Millis, options : List Option }
+    { duration : Millis
+    , options : List Option
+    }
 
 
-type alias PropertyShorthand =
+type alias ToProperty =
     Millis -> List Option -> Property
 
 
-all : Config -> List PropertyShorthand -> Transition
+
+-- All
+
+
+all : Config -> List ToProperty -> Transition
 all config =
-    List.map (\p -> p config.duration config.options)
-        >> Transition
+    List.map (\p -> p config.duration config.options) >> Transition
+
+
+
+-- Properties
 
 
 properties : List Property -> Transition
@@ -48,17 +61,20 @@ properties =
     Transition
 
 
+
+-- Render
+
+
 render : Transition -> String
 render (Transition props) =
-    List.map renderProperty props
-        |> intersperseValuesWith ", "
+    List.map renderProperty props |> intersperseValuesWith ", "
 
 
 renderProperty : Property -> String
 renderProperty (Property name duration options) =
     intersperseValuesWith " "
         [ name
-        , ms duration
+        , Unit.ms duration
         , findEaseOption options |> renderOptionShorthand
         , findDelayOption options |> renderOptionShorthand
         ]
@@ -68,10 +84,10 @@ renderOptionShorthand : Option -> String
 renderOptionShorthand o =
     case o of
         Delay n ->
-            ms n
+            Unit.ms n
 
         Ease e ->
-            Ease.render e
+            Ease.toString e
 
 
 findDelayOption : List Option -> Option
@@ -99,12 +115,12 @@ findEaseOption =
                 _ ->
                     acc
         )
-        (Ease Ease.Default)
+        (Ease Ease.Ease)
 
 
 intersperseValuesWith : String -> List String -> String
 intersperseValuesWith separator =
-    List.intersperse separator >> List.foldr (++) ""
+    List.intersperse separator >> String.concat
 
 
 toAttr : Transition -> Attribute msg

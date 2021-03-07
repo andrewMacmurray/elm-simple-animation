@@ -1,15 +1,20 @@
 module Utils.UI exposing
-    ( black
+    ( activeButton
+    , black
     , blue
     , gold
     , group
     , groups
     , large
     , medium
+    , regularButton
     , small
+    , white
     )
 
 import Element exposing (..)
+import Element.Events exposing (onClick)
+import Element.Font as Font
 
 
 
@@ -29,6 +34,38 @@ black =
 gold : Color
 gold =
     rgb255 255 221 46
+
+
+white : Color
+white =
+    rgb255 255 255 255
+
+
+
+-- Buttons
+
+
+activeButton : List (Attribute msg) -> String -> Element msg
+activeButton attrs label =
+    el
+        (List.append attrs
+            [ pointer
+            , Font.color blue
+            ]
+        )
+        (text label)
+
+
+regularButton : List (Attribute msg) -> msg -> String -> Element msg
+regularButton attrs msg label =
+    el
+        (List.append attrs
+            [ onClick msg
+            , pointer
+            , Font.color black
+            ]
+        )
+        (text label)
 
 
 

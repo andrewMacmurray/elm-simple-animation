@@ -1,4 +1,4 @@
-module Examples.Sunflowers.Butterfly exposing (hovering, resting)
+module Examples.Animations.Sunflowers.Butterfly exposing (hovering, resting)
 
 import Element exposing (Element, el, html)
 import Simple.Animation as Animation exposing (Animation)

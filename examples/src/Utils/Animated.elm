@@ -6,8 +6,8 @@ module Utils.Animated exposing
     )
 
 import Element exposing (Element)
-import Simple.Animated as Animated
 import Simple.Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
 import Svg exposing (Svg)
 import Svg.Attributes
 import TypedSvg
@@ -59,7 +59,9 @@ animatedSvg :
     -> List (Svg msg)
     -> Svg msg
 animatedSvg =
-    Animated.svg Svg.Attributes.class
+    Animated.svg
+        { class = Svg.Attributes.class
+        }
 
 
 

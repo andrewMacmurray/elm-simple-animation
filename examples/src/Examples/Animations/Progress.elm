@@ -1,4 +1,4 @@
-module Examples.Progress exposing (examples)
+module Examples.Animations.Progress exposing (examples)
 
 import Element exposing (..)
 import Element.Background as Background

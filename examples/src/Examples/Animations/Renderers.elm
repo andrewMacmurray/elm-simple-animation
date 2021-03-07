@@ -1,10 +1,10 @@
-module Examples.Renderers exposing (examples)
+module Examples.Animations.Renderers exposing (examples)
 
 import Element exposing (Element)
 import Html exposing (Html)
 import Html.Attributes
-import Simple.Animated as Animated
 import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
 import Simple.Animation.Property as P
 import Svg exposing (Svg)
 import Svg.Attributes
