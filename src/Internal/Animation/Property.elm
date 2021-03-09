@@ -84,7 +84,7 @@ escapedChars_ =
 
 rounded : Int -> Float -> String
 rounded n val =
-    String.fromInt (round val * n)
+    String.fromInt <| round (val * toFloat n)
 
 
 render : List Property -> String
