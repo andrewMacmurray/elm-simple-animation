@@ -1,18 +1,19 @@
 module Internal.Animation exposing
     ( Animation(..)
-    , Ease(..)
     , Frame(..)
     , Iteration(..)
-    , Millis
     , Option(..)
     , classDefinition_
     , duration_
     , keyframes_
     , name_
+    , renderOption
     , stylesheet_
     )
 
-import Internal.Property as P exposing (Property)
+import Internal.Animation.Property as P exposing (Property)
+import Internal.Ease as Ease exposing (Ease)
+import Internal.Unit as Unit
 
 
 
@@ -33,14 +34,6 @@ type Frame
     = Frame Percent (List Property)
 
 
-type Ease
-    = Cubic Float Float Float Float
-    | Linear
-    | EaseIn
-    | EaseOut
-    | EaseInOut
-
-
 type Iteration
     = Loop
     | Count Int
@@ -51,7 +44,7 @@ type alias Percent =
 
 
 type alias Millis =
-    Int
+    Unit.Millis
 
 
 
@@ -94,7 +87,7 @@ keyframes_ =
 
 renderFrame : Frame -> String
 renderFrame (Frame percent properties) =
-    pc percent ++ "{" ++ P.render properties ++ ";}"
+    Unit.pc percent ++ "{" ++ P.render properties ++ ";}"
 
 
 renderOptions : Animation -> List String
@@ -104,56 +97,20 @@ renderOptions =
 
 animationDuration : Animation -> String
 animationDuration anim =
-    ms (duration_ anim)
-
-
-ms : Int -> String
-ms n =
-    String.fromInt n ++ "ms"
-
-
-pc : Float -> String
-pc n =
-    String.fromFloat n ++ "%"
+    Unit.ms (duration_ anim)
 
 
 renderOption : Option -> List String
 renderOption o =
     case o of
         Delay n ->
-            [ "animation-delay: " ++ ms n ]
+            [ "animation-delay: " ++ Unit.ms n ]
 
         Ease e ->
-            [ "animation-timing-function: " ++ renderEase e ]
+            [ "animation-timing-function: " ++ Ease.toString e ]
 
         Iteration i ->
             [ "animation-iteration-count: " ++ renderIteration i ]
-
-
-renderEase : Ease -> String
-renderEase e =
-    case e of
-        Cubic a b c d ->
-            "cubic-bezier("
-                ++ String.join ","
-                    [ String.fromFloat a
-                    , String.fromFloat b
-                    , String.fromFloat c
-                    , String.fromFloat d
-                    ]
-                ++ ")"
-
-        Linear ->
-            "linear"
-
-        EaseIn ->
-            "ease-in"
-
-        EaseOut ->
-            "ease-out"
-
-        EaseInOut ->
-            "ease-in-out"
 
 
 renderIteration : Iteration -> String
@@ -192,7 +149,7 @@ optionName o =
             "d" ++ String.fromInt n
 
         Ease ease ->
-            easeName ease
+            P.escape (Ease.toString ease)
 
         Iteration i ->
             iterationName i
@@ -206,25 +163,6 @@ frameName (Frame dur props) =
 joinWith : (a -> String) -> List a -> String
 joinWith f =
     List.map f >> String.concat
-
-
-easeName : Ease -> String
-easeName e =
-    case e of
-        Cubic a b c d ->
-            "cubic" ++ String.fromInt (round (a + b + c + d))
-
-        Linear ->
-            "linear"
-
-        EaseIn ->
-            "ease-in"
-
-        EaseOut ->
-            "ease-out"
-
-        EaseInOut ->
-            "ease-in-out"
 
 
 iterationName : Iteration -> String

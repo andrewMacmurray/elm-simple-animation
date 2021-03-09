@@ -3,11 +3,12 @@
     "name": "andrewMacmurray/elm-simple-animation",
     "summary": "stateless animation utils",
     "license": "MIT",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "exposed-modules": [
-        "Simple.Animated",
         "Simple.Animation",
-        "Simple.Animation.Property"
+        "Simple.Animation.Animated",
+        "Simple.Animation.Property",
+        "Simple.Transition"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {

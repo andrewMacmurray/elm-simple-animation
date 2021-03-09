@@ -1,4 +1,4 @@
-module Examples.Progress exposing (examples)
+module Examples.Animations.Progress.Bar exposing (progress)
 
 import Element exposing (..)
 import Element.Background as Background
@@ -6,7 +6,7 @@ import Element.Border as Border
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Utils.Animated as Animated
-import Utils.UI exposing (blue, group, groups, small)
+import Utils.UI exposing (blue)
 
 
 
@@ -37,8 +37,8 @@ pc n =
 -- Progress Bar
 
 
-progressBar : Float -> Element msg
-progressBar percent =
+progress : Float -> Element msg
+progress percent =
     el
         [ width (fill |> maximum 300)
         , height (px 22)
@@ -53,23 +53,3 @@ progressBar percent =
             ]
             none
         )
-
-
-
--- Examples
-
-
-examples : Element msg -> Element msg
-examples =
-    groups
-        [ group "clip-path Progress Bars" progressBars
-        ]
-
-
-progressBars : Element msg
-progressBars =
-    column [ spacing small, width fill ]
-        [ progressBar 100
-        , progressBar 50
-        , progressBar 30
-        ]

@@ -1,4 +1,4 @@
-module Examples.FromTo exposing (examples)
+module Examples.Animations.FromTo exposing (examples)
 
 import Element exposing (..)
 import Element.Background as Background

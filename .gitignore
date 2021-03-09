@@ -3,3 +3,4 @@ repl-temp-*
 .idea
 node_modules
 examples/dist
+docs.json

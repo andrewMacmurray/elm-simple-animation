@@ -9,8 +9,6 @@ module Simple.Animation exposing
 
 {-| Build an Animation for rendering on the page
 
-All animation durations are in `milliseconds`
-
 
 # Create an Animation
 
@@ -52,17 +50,21 @@ See what these eases look and feel like: <https://easings.net>
 -}
 
 import Internal.Animation as Internal exposing (..)
+import Internal.Ease as Ease
+import Internal.Unit as Unit
 import Simple.Animation.Property exposing (Property)
 
 
-{-| -}
+{-| Animation to be rendered with `Simple.Animation.Animated` functions
+-}
 type alias Animation =
     Internal.Animation
 
 
-{-| -}
+{-| Time unit for all Animations
+-}
 type alias Millis =
-    Int
+    Unit.Millis
 
 
 {-| -}
@@ -95,6 +97,9 @@ type Step
 
 {-| Create an animation with `start` and `end` properties:
 
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
+
     fadeOut : Animation
     fadeOut =
         Animation.fromTo
@@ -121,6 +126,9 @@ fromTo o from_ to_ =
 
 
 {-| Create an animation with multiple steps:
+
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
 
     backAndForth : Animation
     backAndForth =
@@ -181,6 +189,9 @@ wait =
 {-| Wait for another animation to complete before animating the next properties:
 
 This animation will `wait` for `1500` milliseconds before animating to the next step
+
+    import Simple.Animation as Animation exposing (Animation)
+    import Simple.Animation.Property as P
 
     finishAfterFadeOut : Animation
     finishAfterFadeOut =
@@ -311,31 +322,31 @@ delay =
 {-| -}
 linear : Option
 linear =
-    Ease Linear
+    Ease Ease.Linear
 
 
 {-| -}
 easeIn : Option
 easeIn =
-    Ease EaseIn
+    Ease Ease.EaseIn
 
 
 {-| -}
 easeOut : Option
 easeOut =
-    Ease EaseOut
+    Ease Ease.EaseOut
 
 
 {-| -}
 easeInOut : Option
 easeInOut =
-    Ease EaseInOut
+    Ease Ease.EaseInOut
 
 
 {-| -}
 cubic : Float -> Float -> Float -> Float -> Option
 cubic a b c d =
-    Ease (Cubic a b c d)
+    Ease (Ease.Cubic a b c d)
 
 
 
@@ -345,145 +356,145 @@ cubic a b c d =
 {-| -}
 easeInSine : Option
 easeInSine =
-    cubic 0.12 0 0.39 0
+    Ease Ease.easeInSine
 
 
 {-| -}
 easeOutSine : Option
 easeOutSine =
-    cubic 0.61 1 0.88 1
+    Ease Ease.easeOutSine
 
 
 {-| -}
 easeInOutSine : Option
 easeInOutSine =
-    cubic 0.37 0 0.63 1
+    Ease Ease.easeInOutSine
 
 
 {-| -}
 easeInQuad : Option
 easeInQuad =
-    cubic 0.11 0 0.5 0
+    Ease Ease.easeInQuad
 
 
 {-| -}
 easeOutQuad : Option
 easeOutQuad =
-    cubic 0.5 1 0.89 1
+    Ease Ease.easeOutQuad
 
 
 {-| -}
 easeInOutQuad : Option
 easeInOutQuad =
-    cubic 0.45 0 0.55 1
+    Ease Ease.easeInOutQuad
 
 
 {-| -}
 easeInCubic : Option
 easeInCubic =
-    cubic 0.32 0 0.67 0
+    Ease Ease.easeInCubic
 
 
 {-| -}
 easeOutCubic : Option
 easeOutCubic =
-    cubic 0.33 1 0.68 1
+    Ease Ease.easeOutCubic
 
 
 {-| -}
 easeInOutCubic : Option
 easeInOutCubic =
-    cubic 0.65 0 0.35 1
+    Ease Ease.easeInOutCubic
 
 
 {-| -}
 easeInQuart : Option
 easeInQuart =
-    cubic 0.5 0 0.75 0
+    Ease Ease.easeInQuart
 
 
 {-| -}
 easeOutQuart : Option
 easeOutQuart =
-    cubic 0.25 1 0.5 1
+    Ease Ease.easeOutQuart
 
 
 {-| -}
 easeInOutQuart : Option
 easeInOutQuart =
-    cubic 0.76 0 0.24 1
+    Ease Ease.easeInOutQuart
 
 
 {-| -}
 easeInQuint : Option
 easeInQuint =
-    cubic 0.64 0 0.78 0
+    Ease Ease.easeInQuint
 
 
 {-| -}
 easeOutQuint : Option
 easeOutQuint =
-    cubic 0.22 1 0.36 1
+    Ease Ease.easeOutQuint
 
 
 {-| -}
 easeInOutQuint : Option
 easeInOutQuint =
-    cubic 0.83 0 0.17 1
+    Ease Ease.easeInOutQuint
 
 
 {-| -}
 easeInExpo : Option
 easeInExpo =
-    cubic 0.7 0 0.84 0
+    Ease Ease.easeInExpo
 
 
 {-| -}
 easeOutExpo : Option
 easeOutExpo =
-    cubic 0.16 1 0.3 1
+    Ease Ease.easeOutExpo
 
 
 {-| -}
 easeInOutExpo : Option
 easeInOutExpo =
-    cubic 0.87 0 0.13 1
+    Ease Ease.easeInOutExpo
 
 
 {-| -}
 easeInCirc : Option
 easeInCirc =
-    cubic 0.55 0 1 0.45
+    Ease Ease.easeInCirc
 
 
 {-| -}
 easeOutCirc : Option
 easeOutCirc =
-    cubic 0 0.55 0.45 1
+    Ease Ease.easeOutCirc
 
 
 {-| -}
 easeInOutCirc : Option
 easeInOutCirc =
-    cubic 0.85 0 0.15 1
+    Ease Ease.easeInOutCirc
 
 
 {-| -}
 easeInBack : Option
 easeInBack =
-    cubic 0.36 0 0.66 -0.56
+    Ease Ease.easeInBack
 
 
 {-| -}
 easeOutBack : Option
 easeOutBack =
-    cubic 0.34 1.56 0.64 1
+    Ease Ease.easeOutBack
 
 
 {-| -}
 easeInOutBack : Option
 easeInOutBack =
-    cubic 0.68 -0.6 0.32 1.6
+    Ease Ease.easeInOutBack
 
 
 

@@ -50,7 +50,7 @@ Take care with properties that are not hardware accelerated as they may result i
 
 -}
 
-import Internal.Property as Internal exposing (..)
+import Internal.Animation.Property as Internal exposing (..)
 import Internal.Transform as Transform
 
 

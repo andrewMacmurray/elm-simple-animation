@@ -1,13 +1,14 @@
 module Utils.Animated exposing
-    ( el
+    ( circle
+    , el
     , g
     , path
     , typedSvgG
     )
 
 import Element exposing (Element)
-import Simple.Animated as Animated
 import Simple.Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
 import Svg exposing (Svg)
 import Svg.Attributes
 import TypedSvg
@@ -47,6 +48,11 @@ g =
     animatedSvg Svg.g
 
 
+circle : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+circle =
+    animatedSvg Svg.circle
+
+
 path : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 path =
     animatedSvg Svg.path
@@ -59,7 +65,9 @@ animatedSvg :
     -> List (Svg msg)
     -> Svg msg
 animatedSvg =
-    Animated.svg Svg.Attributes.class
+    Animated.svg
+        { class = Svg.Attributes.class
+        }
 
 
 

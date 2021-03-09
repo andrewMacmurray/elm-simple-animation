@@ -12,7 +12,14 @@ jobs:
       SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.elm
+            ~/.npm
+            **/elm-stuff
+            **/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
       - run: npm ci
       - run: npm run examples:deploy

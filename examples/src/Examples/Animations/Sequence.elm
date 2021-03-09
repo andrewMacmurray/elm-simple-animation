@@ -1,8 +1,8 @@
-module Examples.Sequence exposing (examples)
+module Examples.Animations.Sequence exposing (examples)
 
 import Element exposing (..)
-import Examples.Sunflowers.Butterfly as Butterfly
-import Examples.Sunflowers.Sunflower as Sunflower
+import Examples.Animations.Sunflowers.Butterfly as Butterfly
+import Examples.Animations.Sunflowers.Sunflower as Sunflower
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Utils.Animated as Animated

@@ -1,4 +1,4 @@
-module Examples.Sunflowers.Sunflower exposing
+module Examples.Animations.Sunflowers.Sunflower exposing
     ( duration
     , sunflower
     )
