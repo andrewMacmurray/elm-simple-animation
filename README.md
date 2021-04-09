@@ -119,6 +119,20 @@ g =
 
 Provide these 3 functions to `Simple.Animation.Animated.ui`
 
+The hook is just a wrapper arround Elm-UI `Element's. A new wrapper
+must be created for each element that you would like to animate.
+Though because Elm-UI `Element`s can all be wrapped in either `el`,
+`row` or `column` that is usually all we need.
+
+To do that first we need to add a helper function so that wrappers can
+can be created more easily. Just import `elm-simple-animation` with
+```
+import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
+import Simple.Animation.Property as P
+```
+and then paste this helper function into your file.
+
 ```elm
 animatedUi =
     Simple.Animation.Animated.ui
@@ -128,18 +142,23 @@ animatedUi =
         }
 ```
 
-Then create animated `Element`s!
+Finally we need to wrap the Elm-UI `Element`s!
+Because you will likely still need to create non-animated
+`Element`s, lets give these a similar name `ael` and `acolumn`
+for "animated element" and "animated column". Just paste these into your file
 
 ```elm
-el : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
-el =
+ael : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
+ael =
     animatedUi Element.el
 
 
-column : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
-column =
+acolumn : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
+acolumn =
     animatedUi Element.column
 ```
+And then you should be able to create animated elements just as easy as you would any other.
+Want an example check out a simple floating animation [here](https://ellie-app.com/cRnmxZJFD4Ta1)!
 
 ## Hook Into Custom Renderer
 
