@@ -128,7 +128,7 @@ To do that first we need to add a helper function so that wrappers can
 can be created more easily. Just import `elm-simple-animation` with
 ```
 import Simple.Animation as Animation exposing (Animation)
-import Simple.Animation.Animated as Animated
+import Simple.Animation.Animated
 import Simple.Animation.Property as P
 ```
 and then paste this helper function into your file.
@@ -148,13 +148,13 @@ Because you will likely still need to create non-animated
 for "animated element" and "animated column". Just paste these into your file
 
 ```elm
-ael : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
+animatedEl : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
 ael =
     animatedUi Element.el
 
 
-acolumn : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
-acolumn =
+animatedColumn : Animation -> List (Element.Attribute msg) -> List (Element msg) -> Element msg
+animatedColumn =
     animatedUi Element.column
 ```
 And then you should be able to create animated elements just as easy as you would any other.
