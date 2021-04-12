@@ -1,5 +1,5 @@
 module Simple.Animation exposing
-    ( Animation, Millis, fromTo, steps
+    ( Animation, Millis, fromTo, steps, empty
     , Step, step, set, wait, waitTillComplete
     , Option, loop, count, delay
     , linear, easeIn, easeOut, easeInOut, cubic
@@ -151,7 +151,20 @@ steps { options, startAt } steps_ =
             }
         )
 
-
+{-| Create an empty animation:
+    emptyAnimation : Animation
+    enptyAnimation =
+        Animation.empty
+-}
+empty : Animation
+empty =
+    toAnimation
+        (Stepped
+            { options = []
+            , startAt = []
+            , steps   = []
+            }
+        )
 
 -- Step
 
