@@ -21,6 +21,12 @@ Build up a multi step animation
 
 @docs Step, step, set, wait, waitTillComplete
 
+# Empty
+
+Build an Animation that does nothing.
+
+@docs empty
+
 
 # Options
 
