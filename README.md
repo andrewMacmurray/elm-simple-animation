@@ -36,10 +36,10 @@ expandFade =
 
 When you want some typesafe, simple, decorative animations or transitions, but you don't need the full power of something like `elm-animator`. The benefits of this are:
 
-+ Animations are `stateless` (from Elm's perspective) so easy to drop in anywhere (no model, update or subscriptions required).
-+ Very performant
-    + `Animations` generate CSS keyframes animations under the hood.
-    + `Transitions` are a single Html Attribute with a CSS transition.
+- Animations are `stateless` (from Elm's perspective) so easy to drop in anywhere (no model, update or subscriptions required).
+- Very performant
+  - `Animations` generate CSS keyframes animations under the hood.
+  - `Transitions` are a single Html Attribute with a CSS transition.
 
 ## How?
 
@@ -72,7 +72,7 @@ spinningBox =
 
 ## For Transitions
 
-Just add a transition as a Html Attribute 
+Just add a transition as a Html Attribute
 
 ```elm
 glowingBox : Html msg
@@ -93,9 +93,12 @@ glowingBox =
 
 So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whatever `Html` abstraction you use) there are some helpers that let you create animated versions:
 
-## Hook into SVG
+## Use with SVG
 
-Give the `Svg.Attributes` `class` function to `Simple.Animation.Animated.svg`
+A working example: https://ellie-app.com/cZTwtp3TsdSa1
+
+So we can create animated `Svg`s, create an animated wrapper function using `Svg.Attributes.class` and `Simple.Animation.Animated.svg`
+
 ```elm
 animatedSvg =
     Simple.Animation.Animated.svg
@@ -103,35 +106,60 @@ animatedSvg =
         }
 ```
 
-Then create any animated SVG element you like!
+This lets you wrap regular `Svg` nodes to make animated ones
+
 ```elm
-svg : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
-svg =
-    animatedSvg Svg.svg
+animatedCircle : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+animatedCircle =
+    animatedSvg Svg.circle
 
 
-g : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
-g =
+animatedG : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+animatedG =
     animatedSvg Svg.g
 ```
 
-## Hook into Elm UI
+Here's an animated circle with `elm/svg`
 
-Provide these 3 functions to `Simple.Animation.Animated.ui`
-
-The hook is just a wrapper arround Elm-UI `Element's. A new wrapper
-must be created for each element that you would like to animate.
-Though because Elm-UI `Element`s can all be wrapped in either `el`,
-`row` or `column` that is usually all we need.
-
-To do that first we need to add a helper function so that wrappers can
-can be created more easily. Just import `elm-simple-animation` with
-```
+```elm
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Animated
 import Simple.Animation.Property as P
+import Svg exposing (Svg)
+import Svg.Attributes exposing (cx, cy, r)
+
+
+myCircle : Svg msg
+myCircle =
+    animatedCircle fade [ cx "50", cy "50", r "50" ] []
+
+
+fade : Animation
+fade =
+    Animation.fromTo
+        { duration = 1000
+        , options = []
+        }
+        [ P.opacity 0 ]
+        [ P.opacity 1 ]
+
+
+animatedCircle : Animation -> List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
+animatedCircle =
+    animatedSvg Svg.circle
+
+
+animatedSvg =
+    Simple.Animation.Animated.svg
+        { class = Svg.Attributes.class
+        }
 ```
-and then paste this helper function into your file.
+
+## Use with Elm UI
+
+A working example: https://ellie-app.com/cZTwvfZ37xWa1
+
+So we can create animated `el`s, `row`s or `column`s, create an animated wrapper function using `Simple.Animation.Animated.ui` and the following `Element` functions:
 
 ```elm
 animatedUi =
@@ -142,10 +170,7 @@ animatedUi =
         }
 ```
 
-Finally we need to wrap the Elm-UI `Element`s!
-Because you will likely still need to create non-animated
-`Element`s, lets give these a similar name `ael` and `acolumn`
-for "animated element" and "animated column". Just paste these into your file
+this lets you wrap regular `Element`s to create animated ones:
 
 ```elm
 animatedEl : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
@@ -157,10 +182,51 @@ animatedColumn : Animation -> List (Element.Attribute msg) -> List (Element msg)
 animatedColumn =
     animatedUi Element.column
 ```
-And then you should be able to create animated elements just as easy as you would any other.
-Want an example check out a simple floating animation [here](https://ellie-app.com/cRnmxZJFD4Ta1)!
 
-## Hook Into Custom Renderer
+Here's an animated square with `elm-ui`:
+
+```elm
+import Element exposing (..)
+import Element.Background as Background
+import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Animated as Animated
+import Simple.Animation.Property as P
+
+
+mySquare : Element msg
+mySquare =
+    animatedEl fade
+        [ width (px 30)
+        , height (px 30)
+        , Background.color (rgb 1 0 0)
+        ]
+        none
+
+
+fade : Animation
+fade =
+    Animation.fromTo
+        { duration = 1000
+        , options = []
+        }
+        [ P.opacity 0 ]
+        [ P.opacity 1 ]
+
+
+animatedEl : Animation -> List (Attribute msg) -> Element msg -> Element msg
+animatedEl =
+    animatedUi Element.el
+
+
+animatedUi =
+    Animated.ui
+        { behindContent = Element.behindContent
+        , htmlAttribute = Element.htmlAttribute
+        , html = Element.html
+        }
+```
+
+## Use a Custom Renderer
 
 In case you want to completely customise how to render animations you can use the low level `Simple.Animation.Animated.custom` - which gives you access to the raw animation `stylesheet` and `class` name that will apply the animation.
 
@@ -184,8 +250,7 @@ animatedTypedSvg node animation attributes children =
 
 You can find many of these common helpers here: https://github.com/andrewMacmurray/elm-simple-animation/blob/main/examples/src/Utils/Animated.elm
 
-
-## Run Locally
+## Develop Locally
 
 install dependencies
 
