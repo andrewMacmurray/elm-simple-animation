@@ -8,6 +8,8 @@ See some examples here: https://elm-simple-animation-examples.surge.sh/
 
 Animate HTML, SVG (or any UI Elements) with declarative animations and transitions
 
+A working example: https://ellie-app.com/d5nyjJY3Ptna1
+
 ```elm
 import Html exposing (Html)
 import Simple.Animation as Animation exposing (Animation)
@@ -45,6 +47,8 @@ When you want some typesafe, simple, decorative animations or transitions, but y
 
 ## For Animations:
 
+A working example: https://ellie-app.com/d5nmZJv84f2a1
+
 1 . Define an animation (either `fromTo` or a sequence of `steps`)
 
 ```elm
@@ -71,6 +75,8 @@ spinningBox =
 ![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
 
 ## For Transitions
+
+A working example: https://ellie-app.com/d5nxzgtzCpva1
 
 Just add a transition as a Html Attribute
 
