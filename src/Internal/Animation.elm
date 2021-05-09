@@ -28,6 +28,8 @@ type Option
     = Iteration Iteration
     | Delay Millis
     | Ease Ease
+    | Yoyo
+    | Reverse
 
 
 type Frame
@@ -45,6 +47,21 @@ type alias Percent =
 
 type alias Millis =
     Unit.Millis
+
+
+type alias Options =
+    { delay : Maybe Millis
+    , timingFunction : Maybe Ease
+    , iteration : Maybe Iteration
+    , isYoyo : Bool
+    , reversed : Bool
+    }
+
+
+type Direction
+    = Alternate_
+    | Reverse_
+    | AlternateReverse_
 
 
 
@@ -92,7 +109,7 @@ renderFrame (Frame percent properties) =
 
 renderOptions : Animation -> List String
 renderOptions =
-    options_ >> List.concatMap renderOption
+    options_ >> renderOptions_ >> List.filterMap identity
 
 
 animationDuration : Animation -> String
@@ -100,17 +117,46 @@ animationDuration anim =
     Unit.ms (duration_ anim)
 
 
-renderOption : Option -> List String
-renderOption o =
-    case o of
-        Delay n ->
-            [ "animation-delay: " ++ Unit.ms n ]
+renderOptions_ : Options -> List (Maybe String)
+renderOptions_ opts =
+    [ renderOption "animation-delay" Unit.ms opts.delay
+    , renderOption "animation-timing-function" Ease.toString opts.timingFunction
+    , renderOption "animation-iteration-count" renderIteration opts.iteration
+    , renderOption "animation-direction" renderDirection (toDirection opts)
+    ]
 
-        Ease e ->
-            [ "animation-timing-function: " ++ Ease.toString e ]
 
-        Iteration i ->
-            [ "animation-iteration-count: " ++ renderIteration i ]
+toDirection : Options -> Maybe Direction
+toDirection opts =
+    if opts.isYoyo && opts.reversed then
+        Just AlternateReverse_
+
+    else if opts.reversed then
+        Just Reverse_
+
+    else if opts.isYoyo then
+        Just Alternate_
+
+    else
+        Nothing
+
+
+renderOption : String -> (a -> String) -> Maybe a -> Maybe String
+renderOption name toProp =
+    Maybe.map (\x -> name ++ ": " ++ toProp x)
+
+
+renderDirection : Direction -> String
+renderDirection d =
+    case d of
+        Alternate_ ->
+            "alternate"
+
+        Reverse_ ->
+            "reverse"
+
+        AlternateReverse_ ->
+            "alternate-reverse"
 
 
 renderIteration : Iteration -> String
@@ -154,6 +200,12 @@ optionName o =
         Iteration i ->
             iterationName i
 
+        Yoyo ->
+            "yoyo"
+
+        Reverse ->
+            "rev"
+
 
 frameName : Frame -> String
 frameName (Frame dur props) =
@@ -179,8 +231,66 @@ iterationName i =
 -- Helpers
 
 
-options_ : Animation -> List Option
-options_ (Animation _ o _) =
+options_ : Animation -> Options
+options_ =
+    rawOptions_
+        >> List.foldl collectOption defaults
+        >> normalise
+
+
+normalise : Options -> Options
+normalise opts =
+    if opts.isYoyo then
+        { opts | iteration = Just (iterationForYoyo opts) }
+
+    else
+        opts
+
+
+iterationForYoyo : Options -> Iteration
+iterationForYoyo opts =
+    case opts.iteration of
+        Just Loop ->
+            Loop
+
+        Just (Count n) ->
+            Count (n * 2)
+
+        Nothing ->
+            Count 2
+
+
+collectOption : Option -> Options -> Options
+collectOption o opts =
+    case o of
+        Delay ms ->
+            { opts | delay = Just ms }
+
+        Iteration i ->
+            { opts | iteration = Just i }
+
+        Ease e ->
+            { opts | timingFunction = Just e }
+
+        Yoyo ->
+            { opts | isYoyo = True }
+
+        Reverse ->
+            { opts | reversed = True }
+
+
+defaults : Options
+defaults =
+    { delay = Nothing
+    , timingFunction = Nothing
+    , iteration = Nothing
+    , isYoyo = False
+    , reversed = False
+    }
+
+
+rawOptions_ : Animation -> List Option
+rawOptions_ (Animation _ o _) =
     o
 
 
