@@ -1,7 +1,7 @@
 module Simple.Animation exposing
     ( Animation, Millis, fromTo, steps
     , Step, step, set, wait, waitTillComplete
-    , Option, loop, count, delay
+    , Option, loop, count, delay, reverse, yoyo
     , linear, easeIn, easeOut, easeInOut, cubic
     , easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
     , duration
@@ -26,7 +26,7 @@ Build up a multi step animation
 
 Customise the feel and behaviour of an animation
 
-@docs Option, loop, count, delay
+@docs Option, loop, count, delay, reverse, yoyo
 
 
 # Standard Eases
@@ -306,6 +306,20 @@ loop =
 count : Int -> Option
 count =
     Iteration << Count
+
+
+{-| Play animation in reverse
+-}
+reverse : Option
+reverse =
+    Reverse
+
+
+{-| When animation completes, play it in reverse
+-}
+yoyo : Option
+yoyo =
+    Yoyo
 
 
 {-| Delay the start of an animation (repeats like `loop` or `count` are not affected by this)

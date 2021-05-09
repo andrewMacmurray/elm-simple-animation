@@ -3,6 +3,7 @@ module Main exposing (main)
 import Browser
 import Element exposing (..)
 import Element.Font as Font
+import Examples.Animations.Directions as Directions
 import Examples.Animations.FromTo as FromTo
 import Examples.Animations.Progress as Progress
 import Examples.Animations.Renderers as Renderers
@@ -49,6 +50,7 @@ type TransitionExample
 type AnimationExample
     = FromTo
     | Steps
+    | Directions
     | Sequence
     | Renderers
     | Progress
@@ -100,6 +102,9 @@ examples model =
 
         Animation Steps ->
             Steps.examples
+
+        Animation Directions ->
+            Directions.examples
 
         Animation Sequence ->
             Sequence.examples
@@ -166,6 +171,7 @@ animationButtons =
     List.map (Tuple.mapFirst Animation)
         [ ( FromTo, "FromTo" )
         , ( Steps, "Steps" )
+        , ( Directions, "Directions" )
         , ( Sequence, "Sequence" )
         , ( Renderers, "Renderers" )
         , ( Progress, "Progress" )
