@@ -1,5 +1,6 @@
 module Utils.Animated exposing
-    ( circle
+    ( animatedStyledNode
+    , circle
     , el
     , g
     , path
@@ -7,6 +8,8 @@ module Utils.Animated exposing
     )
 
 import Element exposing (Element)
+import Html.Styled as Htmls
+import Html.Styled.Attributes as Attr
 import Simple.Animation exposing (Animation)
 import Simple.Animation.Animated as Animated
 import Svg exposing (Svg)
@@ -91,5 +94,30 @@ animatedTypedSvg node animation attributes children =
             node
                 (TypedSvg.Attributes.class [ className ] :: attributes)
                 (TypedSvg.style [] [ TypedSvg.text stylesheet ] :: children)
+        )
+        animation
+
+
+
+-- elm-css
+
+
+animatedStyledNode :
+    (List (Htmls.Attribute msg) -> List (Htmls.Html msg) -> Htmls.Html msg)
+    -> Animation
+    -> List (Htmls.Attribute msg)
+    -> List (Htmls.Html msg)
+    -> Htmls.Html msg
+animatedStyledNode nodeToAnimate animation attributes children =
+    Animated.custom
+        (\className stylesheet ->
+            nodeToAnimate
+                (Attr.class className :: attributes)
+                (Htmls.node
+                    "style"
+                    []
+                    [ Htmls.text stylesheet ]
+                    :: children
+                )
         )
         animation

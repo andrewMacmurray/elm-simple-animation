@@ -3,11 +3,14 @@ module Examples.Animations.Renderers exposing (examples)
 import Element exposing (Element)
 import Html exposing (Html)
 import Html.Attributes
+import Html.Styled as Htmls
+import Html.Styled.Attributes as Attr
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Animated as Animated
 import Simple.Animation.Property as P
 import Svg exposing (Svg)
 import Svg.Attributes
+import Tailwind.Utilities as Tw
 import TypedSvg
 import TypedSvg.Attributes
 import TypedSvg.Core as TypedSvg
@@ -120,6 +123,28 @@ typedCircle =
 
 
 
+-- elm-css
+
+
+htmlsExample : Html.Html msg
+htmlsExample =
+    Animated.animatedStyledNode
+        Htmls.div
+        flash
+        [ Attr.css
+            [ Tw.text_red_700
+            , Tw.font_semibold
+            , Tw.text_center
+            , Tw.m_4
+            , Tw.p_6
+            , Tw.w_48
+            ]
+        ]
+        [ Htmls.text "I'm flashing too!" ]
+        |> Htmls.toUnstyled
+
+
+
 -- Examples
 
 
@@ -129,6 +154,9 @@ examples =
         [ group "With HTML" (html htmlExample)
         , group "With SVG" (html svgExample)
         , group "With Typed SVG" (html typedSvgExample)
+        , group
+            "With Styled HTML from 'elm-css'"
+            (html htmlsExample)
         ]
 
 
