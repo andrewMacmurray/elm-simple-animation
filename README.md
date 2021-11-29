@@ -234,6 +234,8 @@ animatedUi =
 
 ## Use with elm-css
 
+A working example: https://ellie-app.com/fYDt8SJSkLha1
+
 So we can create animated versions of `elm-css` `div`s, `p`s or any other `Styled` element, create an animated wrapper using `Simple.Animation.Animated.elmCss` and the following:
 
 ```elm
