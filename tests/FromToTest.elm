@@ -1,5 +1,7 @@
 module FromToTest exposing (suite)
 
+import Expect
+import Internal.Animation as Animation
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
 import Test exposing (..)
@@ -47,4 +49,12 @@ suite =
                         , "animation-duration: 1000ms"
                         , "animation-timing-function: linear"
                         ]
+        , test "Empty Animations have formatted name" <|
+            \_ ->
+                [ Animation.empty
+                , Animation.fromTo { duration = 0, options = [] } [] []
+                , Animation.steps { startAt = [], options = [] } []
+                ]
+                    |> List.map Animation.name_
+                    |> Expect.equal (List.repeat 3 "anim-empty")
         ]

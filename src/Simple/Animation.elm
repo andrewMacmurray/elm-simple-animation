@@ -1,5 +1,5 @@
 module Simple.Animation exposing
-    ( Animation, Millis, fromTo, steps
+    ( Animation, Millis, fromTo, steps, empty
     , Step, step, set, wait, waitTillComplete
     , Option, loop, count, delay, reverse, yoyo
     , linear, easeIn, easeOut, easeInOut, cubic
@@ -12,7 +12,7 @@ module Simple.Animation exposing
 
 # Create an Animation
 
-@docs Animation, Millis, fromTo, steps
+@docs Animation, Millis, fromTo, steps, empty
 
 
 # Steps
@@ -150,6 +150,29 @@ steps { options, startAt } steps_ =
             , steps = steps_
             }
         )
+
+
+{-| Create an Empty Animation - Useful when you want to conditionally animate something
+
+    fadeIf : Bool -> Animation
+    fadeIf shouldFade =
+        if shouldFade then
+            Animation.fromTo
+                { duration = 1000
+                , options = []
+                }
+                [ P.opacity 0 ]
+                [ P.opacity 1 ]
+
+        else
+            Animation.empty
+
+`Animation.empty` is equivalent to an animation with `0` duration
+
+-}
+empty : Animation
+empty =
+    fromTo { duration = 0, options = [] } [] []
 
 
 
