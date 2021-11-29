@@ -1,8 +1,11 @@
 module Examples.Animations.Renderers exposing (examples)
 
+import Css
 import Element exposing (Element)
 import Html exposing (Html)
 import Html.Attributes
+import Html.Styled as Styled
+import Html.Styled.Attributes
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Animated as Animated
 import Simple.Animation.Property as P
@@ -43,6 +46,25 @@ htmlExample =
         [ Html.text "I'm animating!"
         , stylesheet
         ]
+
+
+
+-- Elm CSS
+
+
+elmCssExample : Html msg
+elmCssExample =
+    Styled.toUnstyled
+        (Animated.animatedElmCssDiv flash
+            [ Html.Styled.Attributes.class "text"
+            , Html.Styled.Attributes.css
+                [ Css.fontWeight Css.bold
+                , Css.border3 (Css.px 2) Css.solid (Css.hex "#123123")
+                ]
+            ]
+            [ Styled.text "I'm animating!"
+            ]
+        )
 
 
 
@@ -127,6 +149,7 @@ examples : Element msg -> Element msg
 examples =
     groups
         [ group "With HTML" (html htmlExample)
+        , group "With Elm CSS" (html elmCssExample)
         , group "With SVG" (html svgExample)
         , group "With Typed SVG" (html typedSvgExample)
         ]

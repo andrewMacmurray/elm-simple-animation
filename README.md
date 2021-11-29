@@ -101,7 +101,7 @@ So you can use your own version of `elm/svg` and `mdgriffith/elm-ui` (or whateve
 
 ## Use with SVG
 
-A working example: https://ellie-app.com/cZTwtp3TsdSa1
+A working example: https://ellie-app.com/fYCGytWFDD7a1
 
 So we can create animated `Svg`s, create an animated wrapper function using `Svg.Attributes.class` and `Simple.Animation.Animated.svg`
 
@@ -180,7 +180,7 @@ this lets you wrap regular `Element`s to create animated ones:
 
 ```elm
 animatedEl : Animation -> List (Element.Attribute msg) -> Element msg -> Element msg
-ael =
+animatedEl =
     animatedUi Element.el
 
 
@@ -230,6 +230,87 @@ animatedUi =
         , htmlAttribute = Element.htmlAttribute
         , html = Element.html
         }
+```
+
+## Use with elm-css
+
+So we can create animated versions of `elm-css` `div`s, `p`s or any other `Styled` element, create an animated wrapper using `Simple.Animation.Animated.elmCss` and the following:
+
+```elm
+animatedElmCssNode =
+    Animated.elmCss
+        { text = Html.Styled.text
+        , node = Html.Styled.node
+        , class = Html.Styled.Attributes.class
+        }
+```
+
+this lets you wrap regular `Html.Styled` nodes to create animated ones:
+
+```elm
+animatedDiv : Animation -> List (Html.Styled.Attribute msg) -> List (Html.Styled.Html msg) -> Html.Styled.Html msg
+animatedDiv =
+    animatedElmCssNode Html.Styled.div
+
+
+animatedLi : Animation -> List (Html.Styled.Attribute msg) -> List (Html.Styled.Html msg) -> Html.Styled.Html msg
+animatedLi =
+    animatedElmCssNode Html.Styled.li
+```
+
+Here's an animated square using `elm-css`
+
+```elm
+import Css
+import Html exposing (Html)
+import Html.Styled as Styled
+import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation.Animated
+import Simple.Animation.Property as P
+import Html.Styled.Attributes as StyledAttributes
+
+
+mySquare : Html msg
+mySquare =
+    Styled.toUnstyled
+        (animatedDiv hover
+            []
+            [ Styled.div
+                [ StyledAttributes.css
+                    [ Css.width (Css.px 50)
+                    , Css.height (Css.px 50)
+                    , Css.backgroundColor (Css.hex "ff0000")
+                    ]
+                ]
+                []
+            ]
+        )
+
+
+hover : Animation
+hover =
+    Animation.steps
+        { startAt = [ P.y 0 ]
+        , options = [ Animation.loop, Animation.easeInOutQuad ]
+        }
+        [ Animation.step 500 [ P.y 20 ]
+        , Animation.step 650 [ P.y 0 ]
+        ]
+
+
+animatedDiv : Animation -> List (Styled.Attribute msg) -> List (Styled.Html msg) -> Styled.Html msg
+animatedDiv =
+    animatedElmCssNode Styled.div
+
+
+animatedElmCssNode =
+    Simple.Animation.Animated.elmCss
+        { text = Styled.text
+        , node = Styled.node
+        , class = StyledAttributes.class
+        }
+
+
 ```
 
 ## Use a Custom Renderer
