@@ -2,6 +2,7 @@ module Simple.Animation.Animated exposing
     ( div, html
     , SvgOptions, svg
     , UiOptions, ui
+    , ElmCssOptions, elmCss
     , ClassName, Stylesheet, custom
     )
 
@@ -31,6 +32,11 @@ You can find examples of building many of the common helpers mentioned below: <h
 # Hook Into Elm UI
 
 @docs UiOptions, ui
+
+
+# Hook Into Elm CSS
+
+@docs ElmCssOptions, elmCss
 
 
 # Custom Renderer
@@ -193,6 +199,47 @@ ui options node_ anim attrs els =
             attrs
         )
         els
+
+
+{-| -}
+type alias ElmCssOptions element attribute =
+    { text : String -> element
+    , node : String -> List attribute -> List element -> element
+    , class : String -> attribute
+    }
+
+
+{-| Create animated `elm-css` `Styled` nodes
+
+    animatedCss =
+        Simple.Animation.Animated.elmCss
+            { text = Html.Styled.text
+            , node = Html.Styled.node
+            , class = Html.Styled.Attributes.class
+            }
+
+Then render an animation
+
+    dot : Html.Styled msg
+    dot =
+        el expandFade [] elmCssDot
+
+    div : Animation -> List (Html.Styled.Attribute msg) -> List (Html.Styled.Html msg) -> Html.Styled.Html msg
+    div =
+        animatedCss Html.Styled.div
+
+-}
+elmCss :
+    ElmCssOptions element attribute
+    -> (List attribute -> List element -> element)
+    -> Animation
+    -> List attribute
+    -> List element
+    -> element
+elmCss options node_ anim attrs els =
+    node_
+        (options.class (Animation.name_ anim) :: attrs)
+        (options.node "style" [] [ options.text (Animation.stylesheet_ anim) ] :: els)
 
 
 {-| -}

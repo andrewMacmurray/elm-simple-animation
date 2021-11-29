@@ -1,5 +1,6 @@
 module Utils.Animated exposing
-    ( circle
+    ( animatedElmCssDiv
+    , circle
     , el
     , g
     , path
@@ -7,6 +8,8 @@ module Utils.Animated exposing
     )
 
 import Element exposing (Element)
+import Html.Styled as Styled
+import Html.Styled.Attributes
 import Simple.Animation exposing (Animation)
 import Simple.Animation.Animated as Animated
 import Svg exposing (Svg)
@@ -36,6 +39,29 @@ animatedUi =
         { behindContent = Element.behindContent
         , htmlAttribute = Element.htmlAttribute
         , html = Element.html
+        }
+
+
+
+-- Elm CSS
+
+
+animatedElmCssDiv : Animation -> List (Styled.Attribute msg) -> List (Styled.Html msg) -> Styled.Html msg
+animatedElmCssDiv =
+    animatedElmCssNode Styled.div
+
+
+animatedElmCssNode :
+    (List (Styled.Attribute msg) -> List (Styled.Html msg) -> Styled.Html msg)
+    -> Animation
+    -> List (Styled.Attribute msg)
+    -> List (Styled.Html msg)
+    -> Styled.Html msg
+animatedElmCssNode =
+    Animated.elmCss
+        { text = Styled.text
+        , node = Styled.node
+        , class = Html.Styled.Attributes.class
         }
 
 
