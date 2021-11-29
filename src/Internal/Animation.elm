@@ -174,8 +174,15 @@ renderIteration i =
 
 
 name_ : Animation -> String
-name_ (Animation d options frames) =
-    "anim-" ++ String.fromInt d ++ optionNames options ++ framesNames frames
+name_ anim =
+    if isEmpty anim then
+        "anim-empty"
+
+    else
+        "anim-"
+            ++ String.fromInt (duration_ anim)
+            ++ optionNames (rawOptions_ anim)
+            ++ framesNames (frames_ anim)
 
 
 optionNames : List Option -> String
@@ -229,6 +236,11 @@ iterationName i =
 
 
 -- Helpers
+
+
+isEmpty : Animation -> Bool
+isEmpty anim =
+    duration_ anim == 0
 
 
 options_ : Animation -> Options
