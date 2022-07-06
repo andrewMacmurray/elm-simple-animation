@@ -268,6 +268,7 @@ accumDuration step_ curr =
 adjustCompleteWait : Animation -> Millis -> Millis
 adjustCompleteWait anim timePassed =
     let
+        duration_ : Millis
         duration_ =
             duration anim
     in
@@ -281,9 +282,11 @@ adjustCompleteWait anim timePassed =
 toFrames : List Property -> List Step -> List Internal.Frame
 toFrames firstFrame steps_ =
     let
+        percentPerMs : Float
         percentPerMs =
             100 / toFloat (totalDuration steps_)
 
+        getFrame : Step -> ( Millis, List Frame, Frame ) -> ( Millis, List Frame, Frame )
         getFrame f ( n, xs, cur ) =
             case f of
                 Step d props ->
@@ -300,6 +303,7 @@ toFrames firstFrame steps_ =
 
                 WaitTillComplete d ->
                     let
+                        dur : Millis
                         dur =
                             adjustCompleteWait d n
                     in
