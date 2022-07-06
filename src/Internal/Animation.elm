@@ -1,5 +1,5 @@
 module Internal.Animation exposing
-    ( Animation(..)
+    ( Animation
     , Frame(..)
     , Iteration(..)
     , Option(..)
@@ -19,8 +19,11 @@ import Internal.Unit as Unit
 -- Animation
 
 
-type Animation
-    = Animation Millis (List Option) (List Frame)
+type alias Animation =
+    { duration : Millis
+    , frames : List Frame
+    , options : List Option
+    }
 
 
 type Option
@@ -301,15 +304,15 @@ defaults =
 
 
 rawOptions_ : Animation -> List Option
-rawOptions_ (Animation _ o _) =
-    o
+rawOptions_ animation =
+    animation.options
 
 
 duration_ : Animation -> Millis
-duration_ (Animation d _ _) =
-    d
+duration_ animation =
+    animation.duration
 
 
 frames_ : Animation -> List Frame
-frames_ (Animation _ _ f) =
-    f
+frames_ animation =
+    animation.frames

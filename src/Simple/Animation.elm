@@ -244,7 +244,10 @@ waitTillComplete =
 
 toAnimation : Stepped -> Animation
 toAnimation (Stepped s) =
-    Animation (totalDuration s.steps) s.options (toFrames s.startAt s.steps)
+    { duration = totalDuration s.steps
+    , frames = toFrames s.startAt s.steps
+    , options = s.options
+    }
 
 
 totalDuration : List Step -> Millis
