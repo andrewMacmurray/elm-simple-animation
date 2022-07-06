@@ -2,7 +2,7 @@ module FromToTest exposing (suite)
 
 import Expect
 import Internal.Animation as Animation
-import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation as Animation
 import Simple.Animation.Property as P
 import Test exposing (..)
 import Utils.Expect as Expect
@@ -32,8 +32,8 @@ suite =
                     [ P.opacity 1, P.x 50 ]
                     [ P.opacity 0.5, P.x 100 ]
                     |> Expect.keyframes
-                        [ "0% { opacity: 1; transform: translateX(50px); }"
-                        , "100% { opacity: 0.5; transform: translateX(100px); }"
+                        [ "0% { opacity: 1; transform: translate3d(50px,0,0); }"
+                        , "100% { opacity: 0.5; transform: translate3d(100px,0,0); }"
                         ]
         , test "rendering class properties" <|
             \_ ->
