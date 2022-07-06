@@ -150,7 +150,7 @@ rotate_ n =
 
 join : List String -> String
 join =
-    String.join ""
+    String.concat
 
 
 px : Float -> String
