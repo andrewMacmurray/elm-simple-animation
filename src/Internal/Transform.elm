@@ -125,42 +125,45 @@ render_ f =
 
 scale_ : ( Float, Float ) -> String
 scale_ ( x_, y_ ) =
-    join [ "scale3d(", String.fromFloat x_, ",", String.fromFloat y_, ",1)" ]
+    String.concat [ "scale3d(", String.fromFloat x_, ",", String.fromFloat y_, ",1)" ]
 
 
 translateX_ : Float -> String
 translateX_ n =
-    join [ "translate3d(", px n, ",0,0)" ]
+    String.concat [ "translate3d(", px n, ",0,0)" ]
 
 
 translateY_ : Float -> String
 translateY_ n =
-    join [ "translate3d(0,", px n, ",0)" ]
+    String.concat [ "translate3d(0,", px n, ",0)" ]
 
 
 translate_ : ( Float, Float ) -> String
 translate_ ( x_, y_ ) =
-    join [ "translate3d(", px x_, ",", px y_, ",0)" ]
+    String.concat [ "translate3d(", px x_, ",", px y_, ",0)" ]
 
 
 rotate_ : Float -> String
 rotate_ n =
-    join [ "rotate3d(0,0,1,", deg n, ")" ]
-
-
-join : List String -> String
-join =
-    String.concat
+    String.concat [ "rotate3d(0,0,1,", deg n, ")" ]
 
 
 px : Float -> String
 px n =
-    String.fromFloat n ++ "px"
+    if n == 0 then
+        "0"
+
+    else
+        String.fromFloat n ++ "px"
 
 
 deg : Float -> String
 deg n =
-    String.fromFloat n ++ "deg"
+    if n == 0 then
+        "0"
+
+    else
+        String.fromFloat n ++ "deg"
 
 
 

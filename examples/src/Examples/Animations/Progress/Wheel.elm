@@ -102,7 +102,11 @@ originCenter =
 
 px : Float -> String
 px n =
-    String.fromFloat n ++ "px"
+    if n == 0 then
+        "0"
+
+    else
+        String.fromFloat n ++ "px"
 
 
 join : List String -> String
