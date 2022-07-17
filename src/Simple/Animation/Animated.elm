@@ -47,7 +47,8 @@ You can find examples of building many of the common helpers mentioned below: <h
 
 import Html exposing (Html)
 import Html.Attributes
-import Internal.Animation as Animation exposing (Animation)
+import Internal.Animation as Animation
+import Simple.Animation exposing (Animation(..))
 
 
 
@@ -149,10 +150,10 @@ node :
     -> List (Html.Attribute msg)
     -> List (Html msg)
     -> Html msg
-node options node_ anim attrs els =
+node options node_ (Animation anim) attrs els =
     node_
         (options.class (Animation.name_ anim) :: attrs)
-        (toStylesheet_ anim :: els)
+        (toStylesheet_ (Animation anim) :: els)
 
 
 {-| -}
@@ -190,10 +191,10 @@ ui :
     -> List attribute
     -> children
     -> element
-ui options node_ anim attrs els =
+ui options node_ (Animation anim) attrs els =
     node_
         (List.append
-            [ options.behindContent (options.html (toStylesheet_ anim))
+            [ options.behindContent (options.html (toStylesheet_ (Animation anim)))
             , options.htmlAttribute (Html.Attributes.class (Animation.name_ anim))
             ]
             attrs
@@ -236,7 +237,7 @@ elmCss :
     -> List attribute
     -> List element
     -> element
-elmCss options node_ anim attrs els =
+elmCss options node_ (Animation anim) attrs els =
     node_
         (options.class (Animation.name_ anim) :: attrs)
         (options.node "style" [] [ options.text (Animation.stylesheet_ anim) ] :: els)
@@ -271,12 +272,12 @@ For example, say you wanted to animate `elm-community/typed-svg` nodes - you cou
 
 -}
 custom : (ClassName -> Stylesheet -> animated) -> Animation -> animated
-custom toAnimated anim =
+custom toAnimated (Animation anim) =
     toAnimated
         (Animation.name_ anim)
         (Animation.stylesheet_ anim)
 
 
 toStylesheet_ : Animation -> Html msg
-toStylesheet_ anim =
+toStylesheet_ (Animation anim) =
     Html.node "style" [] [ Html.text (Animation.stylesheet_ anim) ]

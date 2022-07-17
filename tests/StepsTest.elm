@@ -3,7 +3,7 @@ module StepsTest exposing (suite)
 import Expect exposing (Expectation)
 import Fuzz
 import Internal.Animation as Internal
-import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation as Animation exposing (Animation(..))
 import Simple.Animation.Property as P
 import Test exposing (..)
 import Utils.Expect as Expect
@@ -22,7 +22,7 @@ suite =
                     , Animation.step d2 [ P.opacity 0 ]
                     , Animation.step d3 [ P.opacity 1 ]
                     ]
-                    |> Internal.duration_
+                    |> (\(Animation anim) -> Internal.duration_ anim)
                     |> Expect.equal (d1 + d2 + d3)
         , test "Calculates percentages for each step" <|
             \_ ->

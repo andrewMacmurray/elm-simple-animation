@@ -5,18 +5,18 @@ module Utils.Expect exposing
 
 import Expect exposing (Expectation)
 import Internal.Animation as Internal
-import Simple.Animation exposing (Animation)
+import Simple.Animation exposing (Animation(..))
 
 
 classProperties : List String -> Animation -> Expectation
-classProperties props anim =
+classProperties props (Animation anim) =
     Internal.classDefinition_ anim
         |> (\def -> List.all (\prop -> String.contains prop def) props)
         |> Expect.true ("unexpected class properties in: \n" ++ Internal.classDefinition_ anim)
 
 
 keyframes : List String -> Animation -> Expectation
-keyframes expected anim =
+keyframes expected (Animation anim) =
     Internal.keyframes_ anim
         |> format
         |> Expect.equal (format (String.concat expected))

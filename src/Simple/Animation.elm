@@ -1,5 +1,5 @@
 module Simple.Animation exposing
-    ( Animation, Millis, fromTo, steps, empty
+    ( Animation(..), Millis, fromTo, steps, empty
     , Step, step, set, wait, waitTillComplete
     , Option, loop, count, delay, reverse, yoyo
     , linear, easeIn, easeOut, easeInOut, cubic
@@ -57,8 +57,8 @@ import Simple.Animation.Property exposing (Property)
 
 {-| Animation to be rendered with `Simple.Animation.Animated` functions
 -}
-type alias Animation =
-    Internal.Animation
+type Animation
+    = Animation Internal.Animation
 
 
 {-| Time unit for all Animations
@@ -244,10 +244,11 @@ waitTillComplete =
 
 toAnimation : Stepped -> Animation
 toAnimation (Stepped s) =
-    { duration = totalDuration s.steps
-    , frames = toFrames s.startAt s.steps
-    , options = s.options
-    }
+    Animation
+        { duration = totalDuration s.steps
+        , frames = toFrames s.startAt s.steps
+        , options = s.options
+        }
 
 
 totalDuration : List Step -> Millis
@@ -548,5 +549,5 @@ easeInOutBack =
 {-| Get the duration of an animation
 -}
 duration : Animation -> Millis
-duration =
-    Internal.duration_
+duration (Animation a) =
+    Internal.duration_ a

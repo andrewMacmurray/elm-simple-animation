@@ -2,7 +2,7 @@ module FromToTest exposing (suite)
 
 import Expect
 import Internal.Animation as Animation
-import Simple.Animation as Animation
+import Simple.Animation as Animation exposing (Animation(..))
 import Simple.Animation.Property as P
 import Test exposing (..)
 import Utils.Expect as Expect
@@ -55,6 +55,6 @@ suite =
                 , Animation.fromTo { duration = 0, options = [] } [] []
                 , Animation.steps { startAt = [], options = [] } []
                 ]
-                    |> List.map Animation.name_
+                    |> List.map (\(Animation anim) -> Animation.name_ anim)
                     |> Expect.equal (List.repeat 3 "anim-empty")
         ]
