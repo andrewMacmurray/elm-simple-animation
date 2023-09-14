@@ -32,7 +32,7 @@ expandFade =
         [ P.opacity 0, P.scale 2 ]
 ```
 
-![dot](https://aws1.discourse-cdn.com/standard17/uploads/elm_lang/original/2X/e/e0cc696d2b443390d5b1ba0e736dbbb1087d3f0b.gif)
+![dot](./images/glowing-dot.gif)
 
 ## Why?
 
@@ -72,7 +72,7 @@ spinningBox =
     Animated.div spinAndSlide [ class "spinning-box" ] []
 ```
 
-![spin-and-slide](https://user-images.githubusercontent.com/14013616/103415754-7ae7bc00-4b7b-11eb-8353-66733c2f2209.gif)
+![spin-and-slide](./images/spin-and-slide.gif)
 
 ## For Transitions
 
@@ -93,7 +93,7 @@ glowingBox =
         [ text "Hover over me" ]
 ```
 
-![glowing-box](https://user-images.githubusercontent.com/14013616/110212957-c1b4a380-7e95-11eb-9ab9-3d88485496b4.gif)
+![glowing-box](./images/glowing-box.gif)
 
 ## Rendering an `Animation` with SVG, Elm UI and Others
 
