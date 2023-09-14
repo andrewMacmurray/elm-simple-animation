@@ -16,7 +16,15 @@ suite =
                 , Transform.rotate 5
                 ]
                     |> Transform.toString
-                    |> Expect.equal "translateX(5px) translateY(5px) scale(5,5) rotate(5deg)"
+                    |> Expect.equal "translate3d(5px,5px,0) scale3d(5,5,1) rotate3d(0,0,1,5deg)"
+        , test "XY transforms are prioritised over separate X and Y transforms" <|
+            \_ ->
+                [ Transform.xy 10 15
+                , Transform.x 2
+                , Transform.y 4
+                ]
+                    |> Transform.toString
+                    |> Expect.equal "translate3d(10px,15px,0)"
         , test "The last property wins if duplicated" <|
             \_ ->
                 [ Transform.rotate 5
@@ -25,5 +33,5 @@ suite =
                 , Transform.x 10
                 ]
                     |> Transform.toString
-                    |> Expect.equal "translateX(10px) rotate(12deg)"
+                    |> Expect.equal "translate3d(10px,0,0) rotate3d(0,0,1,12deg)"
         ]

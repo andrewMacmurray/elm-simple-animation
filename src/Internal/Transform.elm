@@ -108,9 +108,7 @@ combine transform combined =
 
 render : Combined -> String
 render combined =
-    [ render_ translate_ combined.xy
-    , render_ translateX_ combined.x
-    , render_ translateY_ combined.y
+    [ translate_ combined
     , render_ scale_ combined.scale
     , render_ rotate_ combined.rotate
     ]
@@ -125,42 +123,64 @@ render_ f =
 
 scale_ : ( Float, Float ) -> String
 scale_ ( x_, y_ ) =
-    join [ "scale(", String.fromFloat x_, ",", String.fromFloat y_, ")" ]
+    String.concat [ "scale3d(", String.fromFloat x_, ",", String.fromFloat y_, ",1)" ]
+
+
+translate_ : Combined -> String
+translate_ combined =
+    case ( combined.xy, combined.x, combined.y ) of
+        ( Just ( x_, y_ ), _, _ ) ->
+            translateXY_ x_ y_
+
+        ( Nothing, Just x_, Nothing ) ->
+            translateX_ x_
+
+        ( Nothing, Nothing, Just y_ ) ->
+            translateY_ y_
+
+        ( Nothing, Just x_, Just y_ ) ->
+            translateXY_ x_ y_
+
+        ( Nothing, Nothing, Nothing ) ->
+            ""
+
+
+translateXY_ : Float -> Float -> String
+translateXY_ x_ y_ =
+    String.concat [ "translate3d(", px x_, ",", px y_, ",0)" ]
 
 
 translateX_ : Float -> String
 translateX_ n =
-    join [ "translateX(", px n, ")" ]
+    String.concat [ "translate3d(", px n, ",0,0)" ]
 
 
 translateY_ : Float -> String
 translateY_ n =
-    join [ "translateY(", px n, ")" ]
-
-
-translate_ : ( Float, Float ) -> String
-translate_ ( x_, y_ ) =
-    join [ "translate(", px x_, ",", px y_, ")" ]
+    String.concat [ "translate3d(0,", px n, ",0)" ]
 
 
 rotate_ : Float -> String
 rotate_ n =
-    join [ "rotate(", deg n, ")" ]
-
-
-join : List String -> String
-join =
-    String.join ""
+    String.concat [ "rotate3d(0,0,1,", deg n, ")" ]
 
 
 px : Float -> String
 px n =
-    String.fromFloat n ++ "px"
+    if n == 0 then
+        "0"
+
+    else
+        String.fromFloat n ++ "px"
 
 
 deg : Float -> String
 deg n =
-    String.fromFloat n ++ "deg"
+    if n == 0 then
+        "0"
+
+    else
+        String.fromFloat n ++ "deg"
 
 
 
