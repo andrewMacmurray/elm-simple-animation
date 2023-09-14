@@ -6,6 +6,8 @@
     "test": "elm-test",
     "docs": "elm-doc-preview",
     "docs:verify": "elm make --docs docs.json",
+    "review": "elm-review --fix",
+    "review:ci": "elm-review",
     "examples": "cd examples && elm reactor --port 8001",
     "examples:build": "cd examples && elm make src/Main.elm && mkdir -p dist && mv index.html dist/"
   },
@@ -22,6 +24,7 @@
   "devDependencies": {
     "elm": "^0.19.1-5",
     "elm-doc-preview": "^1.0.7",
+    "elm-review": "^2.10.2",
     "elm-test": "^0.19.1-revision12"
   }
 }

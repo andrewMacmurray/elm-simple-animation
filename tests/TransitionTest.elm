@@ -2,8 +2,8 @@ module TransitionTest exposing (suite)
 
 import Expect
 import Internal.Transition as Transition
-import Simple.Transition exposing (..)
-import Test exposing (..)
+import Simple.Transition exposing (color, delay, easeInOut, linear, opacity)
+import Test exposing (Test, describe, test)
 
 
 suite : Test

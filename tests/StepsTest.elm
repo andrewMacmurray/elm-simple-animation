@@ -5,7 +5,7 @@ import Fuzz
 import Internal.Animation as Internal
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
-import Test exposing (..)
+import Test exposing (Test, describe, test)
 import Utils.Expect as Expect
 
 
@@ -27,18 +27,23 @@ suite =
         , test "Calculates percentages for each step" <|
             \_ ->
                 let
+                    d1 : number
                     d1 =
                         1000
 
+                    d2 : number
                     d2 =
                         2000
 
+                    d3 : number
                     d3 =
                         1000
 
+                    totalDuration : number
                     totalDuration =
                         d1 + d2 + d3
 
+                    percent : number -> number
                     percent n =
                         n * 100
                 in

@@ -32,7 +32,7 @@ expandFade =
         [ P.opacity 0, P.scale 2 ]
 ```
 
-![dot](./images/glowing-dot.gif)
+![glowing-dot](https://raw.githubusercontent.com/andrewMacmurray/elm-simple-animation/main/images/glowing-dot.gif)
 
 ## Why?
 
@@ -72,7 +72,7 @@ spinningBox =
     Animated.div spinAndSlide [ class "spinning-box" ] []
 ```
 
-![spin-and-slide](./images/spin-and-slide.gif)
+![spin-and-slide](https://raw.githubusercontent.com/andrewMacmurray/elm-simple-animation/main/images/spin-and-slide.gif)
 
 ## For Transitions
 
@@ -93,7 +93,7 @@ glowingBox =
         [ text "Hover over me" ]
 ```
 
-![glowing-box](./images/glowing-box.gif)
+![glowing-box](https://raw.githubusercontent.com/andrewMacmurray/elm-simple-animation/main/images/glowing-box.gif)
 
 ## Rendering an `Animation` with SVG, Elm UI and Others
 

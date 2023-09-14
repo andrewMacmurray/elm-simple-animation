@@ -7,7 +7,7 @@ module Simple.Animation exposing
     , duration
     )
 
-{-| Build an Animation for rendering on the page
+{-| Build an Animation for rendering on the page.
 
 
 # Create an Animation
@@ -15,23 +15,23 @@ module Simple.Animation exposing
 @docs Animation, Millis, fromTo, steps, empty
 
 
-# Steps
+# Animation Steps
 
 Build up a multi step animation
 
 @docs Step, step, set, wait, waitTillComplete
 
 
-# Options
+# Animation Options
 
-Customise the feel and behaviour of an animation
+Customise the feel and behaviour of an animation.
 
 @docs Option, loop, count, delay, reverse, yoyo
 
 
 # Standard Eases
 
-Standard CSS eases
+Standard CSS eases.
 
 @docs linear, easeIn, easeOut, easeInOut, cubic
 
@@ -43,25 +43,25 @@ See what these eases look and feel like: <https://easings.net>
 @docs easeInSine, easeOutSine, easeInOutSine, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInBack, easeOutBack, easeInOutBack
 
 
-# Duration
+# Animation Duration
 
 @docs duration
 
 -}
 
-import Internal.Animation as Internal exposing (..)
+import Internal.Animation as Internal exposing (Animation(..), Frame(..), Iteration(..), Option(..))
 import Internal.Ease as Ease
 import Internal.Unit as Unit
 import Simple.Animation.Property exposing (Property)
 
 
-{-| Animation to be rendered with `Simple.Animation.Animated` functions
+{-| Animation to be rendered with `Simple.Animation.Animated` functions.
 -}
 type alias Animation =
     Internal.Animation
 
 
-{-| Time unit for all Animations
+{-| Time unit for all Animations.
 -}
 type alias Millis =
     Unit.Millis
@@ -152,7 +152,7 @@ steps { options, startAt } steps_ =
         )
 
 
-{-| Create an Empty Animation - Useful when you want to conditionally animate something
+{-| Create an Empty Animation - Useful when you want to conditionally animate something.
 
     fadeIf : Bool -> Animation
     fadeIf shouldFade =
@@ -167,7 +167,7 @@ steps { options, startAt } steps_ =
         else
             Animation.empty
 
-`Animation.empty` is equivalent to an animation with `0` duration
+`Animation.empty` is equivalent to an animation with `0` duration.
 
 -}
 empty : Animation
@@ -209,9 +209,9 @@ wait =
     Wait
 
 
-{-| Wait for another animation to complete before animating the next properties:
+{-| Wait for another animation to complete before animating the next properties.
 
-This animation will `wait` for `1500` milliseconds before animating to the next step
+This animation will `wait` for `1500` milliseconds before animating to the next step:
 
     import Simple.Animation as Animation exposing (Animation)
     import Simple.Animation.Property as P
@@ -268,6 +268,7 @@ accumDuration step_ curr =
 adjustCompleteWait : Animation -> Millis -> Millis
 adjustCompleteWait anim timePassed =
     let
+        duration_ : Millis
         duration_ =
             duration anim
     in
@@ -281,9 +282,11 @@ adjustCompleteWait anim timePassed =
 toFrames : List Property -> List Step -> List Internal.Frame
 toFrames firstFrame steps_ =
     let
+        percentPerMs : Float
         percentPerMs =
             100 / toFloat (totalDuration steps_)
 
+        getFrame : Step -> ( Millis, List Frame, Frame ) -> ( Millis, List Frame, Frame )
         getFrame f ( n, xs, cur ) =
             case f of
                 Step d props ->
@@ -300,6 +303,7 @@ toFrames firstFrame steps_ =
 
                 WaitTillComplete d ->
                     let
+                        dur : Millis
                         dur =
                             adjustCompleteWait d n
                     in
@@ -307,9 +311,11 @@ toFrames firstFrame steps_ =
                     , xs ++ [ cur ]
                     , Frame (percentPerMs * toFloat dur) (frameProps cur)
                     )
+
+        ( _, frames_, currentFrame ) =
+            List.foldl getFrame ( 0, [], Frame 0 firstFrame ) steps_
     in
-    List.foldl getFrame ( 0, [], Frame 0 firstFrame ) steps_
-        |> (\( _, xs, curr ) -> xs ++ [ curr ])
+    frames_ ++ [ currentFrame ]
 
 
 frameProps : Frame -> List Property
@@ -538,7 +544,7 @@ easeInOutBack =
 -- Other
 
 
-{-| Get the duration of an animation
+{-| Get the duration of an animation.
 -}
 duration : Animation -> Millis
 duration =
