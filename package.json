@@ -1,15 +1,13 @@
 {
   "name": "elm-simple-animation",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "description": "stateless animation utils for Elm",
   "scripts": {
     "test": "elm-test",
     "docs": "elm-doc-preview",
     "docs:verify": "elm make --docs docs.json",
     "examples": "cd examples && elm reactor --port 8001",
-    "examples:build": "cd examples && elm make src/Main.elm && mkdir -p dist && mv index.html dist/",
-    "examples:push": "cd examples && surge dist --domain https://elm-simple-animation-examples.surge.sh",
-    "examples:deploy": "npm run examples:build && npm run examples:push"
+    "examples:build": "cd examples && elm make src/Main.elm && mkdir -p dist && mv index.html dist/"
   },
   "repository": {
     "type": "git",
@@ -23,9 +21,7 @@
   "homepage": "https://github.com/andrewMacmurray/elm-simple-animation#readme",
   "devDependencies": {
     "elm": "^0.19.1-5",
-    "elm-doc-preview": "^5.0.5",
-    "elm-format": "^0.8.5",
-    "elm-test": "^0.19.1-revision7",
-    "surge": "^0.21.7"
+    "elm-doc-preview": "^1.0.7",
+    "elm-test": "^0.19.1-revision12"
   }
 }

@@ -2,7 +2,7 @@
 
 ### Stateless animation utils for Elm
 
-See some examples here: https://elm-simple-animation-examples.surge.sh/
+See some examples here: https://elm-simple-animation-examples.vercel.app/
 
 ## What?
 
