@@ -47,7 +47,8 @@ You can find examples of building many of the common helpers mentioned below: <h
 
 import Html exposing (Html)
 import Html.Attributes
-import Internal.Animation as Animation exposing (Animation)
+import Internal.Animation as Internal
+import Simple.Animation exposing (Animation)
 
 
 
@@ -151,7 +152,7 @@ node :
     -> Html msg
 node options node_ anim attrs els =
     node_
-        (options.class (Animation.name_ anim) :: attrs)
+        (options.class (Internal.name_ anim) :: attrs)
         (toStylesheet_ anim :: els)
 
 
@@ -194,7 +195,7 @@ ui options node_ anim attrs els =
     node_
         (List.append
             [ options.behindContent (options.html (toStylesheet_ anim))
-            , options.htmlAttribute (Html.Attributes.class (Animation.name_ anim))
+            , options.htmlAttribute (Html.Attributes.class (Internal.name_ anim))
             ]
             attrs
         )
@@ -238,8 +239,8 @@ elmCss :
     -> element
 elmCss options node_ anim attrs els =
     node_
-        (options.class (Animation.name_ anim) :: attrs)
-        (options.node "style" [] [ options.text (Animation.stylesheet_ anim) ] :: els)
+        (options.class (Internal.name_ anim) :: attrs)
+        (options.node "style" [] [ options.text (Internal.stylesheet_ anim) ] :: els)
 
 
 {-| -}
@@ -273,10 +274,10 @@ For example, say you wanted to animate `elm-community/typed-svg` nodes - you cou
 custom : (ClassName -> Stylesheet -> animated) -> Animation -> animated
 custom toAnimated anim =
     toAnimated
-        (Animation.name_ anim)
-        (Animation.stylesheet_ anim)
+        (Internal.name_ anim)
+        (Internal.stylesheet_ anim)
 
 
 toStylesheet_ : Animation -> Html msg
 toStylesheet_ anim =
-    Html.node "style" [] [ Html.text (Animation.stylesheet_ anim) ]
+    Html.node "style" [] [ Html.text (Internal.stylesheet_ anim) ]

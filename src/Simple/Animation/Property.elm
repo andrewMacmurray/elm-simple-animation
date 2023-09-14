@@ -6,29 +6,21 @@ module Simple.Animation.Property exposing
     , property
     )
 
-{-| Animatable properties
-
-
-# Property
+{-| Animatable `Properties` specify what your animation should look like at each point in an animation.
 
 @docs Property
 
 
 # Common Properties
 
-These properties will give you smooth and performant animations
-
-
-## Opacity
-
-Animate the opacity of an element (a value between `0` and `1`)
+These properties will give you smooth and performant animations.
 
 @docs opacity
 
 
 ## Transforms
 
-Move, Rotate and resize elements
+Move, Rotate and resize elements.
 
 @docs rotate, scale, scaleXY, y, x, xy
 
@@ -44,61 +36,63 @@ Animate any CSS property:
 
     P.property "stroke-dasharray" "10"
 
-Take care with properties that are not hardware accelerated as they may result in janky animations
+Take care with properties that are not hardware accelerated as they may result in janky animations.
 
 @docs property
 
 -}
 
-import Internal.Animation.Property as Internal exposing (..)
+import Internal.Animation.Property as Internal
 import Internal.Transform as Transform
 
 
-{-| -}
+{-| An animatable property.
+-}
 type alias Property =
     Internal.Property
 
 
-{-| -}
+{-| Animate the opacity of an element (a value between `0` and `1`).
+-}
 opacity : Float -> Property
 opacity =
-    Opacity
+    Internal.Opacity
 
 
 {-| -}
 y : Float -> Property
 y =
-    Transform << Transform.y
+    Internal.Transform << Transform.y
 
 
 {-| -}
 x : Float -> Property
 x =
-    Transform << Transform.x
+    Internal.Transform << Transform.x
 
 
 {-| -}
 xy : Float -> Float -> Property
 xy x_ y_ =
-    Transform (Transform.xy x_ y_)
+    Internal.Transform (Transform.xy x_ y_)
 
 
 {-| -}
 scale : Float -> Property
 scale n =
-    Transform (Transform.scaleXY n n)
+    Internal.Transform (Transform.scaleXY n n)
 
 
 {-| -}
 scaleXY : Float -> Float -> Property
 scaleXY x_ y_ =
-    Transform (Transform.scaleXY x_ y_)
+    Internal.Transform (Transform.scaleXY x_ y_)
 
 
 {-| -}
 rotate : Float -> Property
 rotate =
-    Transform << Transform.rotate
+    Internal.Transform << Transform.rotate
 
 
 {-| -}
@@ -122,4 +116,4 @@ borderColor =
 {-| -}
 property : String -> String -> Property
 property =
-    Raw
+    Internal.Raw

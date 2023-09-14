@@ -2,9 +2,9 @@ module FromToTest exposing (suite)
 
 import Expect
 import Internal.Animation as Animation
-import Simple.Animation as Animation exposing (Animation)
+import Simple.Animation as Animation
 import Simple.Animation.Property as P
-import Test exposing (..)
+import Test exposing (Test, describe, test)
 import Utils.Expect as Expect
 
 

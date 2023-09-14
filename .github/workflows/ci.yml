@@ -27,3 +27,5 @@ jobs:
         run: npm test
       - name: Check Docs Compile
         run: npm run docs:verify
+      - name: Run Elm Review
+        run: npm run review:ci

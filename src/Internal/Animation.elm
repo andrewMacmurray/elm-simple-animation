@@ -7,7 +7,6 @@ module Internal.Animation exposing
     , duration_
     , keyframes_
     , name_
-    , renderOption
     , stylesheet_
     )
 

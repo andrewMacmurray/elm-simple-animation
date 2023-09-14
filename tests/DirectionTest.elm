@@ -2,7 +2,7 @@ module DirectionTest exposing (suite)
 
 import Simple.Animation as Animation exposing (Animation)
 import Simple.Animation.Property as P
-import Test exposing (..)
+import Test exposing (Test, describe, test)
 import Utils.Expect as Expect
 
 

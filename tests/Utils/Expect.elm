@@ -10,8 +10,8 @@ import Simple.Animation exposing (Animation)
 
 classProperties : List String -> Animation -> Expectation
 classProperties props anim =
-    Internal.classDefinition_ anim
-        |> (\def -> List.all (\prop -> String.contains prop def) props)
+    props
+        |> List.all (\prop -> String.contains prop (Internal.classDefinition_ anim))
         |> Expect.true ("unexpected class properties in: \n" ++ Internal.classDefinition_ anim)
 
 
